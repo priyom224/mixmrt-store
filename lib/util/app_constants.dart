@@ -1,38 +1,17 @@
 import 'dart:convert';
-
+import 'package:flutter/foundation.dart';
 import 'package:sixam_mart_store/features/language/domain/models/language_model.dart';
 import 'package:sixam_mart_store/util/images.dart';
 import 'package:http/http.dart' as http;
 
 class AppConstants {
-  static const String appName = 'MIXMRT ZM Store';
+  static const String appName = 'MIXMRT Store';
   static const double appVersion = 2.8;
 
   static const String fontFamily = 'Roboto';
 
   static String baseUrl = 'https://mixmrt.com/zm';
   //static const String baseUrl = 'http://192.168.50.92/6amtech/mart/Backend-6amMart';
-
-  static Future<void> setBaseUrlBasedOnCountry() async {
-    String? countryCode = await CountryDetector.getCountry();
-
-    if (countryCode != null) {
-      switch (countryCode) {
-        case 'IN':
-          baseUrl = 'https://mixmrt.in/zm';
-          break;
-        case 'US':
-          baseUrl = 'https://mixmrt.us/zm';
-          break;
-        case 'UK':
-          baseUrl = 'https://mixmrt.uk/zm';
-          break;
-        default:
-          baseUrl = 'https://mixmrt.com/zm';  // Default URL
-      }
-      print('Base URL set to: $baseUrl');
-    }
-  }
 
   static const String configUri = '/api/v1/config';
   static const String loginUri = '/api/v1/auth/vendor/login';
@@ -127,6 +106,7 @@ class AppConstants {
   static const String getBrandsUri = '/api/v1/brand';
   static const String updateReplyUri = '/api/v1/vendor/item/reply-update';
   static const String checkZoneUri = '/api/v1/zone/check';
+  static const String getAgreementUri = '/show-agreement/store';
 
 
   /// Subscription url
@@ -199,6 +179,30 @@ class AppConstants {
   static List<LanguageModel> languages = [
     LanguageModel(imageUrl: Images.english, languageName: 'English', countryCode: 'US', languageCode: 'en'),
   ];
+
+  static Future<void> setBaseUrlBasedOnCountry() async {
+    String? countryCode = await CountryDetector.getCountry();
+
+    if (countryCode != null) {
+      switch (countryCode) {
+        case 'MW':
+          baseUrl = 'https://mixmrt.in/mw';
+          break;
+        case 'TZ':
+          baseUrl = 'https://mixmrt.us/tz';
+          break;
+        case 'ZM':
+          baseUrl = 'https://mixmrt.uk/zm';
+          break;
+        default:
+          baseUrl = 'https://mixmrt.com/zm';
+      }
+      if (kDebugMode) {
+        print('Base URL set to: $baseUrl');
+      }
+    }
+  }
+
 }
 
 class CountryDetector {
@@ -209,10 +213,15 @@ class CountryDetector {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        return data['countryCode']; // Returns country code (e.g., 'US', 'IN')
+        if (kDebugMode) {
+          print('Country_code==>>: ${data['countryCode']}');
+        }
+        return data['countryCode'];
       }
     } catch (e) {
-      print('Error detecting country: $e');
+      if (kDebugMode) {
+        print('Error detecting country: $e');
+      }
     }
     return null;
   }

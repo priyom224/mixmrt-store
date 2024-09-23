@@ -81,6 +81,30 @@ class AuthController extends GetxController implements GetxService {
   XFile? get pickedRegistration => _pickedRegistration;
   XFile? get pickedAgreement => _pickedAgreement;
 
+  bool _acceptTerms = true;
+  bool get acceptTerms => _acceptTerms;
+
+  bool _isAgreement = true;
+  bool get isAgreement => _isAgreement;
+
+  bool _isPrivacyPolicy = true;
+  bool get isPrivacyPolicy => _isPrivacyPolicy;
+
+  void toggleTerms() {
+    _acceptTerms = !_acceptTerms;
+    update();
+  }
+
+  void toggleAgreement() {
+    _isAgreement = !_isAgreement;
+    update();
+  }
+
+  void togglePrivacyPolicy() {
+    _isPrivacyPolicy = !_isPrivacyPolicy;
+    update();
+  }
+
   Future<ResponseModel?> login(String? email, String password, String type) async {
     _isLoading = true;
     update();
@@ -194,7 +218,7 @@ class AuthController extends GetxController implements GetxService {
   Future<void> registerStore(Map<String, String> data) async {
     _isLoading = true;
     update();
-    await authServiceInterface.registerRestaurant(data, _pickedLogo, _pickedCover, _pickedTax, _pickedRegistration, _pickedAgreement);
+    await authServiceInterface.registerRestaurant(data, _pickedLogo, _pickedCover, _pickedTax, _pickedRegistration);
     _isLoading = false;
     update();
   }

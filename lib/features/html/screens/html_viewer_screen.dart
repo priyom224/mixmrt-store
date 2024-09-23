@@ -8,7 +8,8 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 class HtmlViewerScreen extends StatefulWidget {
   final bool isPrivacyPolicy;
-  const HtmlViewerScreen({super.key, required this.isPrivacyPolicy});
+  final bool isAgreement;
+  const HtmlViewerScreen({super.key, required this.isPrivacyPolicy, required this.isAgreement});
 
   @override
   State<HtmlViewerScreen> createState() => _HtmlViewerScreenState();
@@ -20,13 +21,13 @@ class _HtmlViewerScreenState extends State<HtmlViewerScreen> {
   void initState() {
     super.initState();
 
-    Get.find<HtmlController>().getHtmlText(widget.isPrivacyPolicy);
+    Get.find<HtmlController>().getHtmlText(widget.isPrivacyPolicy, widget.isAgreement);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBarWidget(title: widget.isPrivacyPolicy ? 'privacy_policy'.tr : 'terms_condition'.tr),
+      appBar: CustomAppBarWidget(title: widget.isPrivacyPolicy ? 'privacy_policy'.tr : widget.isAgreement ? 'contact'.tr : 'terms_condition'.tr),
       body: GetBuilder<HtmlController>(builder: (htmlController) {
         return Container(
           height: MediaQuery.of(context).size.height,
@@ -37,7 +38,7 @@ class _HtmlViewerScreenState extends State<HtmlViewerScreen> {
             physics: const BouncingScrollPhysics(),
             child: Html(
               data: htmlController.htmlText ?? '', shrinkWrap: true,
-              key: Key(widget.isPrivacyPolicy ? 'privacy_policy' : 'terms_condition'),
+              key: Key(widget.isPrivacyPolicy ? 'privacy_policy' : widget.isAgreement ? 'contact' : 'terms_condition'),
               onLinkTap: (url, attributes, element) {
                 if(url!.startsWith('www.')) {
                   url = 'https://$url';

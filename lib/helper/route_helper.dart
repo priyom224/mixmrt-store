@@ -120,6 +120,7 @@ class RouteHelper {
   static const String reviewReply = '/review-reply';
   static const String offlineHistory = '/offline-history';
   static const String offlinePaymentScreen = '/offline-payment-screen';
+  static const String agreement = '/agreement';
 
   //ToDo: Subscription
   static const String businessPlan = '/business-plan';
@@ -203,6 +204,7 @@ class RouteHelper {
   }
   static String getTermsRoute() => terms;
   static String getPrivacyRoute() => privacy;
+  static String getAgreementRoute() => agreement;
   static String getItemImagesRoute(Item item) {
     String data = base64Url.encode(utf8.encode(jsonEncode(item.toJson())));
     return '$itemImages?item=$data';
@@ -359,8 +361,9 @@ class RouteHelper {
       DeliveryManModel data = DeliveryManModel.fromJson(jsonDecode(utf8.decode(decode)));
       return DeliveryManDetailsScreen(deliveryMan: data);
     }),
-    GetPage(name: terms, page: () => const HtmlViewerScreen(isPrivacyPolicy: false)),
-    GetPage(name: privacy, page: () => const HtmlViewerScreen(isPrivacyPolicy: true)),
+    GetPage(name: terms, page: () => const HtmlViewerScreen(isPrivacyPolicy: false, isAgreement: false)),
+    GetPage(name: privacy, page: () => const HtmlViewerScreen(isPrivacyPolicy: true, isAgreement: false)),
+    GetPage(name: agreement, page: () => const HtmlViewerScreen(isAgreement: true, isPrivacyPolicy: false)),
     GetPage(name: update, page: () => UpdateScreen(isUpdate: Get.parameters['update'] == 'true')),
     GetPage(name: itemImages, page: () => ImageViewerScreen(
       item: Item.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['item']!.replaceAll(' ', '+'))))),

@@ -27,7 +27,7 @@
         </queries>
 
         <application
-            android:label="MIXMRT ZM Store"
+            android:label="MIXMRT Store"
             android:name="${applicationName}"
             android:requestLegacyExternalStorage="true"
             android:usesCleartextTraffic="true"

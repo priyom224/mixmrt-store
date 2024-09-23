@@ -5,7 +5,7 @@ import 'package:sixam_mart_store/common/models/response_model.dart';
 
 abstract class AuthServiceInterface {
   Future<Response> login(String? email, String password, String type);
-  Future<Response> registerRestaurant(Map<String, String> data, XFile? logo, XFile? cover, XFile? tax, XFile? registration, XFile? agreement);
+  Future<Response> registerRestaurant(Map<String, String> data, XFile? logo, XFile? cover, XFile? tax, XFile? registration);
   Future<Response> updateToken();
   Future<bool> saveUserToken(String token, String zoneTopic, String type);
   String getUserToken();

@@ -8,9 +8,9 @@ class HtmlController extends GetxController implements GetxService {
   String? _htmlText;
   String? get htmlText => _htmlText;
 
-  Future<void> getHtmlText(bool isPrivacyPolicy) async {
+  Future<void> getHtmlText(bool isPrivacyPolicy, bool isAgreement) async {
     _htmlText = null;
-    Response response = await htmlServiceInterface.getHtmlText(isPrivacyPolicy);
+    Response response = await htmlServiceInterface.getHtmlText(isPrivacyPolicy, isAgreement);
     if (response.statusCode == 200) {
       if(response.body != null && response.body.isNotEmpty && response.body is String) {
         _htmlText = response.body.replaceAll('href=', 'target="_blank" href=');

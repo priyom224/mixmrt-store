@@ -17,8 +17,8 @@ class AuthService implements AuthServiceInterface {
   }
 
   @override
-  Future<Response> registerRestaurant(Map<String, String> data, XFile? logo, XFile? cover,  XFile? tax, XFile? registration, XFile? agreement) async {
-    Response response = await authRepositoryInterface.registerRestaurant(data, logo, cover, tax, registration, agreement);
+  Future<Response> registerRestaurant(Map<String, String> data, XFile? logo, XFile? cover,  XFile? tax, XFile? registration) async {
+    Response response = await authRepositoryInterface.registerRestaurant(data, logo, cover, tax, registration);
     if(response.statusCode == 200) {
       int? storeId = response.body['store_id'];
       Get.offAllNamed(RouteHelper.getBusinessPlanRoute(storeId));

@@ -10,6 +10,7 @@ import 'package:sixam_mart_store/common/widgets/confirmation_dialog_widget.dart'
 import 'package:sixam_mart_store/common/widgets/custom_tool_tip_widget.dart';
 import 'package:sixam_mart_store/features/auth/controllers/auth_controller.dart';
 import 'package:sixam_mart_store/features/address/controllers/address_controller.dart';
+import 'package:sixam_mart_store/features/auth/widgets/condition_check_box_widget.dart';
 import 'package:sixam_mart_store/features/language/controllers/language_controller.dart';
 import 'package:sixam_mart_store/features/splash/controllers/splash_controller.dart';
 import 'package:sixam_mart_store/features/store/domain/models/store_body_model.dart';
@@ -383,11 +384,12 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                           Text('store_preference'.tr, style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge)),
                           const SizedBox(height: Dimensions.paddingSizeDefault),
 
-                          Row(
+                         /* Row(
                             children: [
                               Expanded(
                                 child: CustomTextFieldWidget(
                                   hintText: 'tax_id'.tr,
+                                  labelText: 'tax_id'.tr,
                                   controller: _taxIdController,
                                   focusNode: _taxIdFocus,
                                   nextFocus: _registrationNoFocus,
@@ -406,11 +408,22 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                                 ),
                               ) : const SizedBox(),
                             ],
+                          ),*/
+
+                          CustomTextFieldWidget(
+                            hintText: 'tax_id'.tr,
+                            labelText: 'tax_id'.tr,
+                            controller: _taxIdController,
+                            focusNode: _taxIdFocus,
+                            nextFocus: _registrationNoFocus,
+                            inputAction: TextInputAction.done,
+                            inputType: TextInputType.text,
                           ),
                           const SizedBox(height: Dimensions.paddingSizeExtraLarge),
 
                           CustomTextFieldWidget(
                             hintText: 'registration_no'.tr,
+                            labelText: 'registration_no'.tr,
                             controller: _registrationNoController,
                             focusNode: _registrationNoFocus,
                             nextFocus: _vatFocus,
@@ -499,7 +512,7 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                             ]),),
                           ],),  const SizedBox(height: Dimensions.paddingSizeExtraLarge),
 
-                          Row(children: [
+                         /* Row(children: [
                             Expanded(flex: 10, child: Stack(children: [
                               Padding(
                                 padding: const EdgeInsets.all(5.0),
@@ -537,7 +550,8 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                                 ),
                               ),
                             ]),),
-                          ],),  const SizedBox(height: Dimensions.paddingSizeExtraLarge),
+                          ],),
+                          const SizedBox(height: Dimensions.paddingSizeExtraLarge),*/
 
 
                           Container(
@@ -752,6 +766,15 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                             ]),
                           ),
 
+                          const SizedBox(height: Dimensions.paddingSizeDefault),
+
+                          ConditionCheckBoxWidget(authController: authController, isAgreement: true),
+                          const SizedBox(height: Dimensions.paddingSizeDefault),
+
+                          ConditionCheckBoxWidget(authController: authController),
+                          const SizedBox(height: Dimensions.paddingSizeDefault),
+
+                          ConditionCheckBoxWidget(authController: authController, isPrivacyPolicy: true),
                         ]),
                       ),
                     ),
@@ -769,7 +792,7 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                 child: CustomButtonWidget(
                   buttonText: 'submit'.tr,
                   margin: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-                  onPressed: () async{
+                  onPressed: (!authController.acceptTerms || !authController.isAgreement || !authController.isPrivacyPolicy) ? null : () async{
                     bool defaultNameNull = false;
                     bool defaultAddressNull = false;
                     for(int index=0; index<_languageList.length; index++) {
@@ -825,9 +848,9 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                           showCustomSnackBar('upload_tax_document'.tr);
                         }else if(authController.pickedRegistration == null){
                           showCustomSnackBar('upload_registration_document'.tr);
-                        }else if(authController.pickedAgreement == null){
+                        }/*else if(authController.pickedAgreement == null){
                           showCustomSnackBar('upload_agreement_document'.tr);
-                        }else if(vat.isEmpty) {
+                        }*/else if(vat.isEmpty) {
                           showCustomSnackBar('enter_vat_amount'.tr);
                         }else if(minTime.isEmpty) {
                           showCustomSnackBar('enter_minimum_delivery_time'.tr);

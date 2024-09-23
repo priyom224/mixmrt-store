@@ -19,8 +19,8 @@ class AuthRepository implements AuthRepositoryInterface {
   }
 
   @override
-  Future<Response> registerRestaurant(Map<String, String> data, XFile? logo, XFile? cover, XFile? tax, XFile? registration, XFile? agreement) async {
-    return await apiClient.postMultipartData(AppConstants.restaurantRegisterUri, data, [MultipartBody('logo', logo), MultipartBody('cover_photo', cover), MultipartBody('tax_document', tax), MultipartBody('registration_document', registration), MultipartBody('agreement_document', agreement)]);
+  Future<Response> registerRestaurant(Map<String, String> data, XFile? logo, XFile? cover, XFile? tax, XFile? registration) async {
+    return await apiClient.postMultipartData(AppConstants.restaurantRegisterUri, data, [MultipartBody('logo', logo), MultipartBody('cover_photo', cover), MultipartBody('tax_document', tax), MultipartBody('registration_document', registration)]);
   }
 
   @override
