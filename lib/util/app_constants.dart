@@ -106,7 +106,7 @@ class AppConstants {
   static const String getBrandsUri = '/api/v1/brand';
   static const String updateReplyUri = '/api/v1/vendor/item/reply-update';
   static const String checkZoneUri = '/api/v1/zone/check';
-  static const String getAgreementUri = '/show-agreement/store';
+  static const String getAgreementUri = '/api/v1/show-agreement/store';
 
 
   /// Subscription url
