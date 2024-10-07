@@ -382,7 +382,7 @@ class _AddDeliveryManScreenState extends State<AddDeliveryManScreen> {
                       ),
                     ),
 
-                    Get.find<SplashController>().configModel?.deliveryAgreement == true ? Column(
+                    /*Get.find<SplashController>().configModel?.deliveryAgreement == true ? Column(
                       children: [
                         const SizedBox(height: Dimensions.paddingSizeLarge),
                         CustomButtonWidget(
@@ -394,9 +394,9 @@ class _AddDeliveryManScreenState extends State<AddDeliveryManScreen> {
                         ),
                         const SizedBox(height: Dimensions.paddingSizeLarge),
                       ],
-                    ) : const SizedBox(),
+                    ) : const SizedBox(),*/
 
-                    Row(children: [
+                    /*Row(children: [
                       Expanded(flex: 10, child: Stack(children: [
                         Padding(
                           padding: const EdgeInsets.all(5.0),
@@ -434,8 +434,7 @@ class _AddDeliveryManScreenState extends State<AddDeliveryManScreen> {
                           ),
                         ),
                       ]),),
-                    ],),  const SizedBox(height: Dimensions.paddingSizeSmall),
-
+                    ],),  const SizedBox(height: Dimensions.paddingSizeSmall),*/
 
                   ]);
                 }
@@ -488,9 +487,9 @@ class _AddDeliveryManScreenState extends State<AddDeliveryManScreen> {
       showCustomSnackBar('enter_delivery_man_identity_number'.tr);
     }else if(!_update && dmController.pickedImage == null) {
       showCustomSnackBar('upload_delivery_man_image'.tr);
-    }else if(dmController.pickedAgreement == null) {
+    }/*else if(dmController.pickedAgreement == null) {
       showCustomSnackBar('upload_agreement_document'.tr);
-    }else {
+    }*/else {
       _deliveryMan!.fName = fName;
       _deliveryMan!.lName = lName;
       _deliveryMan!.email = email;

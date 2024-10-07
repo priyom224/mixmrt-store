@@ -19,7 +19,7 @@ class DeliveryManController extends GetxController implements GetxService {
   List<XFile> _pickedIdentities = [];
   List<XFile> get pickedIdentities => _pickedIdentities;
 
-  final List<String> _identityTypeList = ['passport', 'driving_license', 'nid'];
+  final List<String> _identityTypeList = ['nid'];
   List<String> get identityTypeList => _identityTypeList;
 
   int _identityTypeIndex = 0;
@@ -49,7 +49,7 @@ class DeliveryManController extends GetxController implements GetxService {
   Future<void> addDeliveryMan(DeliveryManModel deliveryMan, String pass, String token, bool isAdd) async {
     _isLoading = true;
     update();
-    bool isSuccess = await deliverymanServiceInterface.addDeliveryMan(deliveryMan, pass, _pickedImage, _pickedAgreement, _pickedIdentities, token, isAdd);
+    bool isSuccess = await deliverymanServiceInterface.addDeliveryMan(deliveryMan, pass, _pickedImage, _pickedIdentities, token, isAdd);
     if(isSuccess) {
       Get.back();
       showCustomSnackBar(isAdd ? 'delivery_man_added_successfully'.tr : 'delivery_man_updated_successfully'.tr, isError: false);

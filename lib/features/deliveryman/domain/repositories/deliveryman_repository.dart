@@ -22,11 +22,11 @@ class DeliverymanRepository implements DeliverymanRepositoryInterface {
   }
 
   @override
-  Future<bool> addDeliveryMan(DeliveryManModel deliveryMan, String pass, XFile? image, XFile? agreement, List<XFile> identities, String token, bool isAdd) async {
+  Future<bool> addDeliveryMan(DeliveryManModel deliveryMan, String pass, XFile? image, List<XFile> identities, String token, bool isAdd) async {
 
     List<MultipartBody> multiParts = [];
     multiParts.add(MultipartBody('image', image));
-    multiParts.add(MultipartBody('agreement_document', agreement));
+    //multiParts.add(MultipartBody('agreement_document', agreement));
     for(XFile file in identities) {
       multiParts.add(MultipartBody('identity_image[]', file));
     }

@@ -29,9 +29,6 @@ Future<void> main() async {
   setPathUrlStrategy();
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Detect and set base URL based on the country
-  await AppConstants.setBaseUrlBasedOnCountry();
-
   Map<String, Map<String, String>> languages = await di.init();
 
   if(GetPlatform.isAndroid) {

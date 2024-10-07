@@ -16,8 +16,8 @@ class DeliverymanService implements DeliverymanServiceInterface {
   }
 
   @override
-  Future<bool> addDeliveryMan(DeliveryManModel deliveryMan, String pass, XFile? image, XFile? agreement, List<XFile> identities, String token, bool isAdd) async {
-    return await deliverymanRepositoryInterface.addDeliveryMan(deliveryMan, pass, image, agreement, identities, token, isAdd);
+  Future<bool> addDeliveryMan(DeliveryManModel deliveryMan, String pass, XFile? image, List<XFile> identities, String token, bool isAdd) async {
+    return await deliverymanRepositoryInterface.addDeliveryMan(deliveryMan, pass, image, identities, token, isAdd);
   }
 
   @override
