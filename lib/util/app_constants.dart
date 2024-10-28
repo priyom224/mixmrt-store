@@ -1,8 +1,5 @@
-import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:sixam_mart_store/features/language/domain/models/language_model.dart';
 import 'package:sixam_mart_store/util/images.dart';
-import 'package:http/http.dart' as http;
 
 class AppConstants {
   static const String appName = 'MIXMRT Store';
@@ -11,6 +8,10 @@ class AppConstants {
   static const String fontFamily = 'Roboto';
 
   static String baseUrl = 'https://mixmrt.com/zm';
+
+  static void setBaseUrl(String url) {
+    baseUrl = url;
+  }
 
   static const String configUri = '/api/v1/config';
   static const String loginUri = '/api/v1/auth/vendor/login';
