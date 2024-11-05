@@ -863,9 +863,9 @@
   "you_will_get" : "You will get",
   "to_your_wallet_for_remaining" : "to your wallet for remaining",
   "days_subscription_plan" : "days subscription plan",
-  "tax_id" : "Tax ID",
+  "tax_id" : "Tax Identification Number",
   "registration_no" : "Registration No",
-  "upload_tax_document" : "Upload TPIN Document",
+  "upload_tax_document" : "Upload Tax Document",
   "upload_registration_document" : "Upload Registration Document",
   "upload_agreement_document" : "Upload Agreement/Contact Document",
   "enter_tax_id_info" : "Enter Tax ID information",
@@ -895,5 +895,6 @@
   "contact" : "Agreement/Contract",
   "i_agree_with_all_the" : "I agree with all the",
   "select_your_country" : "Select your country",
-  "tpin" : "TPIN"
+  "tpin" : "TPIN",
+  "upload_tpin_document" : "Upload TPIN Document"
 }
