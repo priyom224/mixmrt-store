@@ -865,7 +865,7 @@
   "days_subscription_plan" : "days subscription plan",
   "tax_id" : "Tax ID",
   "registration_no" : "Registration No",
-  "upload_tax_document" : "Upload Tax Document",
+  "upload_tax_document" : "Upload TPIN Document",
   "upload_registration_document" : "Upload Registration Document",
   "upload_agreement_document" : "Upload Agreement/Contact Document",
   "enter_tax_id_info" : "Enter Tax ID information",
@@ -892,7 +892,8 @@
   "no_history_found" : "No history found",
   "pay_your_bill_using_the_info" : "Pay your bill using the info",
   "terms_conditions": "Terms & Conditions",
-  "contact" : "Contact",
+  "contact" : "Agreement/Contract",
   "i_agree_with_all_the" : "I agree with all the",
-  "select_your_country" : "Select your country"
+  "select_your_country" : "Select your country",
+  "tpin" : "TPIN"
 }

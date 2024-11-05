@@ -411,8 +411,8 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                           ),*/
 
                           CustomTextFieldWidget(
-                            hintText: 'tax_id'.tr,
-                            labelText: 'tax_id'.tr,
+                            hintText: 'tpin'.tr,
+                            labelText: 'tpin'.tr,
                             controller: _taxIdController,
                             focusNode: _taxIdFocus,
                             nextFocus: _registrationNoFocus,
