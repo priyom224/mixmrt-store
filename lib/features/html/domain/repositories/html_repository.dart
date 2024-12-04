@@ -9,9 +9,9 @@ class HtmlRepository implements HtmlRepositoryInterface {
   HtmlRepository({required this.apiClient});
 
   @override
-  Future<Response> getHtmlText(bool isPrivacyPolicy, bool isAgreement) async {
+  Future<Response> getHtmlText(bool isPrivacyPolicy) async {
     return await apiClient.getData(
-      isPrivacyPolicy ? AppConstants.privacyPolicyUri : isAgreement ? AppConstants.getAgreementUri : AppConstants.termsAndConditionsUri,
+      isPrivacyPolicy ? AppConstants.privacyPolicyUri : AppConstants.termsAndConditionsUri,
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Accept': 'application/json',

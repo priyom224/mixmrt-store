@@ -1,4 +1,3 @@
-import 'package:sixam_mart_store/features/profile/controllers/profile_controller.dart';
 import 'package:sixam_mart_store/features/splash/controllers/splash_controller.dart';
 import 'package:sixam_mart_store/helper/date_converter_helper.dart';
 import 'package:sixam_mart_store/util/dimensions.dart';
@@ -30,17 +29,8 @@ class _CustomTimePickerWidgetState extends State<CustomTimePickerWidget> {
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
-      Text(
-        widget.title, maxLines: 1, overflow: TextOverflow.ellipsis,
-        style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor),
-      ),
-      const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-
       InkWell(
         onTap: () async {
-
-          Get.find<ProfileController>().trialWidgetShow(route: 'show-dialog');
-
           TimeOfDay? time = await showTimePicker(
             context: context, initialTime: TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute),
             builder: (BuildContext context, Widget? child) {
@@ -51,13 +41,7 @@ class _CustomTimePickerWidgetState extends State<CustomTimePickerWidget> {
                 child: child!,
               );
             },
-            
-          ).then((selectedTime) {
-            Get.find<ProfileController>().trialWidgetShow(route: '');
-
-            return selectedTime;
-          });
-
+          );
           if(time != null) {
             setState(() {
               _myTime = DateConverterHelper.convertTimeToTime(DateTime(DateTime.now().year, 1, 1, time.hour, time.minute));
@@ -65,26 +49,37 @@ class _CustomTimePickerWidgetState extends State<CustomTimePickerWidget> {
             widget.onTimeChanged(_myTime);
           }
         },
-        child: Container(
-          height: 50, alignment: Alignment.center,
-          padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-            boxShadow: Get.isDarkMode ? null : [BoxShadow(color: Colors.grey[200]!, spreadRadius: 2, blurRadius: 5, offset: const Offset(0, 5))],
-          ),
-          child: Row(children: [
+        child: Stack(clipBehavior: Clip.none, children: [
 
-            Text(
-              _myTime != null ? DateConverterHelper.convertStringTimeToTime(_myTime!) : 'pick_time'.tr, style: robotoRegular,
-              maxLines: 1,
+          Container(
+            height: 50,
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+              borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+              border: Border.all(color: Theme.of(context).disabledColor, width: 0.5),
             ),
-            const Expanded(child: SizedBox()),
+            padding: const EdgeInsets.only(left: Dimensions.paddingSizeDefault, right: Dimensions.paddingSizeSmall),
+            child: Row(children: [
 
-            const Icon(Icons.access_time, size: 20),
+              Expanded(child: Text(
+                _myTime != null ? DateConverterHelper.convertStringTimeToTime(_myTime!) : ' - -  : - - ${'min'.tr}', style: robotoRegular.copyWith(color: _myTime != null ? Theme.of(context).textTheme.bodyLarge?.color : Theme.of(context).disabledColor, fontSize: Dimensions.fontSizeDefault),
+              )),
 
-          ]),
-        ),
+              Icon(Icons.access_time_filled, size: 20, color: Theme.of(context).primaryColor),
+
+            ]),
+          ),
+
+          Positioned(
+            left: 10, top: -15,
+            child: Container(
+              decoration: BoxDecoration(color: Theme.of(context).cardColor),
+              padding: const EdgeInsets.all(5),
+              child: Text(widget.title, style: robotoRegular.copyWith(color: Theme.of(context).disabledColor, fontSize: Dimensions.fontSizeSmall)),
+            ),
+          ),
+
+        ]),
       ),
 
     ]);

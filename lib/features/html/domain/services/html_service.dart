@@ -7,8 +7,8 @@ class HtmlService implements HtmlServiceInterface {
   HtmlService({required this.htmlRepositoryInterface});
 
   @override
-  Future<Response> getHtmlText(bool isPrivacyPolicy, bool isAgreement) async {
-    return await htmlRepositoryInterface.getHtmlText(isPrivacyPolicy, isAgreement);
+  Future<Response> getHtmlText(bool isPrivacyPolicy) async {
+    return await htmlRepositoryInterface.getHtmlText(isPrivacyPolicy);
   }
 
 }

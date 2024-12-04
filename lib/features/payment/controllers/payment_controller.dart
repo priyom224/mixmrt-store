@@ -1,15 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:sixam_mart_store/api/api_checker.dart';
 import 'package:sixam_mart_store/features/payment/domain/models/bank_info_body_model.dart';
 import 'package:sixam_mart_store/common/models/response_model.dart';
 import 'package:sixam_mart_store/features/payment/domain/models/wallet_payment_model.dart';
 import 'package:sixam_mart_store/features/payment/domain/models/widthdrow_method_model.dart';
 import 'package:sixam_mart_store/features/payment/domain/models/withdraw_model.dart';
 import 'package:sixam_mart_store/features/profile/controllers/profile_controller.dart';
-import 'package:sixam_mart_store/features/store/domain/models/offline_list_model.dart';
-import 'package:sixam_mart_store/features/store/domain/models/offline_method_model.dart';
 import 'package:sixam_mart_store/util/styles.dart';
 import 'package:sixam_mart_store/common/widgets/custom_snackbar_widget.dart';
 import 'package:get/get.dart';
@@ -51,8 +46,8 @@ class PaymentController extends GetxController implements GetxService {
   List<TextEditingController> _textControllerList = [];
   List<TextEditingController> get textControllerList => _textControllerList;
 
-  List<MethodFieldsModel> _methodFields = [];
-  List<MethodFieldsModel> get methodFields => _methodFields;
+  List<MethodFields> _methodFields = [];
+  List<MethodFields> get methodFields => _methodFields;
 
   List<FocusNode> _focusList = [];
   List<FocusNode> get focusList => _focusList;
@@ -71,30 +66,6 @@ class PaymentController extends GetxController implements GetxService {
 
   String? _digitalPaymentName;
   String? get digitalPaymentName => _digitalPaymentName;
-
-  List<OfflineMethodModel>? _offlineMethodList;
-  List<OfflineMethodModel>? get offlineMethodList => _offlineMethodList;
-
-  int _selectedOfflineBankIndex = 0;
-  int get selectedOfflineBankIndex => _selectedOfflineBankIndex;
-
-  List<TextEditingController> informationControllerList = [];
-  List<FocusNode> informationFocusList = [];
-
-  List<OfflineListModel>? _offlineList;
-  List<OfflineListModel>? get offlineList => _offlineList;
-
-  late List<OfflineListModel> _allOfflineList;
-
-  double _pendingOffline = 0;
-  double get pendingOffline => _pendingOffline;
-
-  double _offlineVerified = 0;
-  double get offlineVerified => _offlineVerified;
-
-  final List<String> _offlineStatusList = ['all', 'pending', 'verified', 'denied'];
-  List<String> get offlineStatusList => _offlineStatusList;
-
 
   Future<ResponseModel> makeCollectCashPayment(double amount, String paymentGatewayName) async {
     _isLoading = true;
@@ -217,22 +188,6 @@ class PaymentController extends GetxController implements GetxService {
     update();
   }
 
-  void filterOfflineList(int index) {
-    debugPrint('=====================================>>>$index');
-    _filterIndex = index;
-    _offlineList = [];
-    if(index == 0) {
-      _offlineList!.addAll(_allOfflineList);
-    }else {
-      for (var offline in _allOfflineList) {
-        if(offline.status == _offlineStatusList[index]) {
-          _offlineList!.add(offline);
-        }
-      }
-    }
-    update();
-  }
-
   Future<void> requestWithdraw(Map<String?, String> data) async {
     _isLoading = true;
     update();
@@ -257,79 +212,6 @@ class PaymentController extends GetxController implements GetxService {
     if(canUpdate) {
       update();
     }
-  }
-
-
-  Future<void> getOfflineList() async {
-    Response response = await paymentServiceInterface.getOfflineList();
-    if(response.statusCode == 200) {
-      _offlineList = [];
-      _allOfflineList = [];
-      _pendingOffline = 0;
-      _offlineVerified = 0;
-      response.body.forEach((offline) {
-        OfflineListModel offlineListModel = OfflineListModel.fromJson(offline);
-        _offlineList!.add(offlineListModel);
-        _allOfflineList.add(offlineListModel);
-        if(offlineListModel.status == 'pending') {
-          _pendingOffline = _pendingOffline + offlineListModel.amount!;
-        }else if(offlineListModel.status == 'verified') {
-          _offlineVerified = _offlineVerified + offlineListModel.amount!;
-        }
-      });
-    }else {
-      ApiChecker.checkApi(response);
-    }
-    update();
-  }
-
-  void selectOfflineBank(int index, {bool canUpdate = true}){
-    _selectedOfflineBankIndex = index;
-    if(canUpdate) {
-      update();
-    }
-  }
-
-  Future<void> getOfflineMethodList() async{
-    List<OfflineMethodModel>? offlineMethodList = await paymentServiceInterface.getOfflineMethodList();
-    log('--->offlineMethodList: ${offlineMethodList?.length}');
-    if(offlineMethodList != null) {
-      _offlineMethodList = [];
-      _offlineMethodList!.addAll(offlineMethodList);
-    }
-    update();
-  }
-
-  void changesMethod({bool canUpdate = true}) {
-    List<MethodInformations>? methodInformation = offlineMethodList![selectedOfflineBankIndex].methodInformations!;
-
-    informationControllerList = [];
-    informationFocusList = [];
-
-    for(int index=0; index<methodInformation.length; index++) {
-      informationControllerList.add(TextEditingController());
-      informationFocusList.add(FocusNode());
-    }
-    if(canUpdate) {
-      update();
-    }
-
-  }
-
-  Future<bool> saveOfflineInfo(String data) async {
-    _isLoading = true;
-    bool success = false;
-    update();
-    ResponseModel response = await paymentServiceInterface.saveOfflineInfo(data);
-    if (response.isSuccess) {
-      success = true;
-      _isLoading = false;
-      showCustomSnackBar('${response.message}', isError: false);
-    } else {
-      showCustomSnackBar('${response.message}', isError: true);
-    }
-    update();
-    return success;
   }
 
 }

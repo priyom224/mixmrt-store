@@ -7,7 +7,6 @@ import 'package:sixam_mart_store/util/images.dart';
 import 'package:sixam_mart_store/util/styles.dart';
 import 'package:sixam_mart_store/common/widgets/confirmation_dialog_widget.dart';
 import 'package:sixam_mart_store/common/widgets/custom_image_widget.dart';
-import 'package:sixam_mart_store/features/campaign/screens/campaign_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -18,10 +17,7 @@ class CampaignWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Get.toNamed(
-        RouteHelper.getCampaignDetailsRoute(campaignModel.id),
-        arguments: CampaignDetailsScreen(campaignModel: campaignModel),
-      ),
+      onTap: () => Get.toNamed(RouteHelper.getCampaignDetailsRoute(id: campaignModel.id)),
       child: Container(
         margin: const EdgeInsets.only(bottom: Dimensions.paddingSizeSmall),
         padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),

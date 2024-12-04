@@ -124,14 +124,29 @@ class DateConverterHelper {
     }
     return date1.difference(date2).inDays;
   }
-  static String formatDateTime(String timestamp) {
-    // Parse the timestamp string into a DateTime object
-    DateTime dateTime = DateTime.parse(timestamp);
 
-    // Format the DateTime object
-    String formattedDateTime = DateFormat.yMMMMEEEEd().add_jms().format(dateTime);
+  static String stringToMDY(String dateTime) {
+    return DateFormat('MM/dd/yyyy').format(DateTime.parse(dateTime).toLocal());
+  }
 
-    return formattedDateTime;
+  static DateTime stringToDateTimeMDY(String dateTime) {
+    return DateFormat('MM/dd/yyyy').parse(dateTime).toLocal();
+  }
+
+  static DateTime isoUtcStringToLocalDateOnly(String dateTime) {
+    return DateFormat('yyyy-MM-dd').parse(dateTime, true).toLocal();
+  }
+
+  static String dateMonthYearTime(DateTime ? dateTime) {
+    return DateFormat('d MMM, y ${_timeFormatter()}').format(dateTime!);
+  }
+
+  static DateTime isoUtcStringToLocalDate(String dateTime) {
+    return DateFormat('yyyy-MM-ddTHH:mm:ss.SSS').parse(dateTime, true).toLocal();
+  }
+
+  static String stringToLocalDateOnly(String dateTime) {
+    return DateFormat('dd MMM, yyyy').format(DateTime.parse(dateTime).toLocal());
   }
 
 }

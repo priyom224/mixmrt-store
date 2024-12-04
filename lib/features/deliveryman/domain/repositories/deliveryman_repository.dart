@@ -26,7 +26,6 @@ class DeliverymanRepository implements DeliverymanRepositoryInterface {
 
     List<MultipartBody> multiParts = [];
     multiParts.add(MultipartBody('image', image));
-    //multiParts.add(MultipartBody('agreement_document', agreement));
     for(XFile file in identities) {
       multiParts.add(MultipartBody('identity_image[]', file));
     }

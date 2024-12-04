@@ -37,7 +37,7 @@ class DailyTimeWidget extends StatelessWidget {
         const Text(':'),
         const SizedBox(width: Dimensions.paddingSizeExtraSmall),
 
-        Expanded(flex: 8, child: SizedBox(height: 50, child: ListView.builder(
+        Expanded(flex: 7, child: SizedBox(height: 50, child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: scheduleList.length+1,
           itemBuilder: (context, index) {

@@ -1,7 +1,7 @@
 class WidthDrawMethodModel {
   int? id;
   String? methodName;
-  List<MethodFieldsModel>? methodFields;
+  List<MethodFields>? methodFields;
   int? isDefault;
   int? isActive;
   String? createdAt;
@@ -21,9 +21,9 @@ class WidthDrawMethodModel {
     id = json['id'];
     methodName = json['method_name'];
     if (json['method_fields'] != null) {
-      methodFields = <MethodFieldsModel>[];
+      methodFields = <MethodFields>[];
       json['method_fields'].forEach((v) {
-        methodFields!.add(MethodFieldsModel.fromJson(v));
+        methodFields!.add(MethodFields.fromJson(v));
       });
     }
     isDefault = json['is_default'];
@@ -47,16 +47,16 @@ class WidthDrawMethodModel {
   }
 }
 
-class MethodFieldsModel {
+class MethodFields {
   String? inputType;
   String? inputName;
   String? placeholder;
   int? isRequired;
   String? value;
 
-  MethodFieldsModel({this.inputType, this.inputName, this.placeholder, this.isRequired, this.value});
+  MethodFields({this.inputType, this.inputName, this.placeholder, this.isRequired, this.value});
 
-  MethodFieldsModel.fromJson(Map<String, dynamic> json) {
+  MethodFields.fromJson(Map<String, dynamic> json) {
     inputType = json['input_type'];
     inputName = json['input_name'];
     placeholder = json['placeholder'];

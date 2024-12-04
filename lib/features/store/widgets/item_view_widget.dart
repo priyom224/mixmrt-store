@@ -1,3 +1,4 @@
+import 'package:flutter/rendering.dart';
 import 'package:sixam_mart_store/features/store/controllers/store_controller.dart';
 import 'package:sixam_mart_store/util/dimensions.dart';
 import 'package:sixam_mart_store/common/widgets/item_shimmer_widget.dart';
@@ -29,9 +30,21 @@ class ItemViewWidget extends StatelessWidget {
           );
         }
       }
+
+      if (scrollController.position.userScrollDirection == ScrollDirection.reverse) {
+        if(Get.find<StoreController>().isFabVisible){
+          Get.find<StoreController>().hideFab();
+        }
+      } else if (scrollController.position.userScrollDirection == ScrollDirection.forward) {
+        if(!Get.find<StoreController>().isFabVisible){
+          Get.find<StoreController>().showFab();
+        }
+      }
+
     });
     return GetBuilder<StoreController>(builder: (storeController) {
       return Column(children: [
+        const SizedBox(height: Dimensions.paddingSizeDefault),
 
         type != null ? VegFilterWidget(type: type, onSelected: onVegFilterTap) : const SizedBox(),
 
@@ -40,18 +53,21 @@ class ItemViewWidget extends StatelessWidget {
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisSpacing: Dimensions.paddingSizeLarge,
             mainAxisSpacing: 0.01,
-            childAspectRatio: 4,
             crossAxisCount: 1,
+            mainAxisExtent: 120,
           ),
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemCount: storeController.itemList!.length,
           padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
           itemBuilder: (context, index) {
-            return ItemWidget(
-              item: storeController.itemList![index],
-              index: index, length: storeController.itemList!.length, isCampaign: false,
-              inStore: true,
+            return Padding(
+              padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeSmall),
+              child: ItemWidget(
+                item: storeController.itemList![index],
+                index: index, length: storeController.itemList!.length, isCampaign: false,
+                inStore: true,
+              ),
             );
           },
         ) : Padding(
@@ -62,8 +78,8 @@ class ItemViewWidget extends StatelessWidget {
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisSpacing: Dimensions.paddingSizeLarge,
             mainAxisSpacing: 0.01,
-            childAspectRatio: 4,
             crossAxisCount: 1,
+            mainAxisExtent: 120,
           ),
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,

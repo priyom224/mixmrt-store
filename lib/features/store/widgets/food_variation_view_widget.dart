@@ -19,11 +19,9 @@ class _FoodVariationViewWidgetState extends State<FoodVariationViewWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text(
-        'variation'.tr,
-        style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor),
-      ),
-      const SizedBox(height: Dimensions.paddingSizeExtraSmall),
+
+      Text('variation'.tr, style: robotoBold),
+      const SizedBox(height: Dimensions.paddingSizeSmall),
 
       widget.storeController.variationList!.isNotEmpty ? ListView.builder(
         itemCount: widget.storeController.variationList!.length,
@@ -193,17 +191,38 @@ class _FoodVariationViewWidgetState extends State<FoodVariationViewWidget> {
         },
       ) : const SizedBox(),
 
-
-      const SizedBox(height: Dimensions.paddingSizeDefault),
-
-      InkWell(
+      widget.storeController.variationList!.isNotEmpty ? InkWell(
         onTap: () {
           widget.storeController.addVariation();
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall, vertical: Dimensions.paddingSizeSmall),
           decoration: BoxDecoration(color: Theme.of(context).primaryColor, borderRadius: BorderRadius.circular(Dimensions.radiusSmall)),
-          child: Text(widget.storeController.variationList!.isNotEmpty ? 'add_new_variation'.tr : 'add_variation'.tr, style: robotoMedium.copyWith(color: Theme.of(context).cardColor, fontSize: Dimensions.fontSizeDefault)),
+          child: Text('add_new_variation'.tr, style: robotoMedium.copyWith(color: Theme.of(context).cardColor, fontSize: Dimensions.fontSizeDefault)),
+        ),
+      ) : Container(
+        padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall, vertical: Dimensions.paddingSizeSmall),
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+          boxShadow: const [BoxShadow(color: Colors.black12, spreadRadius: 0, blurRadius: 5)],
+        ),
+        child: InkWell(
+          onTap: () {
+            widget.storeController.addVariation();
+          },
+          child: Container(
+            width: context.width,
+            padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall, vertical: Dimensions.paddingSizeLarge),
+            decoration: BoxDecoration(color: Theme.of(context).disabledColor.withOpacity(0.1), borderRadius: BorderRadius.circular(Dimensions.radiusSmall)),
+            child: Column(children: [
+
+              const Icon(Icons.add, size: 24),
+
+              Text('add_variation'.tr, style: robotoRegular.copyWith(color: Theme.of(context).disabledColor)),
+
+            ]),
+          ),
         ),
       ),
 

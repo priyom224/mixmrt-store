@@ -26,7 +26,7 @@ class ItemModel {
 
   ItemModel.fromJson(Map<String, dynamic> json) {
     _totalSize = json['total_size'];
-    _limit = json['limit'];
+    _limit = json['limit'].toString();
     _offset = json['offset'];
     if (json['items'] != null) {
       _items = [];
@@ -53,7 +53,7 @@ class Item {
   String? name;
   String? description;
   String? imageFullUrl;
-  List<String>? imagesFullUrl;
+  List<String?>? imagesFullUrl;
   int? categoryId;
   List<CategoryIds>? categoryIds;
   List<Variation>? variations;
@@ -90,7 +90,14 @@ class Item {
   int? brandId;
   int? isHalal;
   int? halalTagStatus;
-  double? weight;
+  List<String?>? nutrition;
+  List<String?>? allergies;
+  List<String?>? genericName;
+  int? isBasicMedicine;
+  int? conditionId;
+  List<NutritionsData>? nutritionsData;
+  List<AllergiesData>? allergiesData;
+  List<GenericData>? genericNameData;
 
   Item({
     this.id,
@@ -134,7 +141,14 @@ class Item {
     this.brandId,
     this.isHalal,
     this.halalTagStatus,
-    this.weight
+    this.nutrition,
+    this.allergies,
+    this.genericName,
+    this.isBasicMedicine,
+    this.conditionId,
+    this.nutritionsData,
+    this.allergiesData,
+    this.genericNameData,
   });
 
   Item.fromJson(Map<String, dynamic> json) {
@@ -142,7 +156,14 @@ class Item {
     name = json['name'];
     description = json['description'];
     imageFullUrl = json['image_full_url'];
-    imagesFullUrl = json['images_full_url'] != null ? json['images_full_url'].cast<String>() : [];
+    if(json['images_full_url'] != null){
+      imagesFullUrl = [];
+      json['images_full_url'].forEach((v) {
+        if(v != null) {
+          imagesFullUrl!.add(v.toString());
+        }
+      });
+    }
     categoryId = json['category_id'];
     if (json['category_ids'] != null) {
       categoryIds = [];
@@ -220,7 +241,46 @@ class Item {
     brandId = json['brand_id'];
     isHalal = json['is_halal'];
     halalTagStatus = json['halal_tag_status'];
-    weight =  json['weight'] != null ? json['weight'].toDouble() : 0;
+    if(json['nutritions_name'] != null) {
+      nutrition = [];
+      for(String v in json['nutritions_name']) {
+        nutrition!.add(v);
+      }
+    }
+    if(json['allergies_name'] != null) {
+      allergies = [];
+      for(String v in json['allergies_name']) {
+        allergies!.add(v);
+      }
+    }
+    if(json['generic_name'] != null) {
+      genericName = [];
+      for(String v in json['generic_name']) {
+        genericName!.add(v);
+      }
+    }
+    isBasicMedicine = json['is_basic'];
+    conditionId = json['common_condition_id'];
+
+    print('==========model: ${json['nutritions_data']}');
+    if (json['nutritions_data'] != null) {
+      nutritionsData = <NutritionsData>[];
+      json['nutritions_data'].forEach((v) {
+        nutritionsData!.add(NutritionsData.fromJson(v));
+      });
+    }
+    if (json['allergies_data'] != null) {
+      allergiesData = <AllergiesData>[];
+      json['allergies_data'].forEach((v) {
+        allergiesData!.add(AllergiesData.fromJson(v));
+      });
+    }
+    if (json['generic_name_data'] != null) {
+      genericNameData = <GenericData>[];
+      json['generic_name_data'].forEach((v) {
+        genericNameData!.add(GenericData.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -244,8 +304,7 @@ class Item {
     }
     data['attributes'] = attributes;
     if (choiceOptions != null) {
-      data['choice_options'] =
-          choiceOptions!.map((v) => v.toJson()).toList();
+      data['choice_options'] = choiceOptions!.map((v) => v.toJson()).toList();
     }
     data['price'] = price;
     data['tax'] = tax;
@@ -280,7 +339,26 @@ class Item {
     data['brand_id'] = brandId;
     data['is_halal'] = isHalal;
     data['halal_tag_status'] = halalTagStatus;
-    data['weight'] = weight;
+    if (nutrition != null) {
+      data['nutritions_name'] = nutrition;
+    }
+    if (allergies != null) {
+      data['allergies_name'] = allergies;
+    }
+    if (genericName != null) {
+      data['generic_name'] = genericName;
+    }
+    data['is_basic'] = isBasicMedicine;
+    data['common_condition_id'] = conditionId;
+    if (nutritionsData != null) {
+      data['nutritions_data'] = nutritionsData!.map((v) => v.toJson()).toList();
+    }
+    if (allergiesData != null) {
+      data['allergies_data'] = allergiesData!.map((v) => v.toJson()).toList();
+    }
+    if (genericNameData != null) {
+      data['generic_name_data'] = genericNameData!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
@@ -483,6 +561,63 @@ class Tag {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['tag'] = tag;
+    return data;
+  }
+}
+
+class NutritionsData {
+  String? nutrition;
+  int? id;
+
+  NutritionsData({this.nutrition, this.id});
+
+  NutritionsData.fromJson(Map<String, dynamic> json) {
+    nutrition = json['nutrition'];
+    id = json['id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['nutrition'] = nutrition;
+    data['id'] = id;
+    return data;
+  }
+}
+
+class AllergiesData {
+  String? allergy;
+  int? id;
+
+  AllergiesData({this.allergy, this.id});
+
+  AllergiesData.fromJson(Map<String, dynamic> json) {
+    allergy = json['allergy'];
+    id = json['id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['allergy'] = allergy;
+    data['id'] = id;
+    return data;
+  }
+}
+
+class GenericData {
+  String? generic;
+  int? id;
+
+  GenericData({this.generic, this.id});
+
+  GenericData.fromJson(Map<String, dynamic> json) {
+    generic = json['generic'];
+    id = json['id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['generic'] = generic;
+    data['id'] = id;
     return data;
   }
 }

@@ -120,15 +120,4 @@ class OrderRepository implements OrderRepositoryInterface {
   @override
   String? getBluetoothAddress() => sharedPreferences.getString(AppConstants.bluetoothMacAddress);
 
-  @override
-  Future<ResponseModel> assignThirdParty(int? orderID, String companyName, String trackingUrl, String serialNumber) async{
-    Response response = await apiClient.postData(AppConstants.assignThirdParty, {'order_id': orderID, 'company_name': companyName, 'tracking_url' : trackingUrl, 'serial_number' : serialNumber});
-    ResponseModel responseModel;
-    if (response.statusCode == 200) {
-      responseModel = ResponseModel(true, response.body['message']);
-    } else {
-      responseModel = ResponseModel(false, response.statusText);
-    }
-    return responseModel;
-  }
 }

@@ -1,5 +1,5 @@
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:sixam_mart_store/features/business/controllers/business_controller.dart';
+import 'package:sixam_mart_store/features/business/domain/models/package_model.dart';
 import 'package:sixam_mart_store/features/profile/controllers/profile_controller.dart';
 import 'package:sixam_mart_store/features/profile/domain/models/profile_model.dart';
 import 'package:sixam_mart_store/features/splash/controllers/splash_controller.dart';
@@ -7,6 +7,7 @@ import 'package:sixam_mart_store/common/models/response_model.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sixam_mart_store/features/auth/domain/services/auth_service_interface.dart';
+import 'package:sixam_mart_store/helper/route_helper.dart';
 
 class AuthController extends GetxController implements GetxService {
   final AuthServiceInterface authServiceInterface;
@@ -50,7 +51,7 @@ class AuthController extends GetxController implements GetxService {
   bool _spatialCheck = false;
   bool get spatialCheck => _spatialCheck;
 
-  double _storeStatus = 0.4;
+  double _storeStatus = 0.1;
   double get storeStatus => _storeStatus;
 
   String _storeMinTime = '--';
@@ -68,42 +69,17 @@ class AuthController extends GetxController implements GetxService {
   bool _isActiveRememberMe = false;
   bool get isActiveRememberMe => _isActiveRememberMe;
 
+  ProfileModel? _profileModel;
+  ProfileModel? get profileModel => _profileModel;
+
   String? _subscriptionType;
   String? get subscriptionType => _subscriptionType;
 
   String? _expiredToken;
   String? get expiredToken => _expiredToken;
 
-  XFile? _pickedTax;
-  XFile? _pickedRegistration;
-  XFile? _pickedAgreement;
-  XFile? get pickedTax => _pickedTax;
-  XFile? get pickedRegistration => _pickedRegistration;
-  XFile? get pickedAgreement => _pickedAgreement;
-
-  bool _acceptTerms = true;
-  bool get acceptTerms => _acceptTerms;
-
-  bool _isAgreement = true;
-  bool get isAgreement => _isAgreement;
-
-  bool _isPrivacyPolicy = true;
-  bool get isPrivacyPolicy => _isPrivacyPolicy;
-
-  void toggleTerms() {
-    _acceptTerms = !_acceptTerms;
-    update();
-  }
-
-  void toggleAgreement() {
-    _isAgreement = !_isAgreement;
-    update();
-  }
-
-  void togglePrivacyPolicy() {
-    _isPrivacyPolicy = !_isPrivacyPolicy;
-    update();
-  }
+  bool _notificationLoading = false;
+  bool get notificationLoading => _notificationLoading;
 
   Future<ResponseModel?> login(String? email, String password, String type) async {
     _isLoading = true;
@@ -199,9 +175,12 @@ class AuthController extends GetxController implements GetxService {
     return authServiceInterface.getUserToken();
   }
 
-  bool setNotificationActive(bool isActive) {
+  Future<bool> setNotificationActive(bool isActive) async {
+    _notificationLoading = true;
+    update();
     _notification = isActive;
-    authServiceInterface.setNotificationActive(isActive);
+    await authServiceInterface.setNotificationActive(isActive);
+    _notificationLoading = false;
     update();
     return _notification;
   }
@@ -218,7 +197,20 @@ class AuthController extends GetxController implements GetxService {
   Future<void> registerStore(Map<String, String> data) async {
     _isLoading = true;
     update();
-    await authServiceInterface.registerRestaurant(data, _pickedLogo, _pickedCover, _pickedTax, _pickedRegistration);
+
+    Response response = await authServiceInterface.registerRestaurant(data, _pickedLogo, _pickedCover);
+
+    if(response.statusCode == 200){
+      int? storeId = response.body['store_id'];
+      int? packageId = response.body['package_id'];
+
+      if(packageId == null) {
+        Get.find<BusinessController>().submitBusinessPlan(storeId: storeId!, packageId: null);
+      }else{
+        Get.toNamed(RouteHelper.getSubscriptionPaymentRoute(storeId: storeId, packageId: packageId));
+      }
+    }
+
     _isLoading = false;
     update();
   }
@@ -272,34 +264,57 @@ class AuthController extends GetxController implements GetxService {
     return authServiceInterface.getIsStoreRegistration();
   }
 
-  void pickTax() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles( type: FileType.custom, allowedExtensions: ['png','jpg','jpeg','pdf','doc','docx','gif','txt','pptx','xlsx']);
-    if (result != null) {
-      _pickedTax = XFile(result.files.single.path!);
+  String _businessPlanStatus = 'business';
+  String get businessPlanStatus => _businessPlanStatus;
+
+  int _paymentIndex = 0;
+  int get paymentIndex => _paymentIndex;
+
+  int _businessIndex = 0;
+  int get businessIndex => _businessIndex;
+
+  int _activeSubscriptionIndex = 0;
+  int get activeSubscriptionIndex => _activeSubscriptionIndex;
+
+  bool _isFirstTime = true;
+  bool get isFirstTime => _isFirstTime;
+
+  PackageModel? _packageModel;
+  PackageModel? get packageModel => _packageModel;
+
+  void changeFirstTimeStatus() {
+    _isFirstTime = !_isFirstTime;
+  }
+
+  void resetBusiness(){
+    _businessIndex = (Get.find<SplashController>().configModel!.commissionBusinessModel == 0) ? 1 : 0;
+    _activeSubscriptionIndex = 0;
+    _businessPlanStatus = 'business';
+    _isFirstTime = true;
+    _paymentIndex = Get.find<SplashController>().configModel!.subscriptionFreeTrialStatus! ? 0 : 1;
+  }
+
+  Future<void> getPackageList({bool isUpdate = true}) async {
+    _packageModel = await authServiceInterface.getPackageList();
+    if(isUpdate) {
+      update();
     }
+  }
+
+  void setBusiness(int business){
+    _activeSubscriptionIndex = 0;
+    _businessIndex = business;
     update();
   }
 
-  void pickRegistration() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles( type: FileType.custom, allowedExtensions: ['png','jpg','jpeg','pdf','doc','docx','gif','txt','pptx','xlsx']);
-    if (result != null) {
-      _pickedRegistration = XFile(result.files.single.path!);
-    }
+  void setBusinessStatus(String status){
+    _businessPlanStatus = status;
     update();
   }
 
-  void pickAgreement() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles( type: FileType.custom, allowedExtensions: ['png','jpg','jpeg','pdf','doc','docx','gif','txt','pptx','xlsx']);
-    if (result != null) {
-      _pickedAgreement = XFile(result.files.single.path!);
-    }
+  void selectSubscriptionCard(int index){
+    _activeSubscriptionIndex = index;
     update();
-  }
-
-  void initData() {
-    _pickedTax = null;
-    _pickedRegistration = null;
-    _pickedAgreement = null;
   }
 
 }

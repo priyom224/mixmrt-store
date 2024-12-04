@@ -1,16 +1,11 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sixam_mart_store/api/api_client.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart_store/common/models/response_model.dart';
-import 'package:sixam_mart_store/common/widgets/custom_snackbar_widget.dart';
 import 'package:sixam_mart_store/features/auth/controllers/auth_controller.dart';
 import 'package:sixam_mart_store/features/payment/domain/models/wallet_payment_model.dart';
 import 'package:sixam_mart_store/features/payment/domain/models/widthdrow_method_model.dart';
 import 'package:sixam_mart_store/features/payment/domain/models/withdraw_model.dart';
-import 'package:sixam_mart_store/features/store/domain/models/offline_method_model.dart';
 import 'package:sixam_mart_store/helper/route_helper.dart';
 import 'package:sixam_mart_store/util/app_constants.dart';
 import 'package:sixam_mart_store/features/payment/domain/repositories/payment_repository_interface.dart';
@@ -94,7 +89,7 @@ class PaymentRepository implements PaymentRepositoryInterface {
       if(GetPlatform.isWeb) {
         // html.window.open(redirectUrl,"_self");
       } else{
-        Get.toNamed(RouteHelper.getPaymentRoute(null, redirectUrl, null, false));
+        Get.toNamed(RouteHelper.getPaymentRoute(null, redirectUrl, null, false, null));
       }
       responseModel = ResponseModel(true, response.body.toString());
     } else {
@@ -116,37 +111,6 @@ class PaymentRepository implements PaymentRepositoryInterface {
   @override
   Future get(int? id) {
     throw UnimplementedError();
-  }
-
-  @override
-  Future<List<OfflineMethodModel>?> getOfflineMethodList() async{
-    Response response = await apiClient.getData(AppConstants.offlineMethodListUri);
-    List<OfflineMethodModel>? offlineMethodList;
-    if(response.statusCode == 200) {
-      offlineMethodList = [];
-      response.body.forEach((method) {
-        OfflineMethodModel offlineMethod = OfflineMethodModel.fromJson(method);
-        offlineMethodList!.add(offlineMethod);
-      });
-    }
-    log('offlineMethodList: ${offlineMethodList?.length}');
-    return offlineMethodList;
-  }
-
-  @override
-  Future<ResponseModel> saveOfflineInfo(String data) async{
-    Response response = await apiClient.postData(AppConstants.makeCollectedCashPaymentUriOffline, jsonDecode(data));
-    if(response.statusCode == 200){
-      return ResponseModel(true, response.body.toString());
-    }else{
-      return ResponseModel(false, response.statusText);
-    }
-
-  }
-
-  @override
-  Future<Response> getOfflineList() async{
-    return await apiClient.getData(AppConstants.offlineMethodVendorListUri);
   }
 
 }

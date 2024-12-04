@@ -50,8 +50,6 @@ class ConfigModel {
   int? subscriptionBusinessModel;
   int? commissionBusinessModel;
   String? subscriptionFreeTrialType;
-  bool? storeAgreement;
-  bool? deliveryAgreement;
 
   ConfigModel({
     this.businessName,
@@ -105,8 +103,6 @@ class ConfigModel {
     this.subscriptionBusinessModel,
     this.commissionBusinessModel,
     this.subscriptionFreeTrialType,
-    this.storeAgreement,
-    this.deliveryAgreement,
   });
 
   ConfigModel.fromJson(Map<String, dynamic> json) {
@@ -171,8 +167,6 @@ class ConfigModel {
     subscriptionBusinessModel = json['subscription_business_model'];
     commissionBusinessModel = json['commission_business_model'];
     subscriptionFreeTrialType = json['subscription_free_trial_type'];
-    storeAgreement = json['store_agreement'];
-    deliveryAgreement = json['dm_agreement'];
   }
 
   Map<String, dynamic> toJson() {
@@ -234,82 +228,6 @@ class ConfigModel {
     data['subscription_business_model'] = subscriptionBusinessModel;
     data['commission_business_model'] = commissionBusinessModel;
     data['subscription_free_trial_type'] = subscriptionFreeTrialType;
-    data['store_agreement'] = storeAgreement;
-    data['dm_agreement'] = deliveryAgreement;
-    return data;
-  }
-}
-
-class BaseUrls {
-  String? itemImageUrl;
-  String? customerImageUrl;
-  String? bannerImageUrl;
-  String? categoryImageUrl;
-  String? reviewImageUrl;
-  String? notificationImageUrl;
-  String? vendorImageUrl;
-  String? storeImageUrl;
-  String? storeCoverPhotoUrl;
-  String? deliveryManImageUrl;
-  String? chatImageUrl;
-  String? campaignImageUrl;
-  String? moduleImageUrl;
-  String? orderAttachmentUrl;
-  String? gatewayImageUrl;
-
-  BaseUrls(
-      {this.itemImageUrl,
-        this.customerImageUrl,
-        this.bannerImageUrl,
-        this.categoryImageUrl,
-        this.reviewImageUrl,
-        this.notificationImageUrl,
-        this.vendorImageUrl,
-        this.storeImageUrl,
-        this.storeCoverPhotoUrl,
-        this.deliveryManImageUrl,
-        this.chatImageUrl,
-        this.campaignImageUrl,
-        this.moduleImageUrl,
-        this.orderAttachmentUrl,
-        this.gatewayImageUrl,
-      });
-
-  BaseUrls.fromJson(Map<String, dynamic> json) {
-    itemImageUrl = json['item_image_url'];
-    customerImageUrl = json['customer_image_url'];
-    bannerImageUrl = json['banner_image_url'];
-    categoryImageUrl = json['category_image_url'];
-    reviewImageUrl = json['review_image_url'];
-    notificationImageUrl = json['notification_image_url'];
-    vendorImageUrl = json['vendor_image_url'];
-    storeImageUrl = json['store_image_url'];
-    storeCoverPhotoUrl = json['store_cover_photo_url'];
-    deliveryManImageUrl = json['delivery_man_image_url'];
-    chatImageUrl = json['chat_image_url'];
-    campaignImageUrl = json['campaign_image_url'];
-    moduleImageUrl = json['module_image_url'];
-    orderAttachmentUrl = json['order_attachment_url'];
-    gatewayImageUrl = json['gateway_image_url'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['item_image_url'] = itemImageUrl;
-    data['customer_image_url'] = customerImageUrl;
-    data['banner_image_url'] = bannerImageUrl;
-    data['category_image_url'] = categoryImageUrl;
-    data['review_image_url'] = reviewImageUrl;
-    data['notification_image_url'] = notificationImageUrl;
-    data['vendor_image_url'] = vendorImageUrl;
-    data['store_image_url'] = storeImageUrl;
-    data['store_cover_photo_url'] = storeCoverPhotoUrl;
-    data['delivery_man_image_url'] = deliveryManImageUrl;
-    data['chat_image_url'] = chatImageUrl;
-    data['campaign_image_url'] = campaignImageUrl;
-    data['module_image_url'] = moduleImageUrl;
-    data['order_attachment_url'] = orderAttachmentUrl;
-    data['gateway_image_url'] = gatewayImageUrl;
     return data;
   }
 }

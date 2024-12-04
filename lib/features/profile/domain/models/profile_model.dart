@@ -41,6 +41,7 @@ class ProfileModel {
   Subscription? subscription;
   SubscriptionOtherData? subscriptionOtherData;
   bool? subscriptionTransactions;
+  int? outOfStockCount;
 
   ProfileModel({
     this.id,
@@ -83,6 +84,7 @@ class ProfileModel {
     this.subscription,
     this.subscriptionOtherData,
     this.subscriptionTransactions,
+    this.outOfStockCount,
   });
 
   ProfileModel.fromJson(Map<String, dynamic> json) {
@@ -143,6 +145,7 @@ class ProfileModel {
     }
     subscriptionOtherData = json['subscription_other_data'] != null ? SubscriptionOtherData.fromJson(json['subscription_other_data']) : null;
     subscriptionTransactions = json['subscription_transactions'] ?? false;
+    outOfStockCount = json['out_of_stock_count'];
   }
 
   Map<String, dynamic> toJson() {
@@ -188,6 +191,7 @@ class ProfileModel {
     data['dynamic_balance'] = dynamicBalance;
     data['show_pay_now_button'] = showPayNowButton;
     data['subscription_transactions'] = subscriptionTransactions;
+    data['out_of_stock_count'] = outOfStockCount;
     return data;
   }
 }
@@ -202,6 +206,7 @@ class Store {
   String? longitude;
   String? address;
   double? minimumOrder;
+  double? comission;
   bool? scheduleOrder;
   String? currency;
   String? createdAt;
@@ -241,6 +246,7 @@ class Store {
   bool? extraPackagingStatus;
   double? extraPackagingAmount;
   bool? isHalalActive;
+  double? minimumStockForWarning;
 
   Store({
     this.id,
@@ -252,6 +258,7 @@ class Store {
     this.longitude,
     this.address,
     this.minimumOrder,
+    this.comission,
     this.scheduleOrder,
     this.currency,
     this.createdAt,
@@ -291,6 +298,7 @@ class Store {
     this.extraPackagingStatus,
     this.extraPackagingAmount,
     this.isHalalActive,
+    this.minimumStockForWarning,
   });
 
   Store.fromJson(Map<String, dynamic> json) {
@@ -303,6 +311,7 @@ class Store {
     longitude = json['longitude'];
     address = json['address'];
     minimumOrder = json['minimum_order']?.toDouble();
+    comission = json['comission']?.toDouble();
     scheduleOrder = json['schedule_order'];
     currency = json['currency'];
     createdAt = json['created_at'];
@@ -347,6 +356,7 @@ class Store {
     extraPackagingStatus = json['extra_packaging_status'] ?? false;
     extraPackagingAmount = json['extra_packaging_amount']?.toDouble();
     isHalalActive = json['halal_tag_status'] ?? false;
+    minimumStockForWarning = json['minimum_stock_for_warning']?.toDouble();
   }
 
   Map<String, dynamic> toJson() {
@@ -360,6 +370,7 @@ class Store {
     data['longitude'] = longitude;
     data['address'] = address;
     data['minimum_order'] = minimumOrder;
+    data['comission'] = comission;
     data['schedule_order'] = scheduleOrder;
     data['currency'] = currency;
     data['created_at'] = createdAt;
@@ -405,6 +416,7 @@ class Store {
     data['extra_packaging_status'] = extraPackagingStatus;
     data['extra_packaging_amount'] = extraPackagingAmount;
     data['halal_tag_status'] = isHalalActive;
+    data['minimum_stock_for_warning'] = minimumStockForWarning;
     return data;
   }
 }

@@ -18,33 +18,35 @@ class LocalizationController extends GetxController implements GetxService {
   bool _isLtr = true;
   bool get isLtr => _isLtr;
 
-  int _selectedIndex = 0;
-  int get selectedIndex => _selectedIndex;
+  int _selectedLanguageIndex = 0;
+  int get selectedLanguageIndex => _selectedLanguageIndex;
 
   List<LanguageModel> _languages = [];
   List<LanguageModel> get languages => _languages;
 
-  void setLanguage(Locale locale) {
+  void setLanguage(Locale locale, {bool fromBottomSheet = false}) {
     Get.updateLocale(locale);
     _locale = locale;
     _isLtr = languageServiceInterface.setLTR(_locale);
     languageServiceInterface.updateHeader(_locale);
-    saveLanguage(_locale);
+    if(!fromBottomSheet) {
+      saveLanguage(_locale);
+    }
     if(Get.find<AuthController>().isLoggedIn()){
       Get.find<StoreController>().getItemList('1', 'all');
     }
     update();
   }
 
-  void setSelectIndex(int index) {
-    _selectedIndex = index;
+  void setSelectLanguageIndex(int index) {
+    _selectedLanguageIndex = index;
     update();
   }
 
   void loadCurrentLanguage() async {
     _locale = languageServiceInterface.getLocaleFromSharedPref();
     _isLtr = _locale.languageCode != 'ar';
-    _selectedIndex = languageServiceInterface.setSelectedLanguageIndex(AppConstants.languages, _locale);
+    _selectedLanguageIndex = languageServiceInterface.setSelectedLanguageIndex(AppConstants.languages, _locale);
     _languages = [];
     _languages.addAll(AppConstants.languages);
     update();
@@ -52,6 +54,22 @@ class LocalizationController extends GetxController implements GetxService {
 
   void saveLanguage(Locale locale) async {
     languageServiceInterface.saveLanguage(locale);
+  }
+
+  void saveCacheLanguage(Locale? locale) {
+    languageServiceInterface.saveCacheLanguage(locale ?? languageServiceInterface.getLocaleFromSharedPref());
+  }
+
+  Locale getCacheLocaleFromSharedPref() {
+    return languageServiceInterface.getCacheLocaleFromSharedPref();
+  }
+
+  void searchSelectedLanguage() {
+    for (var language in AppConstants.languages) {
+      if (language.languageCode!.toLowerCase().contains(_locale.languageCode.toLowerCase())) {
+        _selectedLanguageIndex = AppConstants.languages.indexOf(language);
+      }
+    }
   }
 
 }

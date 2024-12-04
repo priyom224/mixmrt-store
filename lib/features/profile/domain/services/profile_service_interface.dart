@@ -7,4 +7,6 @@ abstract class ProfileServiceInterface {
   Future<bool> updateProfile(ProfileModel userInfoModel, XFile? data, String token);
   Future<ResponseModel> deleteVendor();
   updateHeader(int? moduleID);
+  // Future<bool> saveLowStockStatus(bool status);
+  // bool getLowStockStatus();
 }

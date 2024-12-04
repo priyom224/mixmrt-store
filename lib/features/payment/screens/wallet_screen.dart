@@ -1,6 +1,5 @@
 import 'package:sixam_mart_store/common/widgets/custom_bottom_sheet_widget.dart';
 import 'package:sixam_mart_store/features/payment/controllers/payment_controller.dart';
-import 'package:sixam_mart_store/features/payment/widgets/offline_list_widget.dart';
 import 'package:sixam_mart_store/features/profile/controllers/profile_controller.dart';
 import 'package:sixam_mart_store/features/splash/controllers/splash_controller.dart';
 import 'package:sixam_mart_store/helper/price_converter_helper.dart';
@@ -33,24 +32,21 @@ class _WalletScreenState extends State<WalletScreen> {
     Get.find<PaymentController>().getWithdrawList();
     Get.find<PaymentController>().getWithdrawMethodList();
     Get.find<PaymentController>().getWalletPaymentList();
-    Get.find<PaymentController>().getOfflineList();
+    if(Get.find<ProfileController>().profileModel == null) {
+      Get.find<ProfileController>().getProfile();
+    }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-
-    if(Get.find<ProfileController>().profileModel == null) {
-      Get.find<ProfileController>().getProfile();
-    }
-
     return Scaffold(
 
       appBar: CustomAppBarWidget(title: 'wallet'.tr, isBackButtonExist: false),
 
       body: GetBuilder<ProfileController>(builder: (profileController) {
         return GetBuilder<PaymentController>(builder: (bankController) {
-          return profileController.modulePermission!.wallet! ? (profileController.profileModel != null && bankController.withdrawList != null) ? RefreshIndicator(
+          return (profileController.profileModel != null && bankController.withdrawList != null) ? profileController.modulePermission!.wallet! ? RefreshIndicator(
             onRefresh: () async {
               await Get.find<ProfileController>().getProfile();
               await Get.find<PaymentController>().getWithdrawList();
@@ -267,7 +263,7 @@ class _WalletScreenState extends State<WalletScreen> {
                             const SizedBox(height: Dimensions.paddingSizeExtraSmall),
 
                             Container(
-                              height: 3, width: 105,
+                              height: 3, width: 120,
                               margin: const EdgeInsets.only(top: Dimensions.paddingSizeExtraSmall),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
@@ -279,49 +275,20 @@ class _WalletScreenState extends State<WalletScreen> {
                         ),
                       ]),
                     ),
-                    const SizedBox(width: Dimensions.paddingSizeSmall),
-
-                    InkWell(
-                      onTap: () {
-                        if(bankController.selectedIndex != 2) {
-                          bankController.setIndex(2);
-                        }
-                      },
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-
-                        Text('offline_payment'.tr, style: robotoMedium.copyWith(
-                          color: bankController.selectedIndex == 2 ? Colors.blue : Theme.of(context).disabledColor,
-                        )),
-                        const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-
-                        Container(
-                          height: 3, width: 105,
-                          margin: const EdgeInsets.only(top: Dimensions.paddingSizeExtraSmall),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                            color: bankController.selectedIndex == 2 ? Colors.blue : null,
-                          ),
-                        ),
-
-                      ]),
-                    ),
                     const SizedBox(height: Dimensions.paddingSizeSmall),
 
                     Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
 
                       Text("transaction_history".tr, style: robotoMedium),
 
-                      (bankController.selectedIndex == 0 && bankController.withdrawList!.isEmpty)
-                      || (bankController.selectedIndex == 1 && bankController.transactions!.isEmpty) ? const SizedBox() : InkWell(
+                      (bankController.selectedIndex == 0 && (bankController.withdrawList != null && bankController.withdrawList!.isNotEmpty))
+                      || (bankController.selectedIndex == 1 && (bankController.transactions != null && bankController.transactions!.isNotEmpty)) ? InkWell(
                         onTap: () {
                           if(bankController.selectedIndex == 0) {
                             Get.toNamed(RouteHelper.getWithdrawHistoryRoute());
                           }
                           if(bankController.selectedIndex == 1) {
                             Get.toNamed(RouteHelper.getPaymentHistoryRoute());
-                          }
-                          if(bankController.selectedIndex == 2) {
-                            Get.toNamed(RouteHelper.getOffLineHistoryRoute());
                           }
 
                         },
@@ -331,7 +298,7 @@ class _WalletScreenState extends State<WalletScreen> {
                             fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).primaryColor,
                           )),
                         ),
-                      ),
+                      ) : const SizedBox(),
 
                     ]),
                     const SizedBox(height: Dimensions.paddingSizeSmall),
@@ -347,7 +314,7 @@ class _WalletScreenState extends State<WalletScreen> {
                             showDivider: index != (bankController.withdrawList!.length > 25 ? 25 : bankController.withdrawList!.length-1),
                           );
                         },
-                      ) : Center(child: Padding(padding: const EdgeInsets.only(top: 70), child: Text('no_transaction_found'.tr)))
+                      ) : Center(child: Padding(padding: const EdgeInsets.only(top: 70, bottom: 100), child: Text('no_transaction_found'.tr)))
                           : const Center(child: Padding(padding: EdgeInsets.only(top: 100), child: CircularProgressIndicator())),
 
                     if (bankController.selectedIndex == 1)
@@ -372,40 +339,17 @@ class _WalletScreenState extends State<WalletScreen> {
                                     )),
                                   ]),
                                 ),
-                                Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-
-                                  Text(bankController.transactions![index].paymentTime.toString(),
-                                    style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor),
-                                  ),
-
-                                  Text(bankController.transactions![index].status!.tr, style: robotoRegular.copyWith(
-                                      fontSize: Dimensions.fontSizeSmall,
-                                      color: Theme.of(context).primaryColor
-                                  )),
-                                ],),
+                                Text(bankController.transactions![index].paymentTime.toString(),
+                                  style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor),
+                                ),
                               ]),
                             ),
 
                             const Divider(height: 1),
                           ]);
                         },
-                      ) : Center(child: Padding(padding: const EdgeInsets.only(top: 70), child: Text('no_transaction_found'.tr)))
+                      ) : Center(child: Padding(padding: const EdgeInsets.only(top: 70, bottom: 100), child: Text('no_transaction_found'.tr)))
                           : const Center(child: Padding(padding: EdgeInsets.only(top: 100), child: CircularProgressIndicator())),
-
-                    if(bankController.selectedIndex == 2)
-                      bankController.offlineList != null ? bankController.offlineList!.isNotEmpty ? ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: bankController.offlineList!.length > 10 ? 10 : bankController.offlineList!.length,
-                        itemBuilder: (context, index) {
-                          return OfflineListWidget(
-                            offlineListModel: bankController.offlineList![index],
-                            showDivider: index != (bankController.offlineList!.length > 25 ? 25 : bankController.offlineList!.length-1),
-                          );
-                        },
-                      ) : Center(child: Padding(padding: const EdgeInsets.only(top: 100), child: Text('no_transaction_found'.tr)))
-                          : const Center(child: Padding(padding: EdgeInsets.only(top: 100), child: CircularProgressIndicator())),
-
 
 
                   ]),
@@ -416,7 +360,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 ? WalletAttentionAlertWidget(isOverFlowBlockWarning: profileController.profileModel!.overFlowBlockWarning!) : const SizedBox(),
 
             ]),
-          ) : const Center(child: CircularProgressIndicator()) : Center(child: Text('you_have_no_permission_to_access_this_feature'.tr, style: robotoMedium));
+          ) : Center(child: Text('you_have_no_permission_to_access_this_feature'.tr, style: robotoMedium)) : const Center(child: CircularProgressIndicator());
         });
       }),
     );

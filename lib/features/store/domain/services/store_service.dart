@@ -8,6 +8,7 @@ import 'package:sixam_mart_store/features/store/domain/models/band_model.dart';
 import 'package:sixam_mart_store/features/store/domain/models/item_model.dart';
 import 'package:sixam_mart_store/features/store/domain/models/pending_item_model.dart';
 import 'package:sixam_mart_store/features/store/domain/models/review_model.dart';
+import 'package:sixam_mart_store/features/store/domain/models/suitable_tag_model.dart';
 import 'package:sixam_mart_store/features/store/domain/models/unit_model.dart';
 import 'package:sixam_mart_store/features/store/domain/models/variant_type_model.dart';
 import 'package:sixam_mart_store/features/store/domain/models/variation_body_model.dart';
@@ -21,6 +22,11 @@ class StoreService implements StoreServiceInterface {
   @override
   Future<ItemModel?> getItemList(String offset, String type) async {
     return await storeRepositoryInterface.getItemList(offset, type);
+  }
+
+  @override
+  Future<ItemModel?> getStockItemList(String offset) async {
+    return await storeRepositoryInterface.getStockItemList(offset);
   }
 
   @override
@@ -49,8 +55,8 @@ class StoreService implements StoreServiceInterface {
   }
 
   @override
-  Future<bool> addItem(Item item, XFile? image, List<XFile> images, List<String> savedImages, Map<String, String> attributes, bool isAdd, String tags, String moduleType) async {
-    return await storeRepositoryInterface.addItem(item, image, images, savedImages, attributes, isAdd, tags, moduleType);
+  Future<Response> addItem(Item item, XFile? image, List<XFile> images, List<String> savedImages, Map<String, String> attributes, bool isAdd, String tags, String nutrition, String allergicIngredients, String genericName) async {
+    return await storeRepositoryInterface.addItem(item, image, images, savedImages, attributes, isAdd, tags, nutrition, allergicIngredients, genericName);
   }
 
   @override
@@ -109,6 +115,11 @@ class StoreService implements StoreServiceInterface {
   }
 
   @override
+  Future<List<SuitableTagModel>?> getSuitableTagList() async {
+    return await storeRepositoryInterface.getSuitableTagList();
+  }
+
+  @override
   Future<bool> updateReply(int reviewID, String reply) async {
     return await storeRepositoryInterface.updateReply(reviewID, reply);
   }
@@ -146,7 +157,7 @@ class StoreService implements StoreServiceInterface {
     for(int index = 0; index < unitList!.length; index++) {
       if(item != null) {
         if (unitList[index].unit == item.unitType) {
-          setUnitIndex = index + 1;
+          setUnitIndex = index;
         }
       }
     }
@@ -283,15 +294,48 @@ class StoreService implements StoreServiceInterface {
 
   @override
   int? setBrandIndex(List<BrandModel>? brands, Item? item) {
-    int? brandIndex = 0;
+    int? brandIndex;
     for(int index = 0; index < brands!.length; index++) {
       if(item != null) {
         if(brands[index].id.toString() == item.brandId.toString()) {
-          brandIndex = index + 1;
+          brandIndex = index;
         }
       }
     }
     return brandIndex;
+  }
+
+  @override
+  int? setSuitableTagIndex(List<SuitableTagModel>? suitableTagList, Item? item) {
+    int? suitableTagIndex;
+    for(int index = 0; index < suitableTagList!.length; index++) {
+      if(item != null) {
+        if(suitableTagList[index].id.toString() == item.conditionId.toString()) {
+          suitableTagIndex = index;
+        }
+      }
+    }
+    return suitableTagIndex;
+  }
+
+  @override
+  Future<List<String?>?> getNutritionSuggestionList() async {
+    return await storeRepositoryInterface.getNutritionSuggestionList();
+  }
+
+  @override
+  Future<List<String?>?> getAllergicIngredientsSuggestionList() async {
+    return await storeRepositoryInterface.getAllergicIngredientsSuggestionList();
+  }
+
+  @override
+  Future<List<String?>?> getGenericNameSuggestionList() async {
+    return await storeRepositoryInterface.getGenericNameSuggestionList();
+  }
+
+  @override
+  Future<Response> stockUpdate(Map<String, String> data) async {
+    return await storeRepositoryInterface.stockUpdate(data);
   }
 
 }

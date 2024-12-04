@@ -33,7 +33,7 @@ class _PaymentSuccessfulScreenState extends State<PaymentSuccessfulScreen> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: true,
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, result) {
         Get.find<ProfileController>().trialWidgetShow(route: '');
       },
       child: Scaffold(

@@ -34,9 +34,6 @@ class FundPaymentDialogWidget extends StatelessWidget {
 
             TextButton(
               onPressed: () {
-                if(Get.isDialogOpen!){
-                  Get.back();
-                }
                 Get.back();
               },
               style: TextButton.styleFrom(

@@ -29,13 +29,20 @@ class ProfileController extends GetxController implements GetxService {
   bool _trialWidgetNotShow = false;
   bool get trialWidgetNotShow => _trialWidgetNotShow;
 
+  bool _showLowStockWarning = true;
+  bool get showLowStockWarning => _showLowStockWarning;
+
+  void hideLowStockWarning(){
+    _showLowStockWarning = !_showLowStockWarning;
+  }
+
   Future<void> getProfile() async {
     ProfileModel? profileModel = await profileServiceInterface.getProfileInfo();
     if (profileModel != null) {
       _profileModel = profileModel;
       Get.find<SplashController>().setModule(_profileModel!.stores![0].module!.id, _profileModel!.stores![0].module!.moduleType);
       profileServiceInterface.updateHeader(_profileModel!.stores![0].module!.id);
-      _allowModulePermission(_profileModel!.roles);
+      _allowModulePermission(_profileModel?.roles);
     }
     update();
   }
@@ -121,5 +128,12 @@ class ProfileController extends GetxController implements GetxService {
     return _trialWidgetNotShow;
   }
 
+  // Future<bool> saveLowStockStatus(bool status) async {
+  //   return await profileServiceInterface.saveLowStockStatus(status);
+  // }
+  //
+  // bool getLowStockStatus() {
+  //   return profileServiceInterface.getLowStockStatus();
+  // }
 
 }

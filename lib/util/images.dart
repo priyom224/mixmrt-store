@@ -3,6 +3,7 @@ class Images {
   static const String arabic = 'assets/image/arabic.png';
   static const String english = 'assets/image/english.png';
   static const String bangla = 'assets/image/bangla.png';
+  static const String spanish = 'assets/image/spanish.png';
   static const String call = 'assets/image/call.png';
   static const String mail = 'assets/image/mail.png';
   static const String placeholder = 'assets/image/placeholder.jpg';
@@ -10,6 +11,7 @@ class Images {
   static const String logOut = 'assets/image/log_out.png';
   static const String profileBg = 'assets/image/profile_bg.png';
   static const String warning = 'assets/image/warning.png';
+  static const String alert = 'assets/image/alert.png';
   static const String lock = 'assets/image/lock.png';
   static const String support = 'assets/image/support.png';
   static const String campaign = 'assets/image/campaign.png';
@@ -67,7 +69,12 @@ class Images {
   static const String numberOfUsesIcon = 'assets/image/number_of_uses_icon.png';
   static const String trial = 'assets/image/trial.png';
   static const String changeIcon = 'assets/image/change_icon.png';
-  static const String offlinePayment = 'assets/image/offline_payment.png';
+  static const String emptyBox = 'assets/image/empty_box.png';
+  static const String adsMenu = 'assets/image/ads_menu.png';
+  static const String cautionDialogIcon = 'assets/image/caution_dialog_icon.png';
+  static const String deleteDialogIcon = 'assets/image/delete_dialog_icon.png';
+  static const String pauseDialogIcon = 'assets/image/pause_dialog_icon.png';
+  static const String resumeDialogIcon = 'assets/image/resume_dialog_icon.png';
 
   /// SVG Images
   static const String shopIcon = 'assets/image/shop_icon.svg';
@@ -76,4 +83,14 @@ class Images {
   static const String cancelGif = 'assets/image/cancel.gif';
   static const String storeRegistrationSuccess = 'assets/image/store_registration_success.svg';
   static const String pickStoreMarker = 'assets/image/pick_store_marker.svg';
+  static const String adsListImage = 'assets/image/ads_list.svg';
+  static const String adsSuccess = 'assets/image/ads_success.svg';
+  static const String adsImage = 'assets/image/adsImage.svg';
+  static const String paymentStatus = 'assets/image/payment_status.svg';
+  static const String calender = 'assets/image/calender.svg';
+  static const String adsType = 'assets/image/ads_type.svg';
+  static const String previewImage = 'assets/image/preview.svg';
+  static const String adsRoundShape = 'assets/image/ads_round_shape.svg';
+  static const String adsCurveShape = 'assets/image/ads_curve_shape.svg';
+  static const String languageBg = 'assets/image/language_bg.svg';
 }

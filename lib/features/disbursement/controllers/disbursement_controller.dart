@@ -27,8 +27,8 @@ class DisbursementController extends GetxController implements GetxService {
   List<TextEditingController> _textControllerList = [];
   List<TextEditingController> get textControllerList => _textControllerList;
   
-  List<MethodFieldsModel> _methodFields = [];
-  List<MethodFieldsModel> get methodFields => _methodFields;
+  List<MethodFields> _methodFields = [];
+  List<MethodFields> get methodFields => _methodFields;
   
   List<FocusNode> _focusList = [];
   List<FocusNode> get focusList => _focusList;

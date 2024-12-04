@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:phone_numbers_parser/phone_numbers_parser.dart';
 import 'package:sixam_mart_store/common/widgets/custom_button_widget.dart';
@@ -9,7 +8,6 @@ import 'package:sixam_mart_store/features/deliveryman/controllers/deliveryman_co
 import 'package:sixam_mart_store/features/splash/controllers/splash_controller.dart';
 import 'package:sixam_mart_store/features/deliveryman/domain/models/delivery_man_model.dart';
 import 'package:sixam_mart_store/helper/custom_validator_helper.dart';
-import 'package:sixam_mart_store/util/app_constants.dart';
 import 'package:sixam_mart_store/util/dimensions.dart';
 import 'package:sixam_mart_store/util/styles.dart';
 import 'package:sixam_mart_store/common/widgets/custom_app_bar_widget.dart';
@@ -19,7 +17,6 @@ import 'package:sixam_mart_store/common/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart_store/features/auth/widgets/pass_view_widget.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 class AddDeliveryManScreen extends StatefulWidget {
   final DeliveryManModel? deliveryMan;
@@ -382,60 +379,6 @@ class _AddDeliveryManScreenState extends State<AddDeliveryManScreen> {
                       ),
                     ),
 
-                    /*Get.find<SplashController>().configModel?.deliveryAgreement == true ? Column(
-                      children: [
-                        const SizedBox(height: Dimensions.paddingSizeLarge),
-                        CustomButtonWidget(
-                          buttonText: 'download_agreement'.tr,
-                          onPressed: () async {
-                            String? downloadFormUri = AppConstants.delDownloadFormUri.toString();
-                            launchUrlString(downloadFormUri, mode: LaunchMode.externalApplication);
-                          },
-                        ),
-                        const SizedBox(height: Dimensions.paddingSizeLarge),
-                      ],
-                    ) : const SizedBox(),*/
-
-                    /*Row(children: [
-                      Expanded(flex: 10, child: Stack(children: [
-                        Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                            child: dmController.pickedAgreement != null ? getFileWidget(dmController.pickedAgreement!.path) : SizedBox(
-                              width: context.width, height: 120,
-                              child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-
-                                Icon(Icons.file_copy, size: 38, color: Theme.of(context).disabledColor),
-                                const SizedBox(height: Dimensions.paddingSizeSmall),
-
-                                Text(
-                                  'upload_agreement_document'.tr,
-                                  style: robotoMedium.copyWith(color: Theme.of(context).disabledColor), textAlign: TextAlign.center,
-                                ),
-                              ]),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 0, right: 0, top: 0, left: 0,
-                          child: InkWell(
-                            onTap: () => dmController.pickAgreement(),
-                            child: DottedBorder(
-                              color: Theme.of(context).primaryColor,
-                              strokeWidth: 1,
-                              strokeCap: StrokeCap.butt,
-                              dashPattern: const [5, 5],
-                              padding: const EdgeInsets.all(0),
-                              borderType: BorderType.RRect,
-                              radius: const Radius.circular(Dimensions.radiusDefault),
-                              child: const SizedBox(),
-                            ),
-                          ),
-                        ),
-                      ]),),
-                    ],),  const SizedBox(height: Dimensions.paddingSizeSmall),*/
-
                   ]);
                 }
               ),
@@ -487,9 +430,7 @@ class _AddDeliveryManScreenState extends State<AddDeliveryManScreen> {
       showCustomSnackBar('enter_delivery_man_identity_number'.tr);
     }else if(!_update && dmController.pickedImage == null) {
       showCustomSnackBar('upload_delivery_man_image'.tr);
-    }/*else if(dmController.pickedAgreement == null) {
-      showCustomSnackBar('upload_agreement_document'.tr);
-    }*/else {
+    }else {
       _deliveryMan!.fName = fName;
       _deliveryMan!.lName = lName;
       _deliveryMan!.email = email;
@@ -501,74 +442,4 @@ class _AddDeliveryManScreenState extends State<AddDeliveryManScreen> {
       );
     }
   }
-
-
-  /// Returns a widget corresponding to the file type based on the file extension.
-  Widget getFileWidget(String filePath) {
-    String fileName = filePath.split('/').last; // Extracting file name
-    String extension = fileName.split('.').last.toLowerCase(); // Extracting file extension
-    switch (extension) {
-      case 'png':
-      case 'jpg':
-      case 'jpeg':
-      case 'gif':
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.file(File(filePath), width: context.width, height: 120, fit: BoxFit.cover),
-            Text(fileName), // Displaying file name
-          ],
-        );
-      case 'pdf':
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Center(child: Icon(Icons.picture_as_pdf, size: 120, color: Colors.red)), // PDF icon
-            Text(fileName), // Displaying file name
-          ],
-        );
-      case 'doc':
-      case 'docx':
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Center(child: Icon(Icons.description, size: 120, color: Colors.blue)), // Word document icon
-            Text(fileName), // Displaying file name
-          ],
-        );
-      case 'txt':
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Center(child: Icon(Icons.text_snippet, size: 120, color: Colors.orange)), // Text file icon
-            Text(fileName), // Displaying file name
-          ],
-        );
-      case 'pptx':
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Center(child: Icon(Icons.slideshow, size: 120, color: Colors.deepPurple)), // PowerPoint icon
-            Text(fileName), // Displaying file name
-          ],
-        );
-      case 'xlsx':
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Center(child: Icon(Icons.table_chart, size: 120, color: Colors.green)), // Excel icon
-            Text(fileName), // Displaying file name
-          ],
-        );
-      default:
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Center(child: Icon(Icons.file_copy, size: 120, color: Colors.grey)), // Default file icon
-            Text(fileName), // Displaying file name
-          ],
-        );
-    }
-  }
-
 }

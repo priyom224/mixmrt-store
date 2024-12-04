@@ -10,6 +10,6 @@ abstract class ChatServiceInterface {
   Future<MessageModel?> getMessages(int offset, int? userId, String userType, int? conversationID);
   Future<MessageModel?> sendMessage(String message, List<MultipartBody> images, int? conversationId, int? userId, String userType);
   List<MultipartBody> processMultipartBody(List<XFile> chatImage);
-  Future<MessageModel?> processSendMessage(NotificationBody? notificationBody, List<MultipartBody> chatImage, String message, int? conversationId);
-  Future<MessageModel?> processGetMessage(int offset, NotificationBody notificationBody, int? conversationID);
+  Future<MessageModel?> processSendMessage(NotificationBodyModel? notificationBody, List<MultipartBody> chatImage, String message, int? conversationId);
+  Future<MessageModel?> processGetMessage(int offset, NotificationBodyModel notificationBody, int? conversationID);
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:sixam_mart_store/features/home/widgets/trial_widget.dart';
 import 'package:sixam_mart_store/features/language/controllers/language_controller.dart';
 import 'package:sixam_mart_store/common/controllers/theme_controller.dart';
@@ -28,26 +29,22 @@ Future<void> main() async {
   }
   setPathUrlStrategy();
   WidgetsFlutterBinding.ensureInitialized();
-
   Map<String, Map<String, String>> languages = await di.init();
 
   if(GetPlatform.isAndroid) {
     await Firebase.initializeApp(
       options: const FirebaseOptions(
-        apiKey: "AIzaSyDwdLNqrd8Is1i_q8BQWxXVbJshwHzAdsg",
-        authDomain: "secret-lambda-403915.firebaseapp.com",
-        projectId: "secret-lambda-403915",
-        storageBucket: "secret-lambda-403915.appspot.com",
-        messagingSenderId: "215254213048",
-        appId: "1:215254213048:web:57383bb9db3677c6556f4d",
-        measurementId: "G-R8QTGD955W",
+        apiKey: "AIzaSyCc3OCd5I2xSlnftZ4bFAbuCzMhgQHLivA",
+        appId: "1:491987943015:android:9795ba69e89c684b8f1ec2",
+        messagingSenderId: "491987943015",
+        projectId: "stackmart-500c7",
       ),
     );
   }else {
     await Firebase.initializeApp();
   }
 
-  NotificationBody? body;
+  NotificationBodyModel? body;
   try {
     if (GetPlatform.isMobile) {
       final RemoteMessage? remoteMessage = await FirebaseMessaging.instance.getInitialMessage();
@@ -64,11 +61,19 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   final Map<String, Map<String, String>>? languages;
-  final NotificationBody? body;
+  final NotificationBodyModel? body;
   const MyApp({super.key, required this.languages, required this.body});
 
   @override
   Widget build(BuildContext context) {
+
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.black,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ));
+
     return GetBuilder<ThemeController>(builder: (themeController) {
       return GetBuilder<LocalizationController>(builder: (localizeController) {
         return GetMaterialApp(

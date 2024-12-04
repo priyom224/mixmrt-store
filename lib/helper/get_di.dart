@@ -11,6 +11,11 @@ import 'package:sixam_mart_store/features/address/domain/repositories/address_re
 import 'package:sixam_mart_store/features/address/domain/repositories/address_repository_interface.dart';
 import 'package:sixam_mart_store/features/address/domain/services/address_service.dart';
 import 'package:sixam_mart_store/features/address/domain/services/address_service_interface.dart';
+import 'package:sixam_mart_store/features/advertisement/controllers/advertisement_controller.dart';
+import 'package:sixam_mart_store/features/advertisement/domain/repositories/advertisement_repository.dart';
+import 'package:sixam_mart_store/features/advertisement/domain/repositories/advertisement_repository_interface.dart';
+import 'package:sixam_mart_store/features/advertisement/domain/services/advertisement_service.dart';
+import 'package:sixam_mart_store/features/advertisement/domain/services/advertisement_service_interface.dart';
 import 'package:sixam_mart_store/features/auth/controllers/auth_controller.dart';
 import 'package:sixam_mart_store/features/auth/domain/repositories/auth_repository.dart';
 import 'package:sixam_mart_store/features/auth/domain/repositories/auth_repository_interface.dart';
@@ -127,7 +132,7 @@ Future<Map<String, Map<String, String>>> init() async {
   /// Core
   final sharedPreferences = await SharedPreferences.getInstance();
   Get.lazyPut(() => sharedPreferences);
-  Get.lazyPut(() => ApiClient(appBaseUrl: AppConstants.baseUrl, sharedPreferences: Get.find()), fenix: true);
+  Get.lazyPut(() => ApiClient(appBaseUrl: AppConstants.baseUrl, sharedPreferences: Get.find()));
 
   ///Repository Interface
   AuthRepositoryInterface authRepositoryInterface = AuthRepository(apiClient: Get.find(), sharedPreferences: Get.find());
@@ -199,6 +204,9 @@ Future<Map<String, Map<String, String>>> init() async {
   SubscriptionRepositoryInterface subscriptionRepositoryInterface = SubscriptionRepository(apiClient: Get.find());
   Get.lazyPut(() => subscriptionRepositoryInterface);
 
+  AdvertisementRepositoryInterface advertisementRepositoryInterface = AdvertisementRepository(apiClient: Get.find());
+  Get.lazyPut(() => advertisementRepositoryInterface);
+
   /// Service Interface
   AuthServiceInterface authServiceInterface = AuthService(authRepositoryInterface: Get.find());
   Get.lazyPut(() => authServiceInterface);
@@ -269,29 +277,8 @@ Future<Map<String, Map<String, String>>> init() async {
   SubscriptionServiceInterface subscriptionServiceInterface = SubscriptionService(subscriptionRepositoryInterface: Get.find());
   Get.lazyPut(() => subscriptionServiceInterface);
 
-  /// Services
-  // Get.lazyPut(() => AuthService(authRepositoryInterface: Get.find()));
-  // Get.lazyPut(() => BusinessService(businessRepoInterface: Get.find()));
-  // Get.lazyPut(() => AddonService(addonRepositoryInterface: Get.find()));
-  // Get.lazyPut(() => BannerService(bannerRepositoryInterface: Get.find()));
-  // Get.lazyPut(() => CampaignService(campaignRepositoryInterface: Get.find()));
-  // Get.lazyPut(() => CategoryService(categoryRepositoryInterface: Get.find()));
-  // Get.lazyPut(() => SplashService(splashRepositoryInterface: Get.find()));
-  // Get.lazyPut(() => HtmlService(htmlRepositoryInterface: Get.find()));
-  // Get.lazyPut(() => ExpenseService(expenseRepositoryInterface: Get.find()));
-  // Get.lazyPut(() => CouponService(couponRepositoryInterface: Get.find()));
-  // Get.lazyPut(() => DeliverymanService(deliverymanRepositoryInterface: Get.find()));
-  // Get.lazyPut(() => DisbursementService(disbursementRepositoryInterface: Get.find()));
-  // Get.lazyPut(() => ForgotPasswordService(forgotPasswordRepositoryInterface: Get.find()));
-  // Get.lazyPut(() => LanguageService(languageRepositoryInterface: Get.find()));
-  // Get.lazyPut(() => NotificationService(notificationRepositoryInterface: Get.find()));
-  // Get.lazyPut(() => PaymentService(paymentRepositoryInterface: Get.find()));
-  // Get.lazyPut(() => ProfileService(profileRepositoryInterface: Get.find()));
-  // Get.lazyPut(() => AddressService(addressRepositoryInterface: Get.find()));
-  // Get.lazyPut(() => ChatService(chatRepositoryInterface: Get.find()));
-  // Get.lazyPut(() => OrderService(orderRepositoryInterface: Get.find()));
-  // Get.lazyPut(() => StoreService(storeRepositoryInterface: Get.find()));
-  // Get.lazyPut(() => PosService(posRepositoryInterface: Get.find()));
+  AdvertisementServiceInterface advertisementServiceInterface = AdvertisementService(advertisementRepositoryInterface: Get.find());
+  Get.lazyPut(() => advertisementServiceInterface);
 
   /// Controller
   Get.lazyPut(() => AuthController(authServiceInterface: Get.find()));
@@ -318,6 +305,7 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.lazyPut(() => StoreController(storeServiceInterface: Get.find()));
   Get.lazyPut(() => PosController(posServiceInterface: Get.find()));
   Get.lazyPut(() => SubscriptionController(subscriptionServiceInterface: Get.find()));
+  Get.lazyPut(() => AdvertisementController(advertisementServiceInterface: Get.find()));
 
   /// Retrieving localized data
   Map<String, Map<String, String>> languages = {};

@@ -13,36 +13,45 @@ class VariationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
+      (item.variations != null && item.variations!.isNotEmpty) ? Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+          color: Theme.of(context).cardColor,
+          boxShadow: [BoxShadow(color: Theme.of(context).disabledColor.withOpacity(0.3), blurRadius: 10)],
+        ),
+        padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
-      (item.variations != null && item.variations!.isNotEmpty) ? Text('variations'.tr, style: robotoMedium) : const SizedBox(),
-      SizedBox(height: (item.variations != null && item.variations!.isNotEmpty) ? Dimensions.paddingSizeExtraSmall : 0),
+          Text('variations'.tr, style: robotoMedium),
+          const SizedBox(height: Dimensions.paddingSizeExtraSmall),
 
-      (item.variations != null && item.variations!.isNotEmpty) ? ListView.builder(
-        itemCount: item.variations!.length,
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        padding: EdgeInsets.zero,
-        itemBuilder: (context, index) {
-          return Row(children: [
+          ListView.builder(
+            itemCount: item.variations!.length,
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
+            itemBuilder: (context, index) {
+              return Row(children: [
 
-            Text('${item.variations![index].type!}:', style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall)),
-            const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-            Text(
-              PriceConverterHelper.convertPrice(item.variations![index].price),
-              style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall),
-            ),
-            SizedBox(width: stock! ? Dimensions.paddingSizeExtraSmall : 0),
-            stock! ? Text(
-              '(${item.variations![index].stock})',
-              style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall),
-            ) : const SizedBox(),
+                Text('${item.variations![index].type!}:', style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall)),
+                const SizedBox(width: Dimensions.paddingSizeExtraSmall),
+                Text(
+                  PriceConverterHelper.convertPrice(item.variations![index].price),
+                  style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall),
+                ),
+                SizedBox(width: stock! ? Dimensions.paddingSizeExtraSmall : 0),
+                stock! ? Text(
+                  '(${item.variations![index].stock})',
+                  style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall),
+                ) : const SizedBox(),
 
-          ]);
-        },
+              ]);
+            },
+          ),
+        ]),
       ) : const SizedBox(),
 
       SizedBox(height: (item.variations != null && item.variations!.isNotEmpty) ? Dimensions.paddingSizeLarge : 0),
-
     ]);
   }
 }

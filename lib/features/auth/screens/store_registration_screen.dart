@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:card_swiper/card_swiper.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,16 +11,16 @@ import 'package:sixam_mart_store/common/widgets/confirmation_dialog_widget.dart'
 import 'package:sixam_mart_store/common/widgets/custom_tool_tip_widget.dart';
 import 'package:sixam_mart_store/features/auth/controllers/auth_controller.dart';
 import 'package:sixam_mart_store/features/address/controllers/address_controller.dart';
-import 'package:sixam_mart_store/features/auth/widgets/condition_check_box_widget.dart';
+import 'package:sixam_mart_store/features/business/domain/models/package_model.dart';
+import 'package:sixam_mart_store/features/business/widgets/base_card_widget.dart';
+import 'package:sixam_mart_store/features/business/widgets/package_card_widget.dart';
 import 'package:sixam_mart_store/features/language/controllers/language_controller.dart';
 import 'package:sixam_mart_store/features/splash/controllers/splash_controller.dart';
 import 'package:sixam_mart_store/features/store/domain/models/store_body_model.dart';
 import 'package:sixam_mart_store/common/models/config_model.dart';
 import 'package:sixam_mart_store/features/store/domain/models/item_model.dart';
-import 'package:sixam_mart_store/helper/custom_validator_helper.dart';
 import 'package:sixam_mart_store/helper/route_helper.dart';
 import 'package:sixam_mart_store/helper/validate_check.dart';
-import 'package:sixam_mart_store/util/app_constants.dart';
 import 'package:sixam_mart_store/util/dimensions.dart';
 import 'package:sixam_mart_store/util/images.dart';
 import 'package:sixam_mart_store/util/styles.dart';
@@ -30,7 +31,6 @@ import 'package:sixam_mart_store/common/widgets/custom_text_field_widget.dart';
 import 'package:sixam_mart_store/features/auth/widgets/custom_time_picker_widget.dart';
 import 'package:sixam_mart_store/features/auth/widgets/pass_view_widget.dart';
 import 'package:sixam_mart_store/features/address/widgets/select_location_module_view_widget.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 class StoreRegistrationScreen extends StatefulWidget {
   const StoreRegistrationScreen({super.key});
@@ -43,8 +43,6 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
 
   final List<TextEditingController> _nameController = [];
   final List<TextEditingController> _addressController = [];
-  final TextEditingController _taxIdController = TextEditingController();
-  final TextEditingController _registrationNoController = TextEditingController();
   final TextEditingController _vatController = TextEditingController();
   final TextEditingController _fNameController = TextEditingController();
   final TextEditingController _lNameController = TextEditingController();
@@ -54,8 +52,6 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
   final TextEditingController _confirmPasswordController = TextEditingController();
   final List<FocusNode> _nameFocus = [];
   final List<FocusNode> _addressFocus = [];
-  final FocusNode _taxIdFocus = FocusNode();
-  final FocusNode _registrationNoFocus = FocusNode();
   final FocusNode _vatFocus = FocusNode();
   final FocusNode _fNameFocus = FocusNode();
   final FocusNode _lNameFocus = FocusNode();
@@ -90,12 +86,13 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
     }
     Get.find<AuthController>().storeStatusChange(0.1, isUpdate: false);
     Get.find<AddressController>().getZoneList();
-    Get.find<AuthController>().initData();
     Get.find<AuthController>().setDeliveryTimeTypeIndex(Get.find<AuthController>().deliveryTimeTypeList[0], false);
     if(Get.find<AuthController>().showPassView){
       Get.find<AuthController>().showHidePass(isUpdate: false);
     }
     Get.find<AuthController>().pickImageForReg(false, true);
+    Get.find<AuthController>().resetBusiness();
+    Get.find<AuthController>().getPackageList(isUpdate: false);
 
     for (var language in _languageList) {
       _tabs.add(Tab(text: language.value));
@@ -115,22 +112,26 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
 
         return PopScope(
           canPop: false,
-          onPopInvoked: (didPop) async{
-            if(authController.storeStatus != 0.1 && firstTime){
+          onPopInvokedWithResult: (didPop, result) async{
+            if(authController.storeStatus == 0.6 && firstTime){
               authController.storeStatusChange(0.1);
               firstTime = false;
+            }else if(authController.storeStatus == 0.9){
+              authController.storeStatusChange(0.6);
             }else {
               await _showBackPressedDialogue('your_registration_not_setup_yet'.tr);
             }
           },
           child: Scaffold(
 
-            appBar: CustomAppBarWidget(title: 'store_registration'.tr, onTap: () {
-              if(authController.storeStatus != 0.1 && firstTime){
+            appBar: CustomAppBarWidget(title: 'store_registration'.tr, onTap: () async {
+              if(authController.storeStatus == 0.6 && firstTime){
                 authController.storeStatusChange(0.1);
                 firstTime = false;
+              }else if(authController.storeStatus == 0.9){
+                authController.storeStatusChange(0.6);
               }else {
-                _showBackPressedDialogue('your_registration_not_setup_yet'.tr);
+                await _showBackPressedDialogue('your_registration_not_setup_yet'.tr);
               }
             }),
 
@@ -141,7 +142,8 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
                   Text(
-                    authController.storeStatus == 0.1 ? 'provide_store_information_to_proceed_next'.tr : 'provide_owner_information_to_confirm'.tr,
+                    //authController.storeStatus == 0.1 ? 'provide_store_information_to_proceed_next'.tr : 'provide_owner_information_to_confirm'.tr,
+                    authController.storeStatus == 0.1 ? 'provide_store_information_to_proceed_next'.tr : authController.storeStatus == 0.6 ? 'provide_owner_information_to_confirm'.tr : 'you_are_one_step_away_choose_your_business_plan'.tr,
                     style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).hintColor),
                   ),
                   const SizedBox(height: Dimensions.paddingSizeSmall),
@@ -384,176 +386,6 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                           Text('store_preference'.tr, style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge)),
                           const SizedBox(height: Dimensions.paddingSizeDefault),
 
-                         /* Row(
-                            children: [
-                              Expanded(
-                                child: CustomTextFieldWidget(
-                                  hintText: 'tax_id'.tr,
-                                  labelText: 'tax_id'.tr,
-                                  controller: _taxIdController,
-                                  focusNode: _taxIdFocus,
-                                  nextFocus: _registrationNoFocus,
-                                  inputAction: TextInputAction.done,
-                                  inputType: TextInputType.text,
-                                ),
-                              ),
-                              Get.find<SplashController>().configModel?.storeAgreement == true ? const SizedBox(width: Dimensions.paddingSizeExtraLarge) : const SizedBox(),
-                              Get.find<SplashController>().configModel?.storeAgreement == true ? Expanded(
-                                child: CustomButtonWidget(
-                                  buttonText: 'download_agreement'.tr,
-                                  onPressed: () async {
-                                    String? downloadFormUri = AppConstants.storeDownloadFormUri.toString();
-                                    launchUrlString(downloadFormUri, mode: LaunchMode.externalApplication);
-                                  },
-                                ),
-                              ) : const SizedBox(),
-                            ],
-                          ),*/
-
-                          CustomTextFieldWidget(
-                            hintText: AppConstants.baseUrl.contains('zm') ? 'tpin'.tr : 'tax_id'.tr,
-                            labelText: AppConstants.baseUrl.contains('zm') ? 'tpin'.tr : 'tax_id'.tr,
-                            controller: _taxIdController,
-                            focusNode: _taxIdFocus,
-                            nextFocus: _registrationNoFocus,
-                            inputAction: TextInputAction.done,
-                            inputType: TextInputType.text,
-                          ),
-                          const SizedBox(height: Dimensions.paddingSizeExtraLarge),
-
-                          CustomTextFieldWidget(
-                            hintText: 'registration_no'.tr,
-                            labelText: 'registration_no'.tr,
-                            controller: _registrationNoController,
-                            focusNode: _registrationNoFocus,
-                            nextFocus: _vatFocus,
-                            inputAction: TextInputAction.done,
-                            inputType: TextInputType.text,
-                          ),
-                          const SizedBox(height: Dimensions.paddingSizeExtraLarge),
-
-                          Row(children: [
-                            Expanded(flex: 10, child: Stack(children: [
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                                  child: authController.pickedTax != null ? getFileWidget(authController.pickedTax!.path) : SizedBox(
-                                    width: context.width, height: 120,
-                                    child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-
-                                      Icon(Icons.file_copy, size: 38, color: Theme.of(context).disabledColor),
-                                      const SizedBox(height: Dimensions.paddingSizeSmall),
-
-                                      Text(
-                                        AppConstants.baseUrl.contains('zm') ? 'upload_tpin_document'.tr : 'upload_tax_document'.tr,
-                                        style: robotoMedium.copyWith(color: Theme.of(context).disabledColor), textAlign: TextAlign.center,
-                                      ),
-                                    ]),
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                bottom: 0, right: 0, top: 0, left: 0,
-                                child: InkWell(
-                                  onTap: () => authController.pickTax(),
-                                  child: DottedBorder(
-                                    color: Theme.of(context).primaryColor,
-                                    strokeWidth: 1,
-                                    strokeCap: StrokeCap.butt,
-                                    dashPattern: const [5, 5],
-                                    padding: const EdgeInsets.all(0),
-                                    borderType: BorderType.RRect,
-                                    radius: const Radius.circular(Dimensions.radiusDefault),
-                                    child: const SizedBox(),
-                                  ),
-                                ),
-                              ),
-                            ]),),
-                          ],),  const SizedBox(height: Dimensions.paddingSizeExtraLarge),
-
-                          Row(children: [
-                            Expanded(flex: 10, child: Stack(children: [
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                                  child: authController.pickedRegistration != null ? getFileWidget(authController.pickedRegistration!.path) : SizedBox(
-                                    width: context.width, height: 120,
-                                    child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-
-                                      Icon(Icons.file_copy, size: 38, color: Theme.of(context).disabledColor),
-                                      const SizedBox(height: Dimensions.paddingSizeSmall),
-
-                                      Text(
-                                        'upload_registration_document'.tr,
-                                        style: robotoMedium.copyWith(color: Theme.of(context).disabledColor), textAlign: TextAlign.center,
-                                      ),
-                                    ]),
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                bottom: 0, right: 0, top: 0, left: 0,
-                                child: InkWell(
-                                  onTap: () => authController.pickRegistration(),
-                                  child: DottedBorder(
-                                    color: Theme.of(context).primaryColor,
-                                    strokeWidth: 1,
-                                    strokeCap: StrokeCap.butt,
-                                    dashPattern: const [5, 5],
-                                    padding: const EdgeInsets.all(0),
-                                    borderType: BorderType.RRect,
-                                    radius: const Radius.circular(Dimensions.radiusDefault),
-                                    child: const SizedBox(),
-                                  ),
-                                ),
-                              ),
-                            ]),),
-                          ],),  const SizedBox(height: Dimensions.paddingSizeExtraLarge),
-
-                         /* Row(children: [
-                            Expanded(flex: 10, child: Stack(children: [
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                                  child: authController.pickedAgreement != null ? getFileWidget(authController.pickedAgreement!.path) : SizedBox(
-                                    width: context.width, height: 120,
-                                    child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-
-                                      Icon(Icons.file_copy, size: 38, color: Theme.of(context).disabledColor),
-                                      const SizedBox(height: Dimensions.paddingSizeSmall),
-
-                                      Text(
-                                        'upload_agreement_document'.tr,
-                                        style: robotoMedium.copyWith(color: Theme.of(context).disabledColor), textAlign: TextAlign.center,
-                                      ),
-                                    ]),
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                bottom: 0, right: 0, top: 0, left: 0,
-                                child: InkWell(
-                                  onTap: () => authController.pickAgreement(),
-                                  child: DottedBorder(
-                                    color: Theme.of(context).primaryColor,
-                                    strokeWidth: 1,
-                                    strokeCap: StrokeCap.butt,
-                                    dashPattern: const [5, 5],
-                                    padding: const EdgeInsets.all(0),
-                                    borderType: BorderType.RRect,
-                                    radius: const Radius.circular(Dimensions.radiusDefault),
-                                    child: const SizedBox(),
-                                  ),
-                                ),
-                              ),
-                            ]),),
-                          ],),
-                          const SizedBox(height: Dimensions.paddingSizeExtraLarge),*/
-
-
                           Container(
                             decoration: BoxDecoration(
                               color: Theme.of(context).cardColor,
@@ -627,7 +459,7 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                     ),
 
                     Visibility(
-                      visible: authController.storeStatus != 0.1,
+                      visible: authController.storeStatus == 0.6,
                       child: Form(
                         key: _formKeySecond,
                         child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
@@ -766,17 +598,84 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                             ]),
                           ),
 
-                          const SizedBox(height: Dimensions.paddingSizeDefault),
-
-                          ConditionCheckBoxWidget(authController: authController, isAgreement: true),
-                          const SizedBox(height: Dimensions.paddingSizeDefault),
-
-                          ConditionCheckBoxWidget(authController: authController),
-                          const SizedBox(height: Dimensions.paddingSizeDefault),
-
-                          ConditionCheckBoxWidget(authController: authController, isPrivacyPolicy: true),
                         ]),
                       ),
+                    ),
+
+                    Visibility(
+                      visible: authController.storeStatus == 0.9,
+                      child: Column(children: [
+
+                        Padding(
+                          padding: const EdgeInsets.only(top: Dimensions.paddingSizeLarge, bottom: Dimensions.paddingSizeExtremeLarge),
+                          child: Center(child: Text('choose_your_business_plan'.tr, style: robotoBold)),
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge),
+                          child: Row(children: [
+
+                            Get.find<SplashController>().configModel!.commissionBusinessModel != 0 ? Expanded(
+                              child: BaseCardWidget(authController: authController, title: 'commission_base'.tr,
+                                index: 0, onTap: ()=> authController.setBusiness(0),
+                              ),
+                            ) : const SizedBox(),
+                            const SizedBox(width: Dimensions.paddingSizeDefault),
+
+                            Get.find<SplashController>().configModel!.subscriptionBusinessModel != 0 ? Expanded(
+                              child: BaseCardWidget(authController: authController, title: 'subscription_base'.tr,
+                                index: 1, onTap: ()=> authController.setBusiness(1),
+                              ),
+                            ) : const SizedBox(),
+
+                          ]),
+                        ),
+                        const SizedBox(height: Dimensions.paddingSizeExtraLarge),
+
+                        authController.businessIndex == 0 ? Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge),
+                          child: Text(
+                            "${'store_will_pay'.tr} ${Get.find<SplashController>().configModel!.adminCommission}% ${'commission_to'.tr} ${Get.find<SplashController>().configModel!.businessName} ${'from_each_order_You_will_get_access_of_all'.tr}",
+                            style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.7)), textAlign: TextAlign.justify, textScaler: const TextScaler.linear(1.1),
+                          ),
+                        ) : Column(children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge),
+                            child: Text(
+                              'run_store_by_purchasing_subscription_packages'.tr,
+                              style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.7)), textAlign: TextAlign.justify, textScaler: const TextScaler.linear(1.1),
+                            ),
+                          ),
+                          const SizedBox(height: Dimensions.paddingSizeLarge),
+
+                          SizedBox(
+                            height: 440,
+                            child: authController.packageModel != null ? authController.packageModel!.packages!.isNotEmpty ? Swiper(
+                              itemCount: authController.packageModel!.packages!.length,
+                              viewportFraction: 0.65,
+                              itemBuilder: (context, index) {
+
+                                Packages package = authController.packageModel!.packages![index];
+
+                                return PackageCardWidget(
+                                  currentIndex: authController.activeSubscriptionIndex == index ? index : null,
+                                  package: package,
+                                );
+                              },
+                              onIndexChanged: (index) {
+                                authController.selectSubscriptionCard(index);
+                              },
+
+                            ) : Center(child: Column(mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('no_package_available'.tr, style: robotoMedium),
+                                ]),
+                            ) : const Center(child: CircularProgressIndicator()),
+                          ),
+
+                        ]),
+
+                      ]),
                     ),
 
                   ]),
@@ -792,7 +691,7 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                 child: CustomButtonWidget(
                   buttonText: 'submit'.tr,
                   margin: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-                  onPressed: (!authController.acceptTerms || !authController.isAgreement || !authController.isPrivacyPolicy) ? null : () async{
+                  onPressed: () {
                     bool defaultNameNull = false;
                     bool defaultAddressNull = false;
                     for(int index=0; index<_languageList.length; index++) {
@@ -806,8 +705,6 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                         break;
                       }
                     }
-                    String taxId = _taxIdController.text.trim();
-                    String regiNo = _registrationNoController.text.trim();
                     String vat = _vatController.text.trim();
                     String minTime = authController.storeMinTime;
                     String maxTime = authController.storeMaxTime;
@@ -826,107 +723,97 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                     } on FormatException {
                       valid = false;
                     }
-                    if(authController.storeStatus == 0.1){
-                      if(_formKeyLogin!.currentState!.validate()){
-                        if(defaultNameNull) {
-                          showCustomSnackBar('enter_store_name'.tr);
-                        }else if(authController.pickedLogo == null) {
-                          showCustomSnackBar('select_store_logo'.tr);
-                        }else if(authController.pickedCover == null) {
-                          showCustomSnackBar('select_store_cover_photo'.tr);
-                        }else if(addressController.selectedModuleIndex == -1) {
-                          showCustomSnackBar('please_select_module_first'.tr);
-                        }else if(defaultAddressNull) {
-                          showCustomSnackBar('enter_store_address'.tr);
-                        }else if(addressController.selectedZoneIndex == -1) {
-                          showCustomSnackBar('please_select_zone'.tr);
-                        }else if(taxId.isEmpty){
-                          showCustomSnackBar('enter_tax_id_info'.tr);
-                        }else if(regiNo.isEmpty){
-                          showCustomSnackBar('enter_regi_no_info'.tr);
-                        }else if(authController.pickedTax == null){
-                          showCustomSnackBar('upload_tax_document'.tr);
-                        }else if(authController.pickedRegistration == null){
-                          showCustomSnackBar('upload_registration_document'.tr);
-                        }/*else if(authController.pickedAgreement == null){
-                          showCustomSnackBar('upload_agreement_document'.tr);
-                        }*/else if(vat.isEmpty) {
-                          showCustomSnackBar('enter_vat_amount'.tr);
-                        }else if(minTime.isEmpty) {
-                          showCustomSnackBar('enter_minimum_delivery_time'.tr);
-                        }else if(maxTime.isEmpty) {
-                          showCustomSnackBar('enter_maximum_delivery_time'.tr);
-                        }else if(!valid) {
-                          showCustomSnackBar('please_enter_the_max_min_delivery_time'.tr);
-                        }else if(valid && double.parse(minTime) > double.parse(maxTime)) {
-                          showCustomSnackBar('maximum_delivery_time_can_not_be_smaller_then_minimum_delivery_time'.tr);
-                        }else if(addressController.restaurantLocation == null) {
-                          showCustomSnackBar('set_store_location'.tr);
-                        }else{
-                          _scrollController.jumpTo(_scrollController.position.minScrollExtent);
-                          authController.storeStatusChange(0.6);
-                          firstTime = true;
+
+                    if(authController.storeStatus == 0.1 || authController.storeStatus == 0.6){
+                      if(authController.storeStatus == 0.1){
+                        if(_formKeyLogin!.currentState!.validate()){
+                          if(defaultNameNull) {
+                            showCustomSnackBar('enter_store_name'.tr);
+                          }else if(authController.pickedLogo == null) {
+                            showCustomSnackBar('select_store_logo'.tr);
+                          }else if(authController.pickedCover == null) {
+                            showCustomSnackBar('select_store_cover_photo'.tr);
+                          }else if(addressController.selectedModuleIndex == -1) {
+                            showCustomSnackBar('please_select_module_first'.tr);
+                          }else if(defaultAddressNull) {
+                            showCustomSnackBar('enter_store_address'.tr);
+                          }else if(addressController.selectedZoneIndex == -1) {
+                            showCustomSnackBar('please_select_zone'.tr);
+                          }else if(vat.isEmpty) {
+                            showCustomSnackBar('enter_vat_amount'.tr);
+                          }else if(minTime.isEmpty) {
+                            showCustomSnackBar('enter_minimum_delivery_time'.tr);
+                          }else if(maxTime.isEmpty) {
+                            showCustomSnackBar('enter_maximum_delivery_time'.tr);
+                          }else if(!valid) {
+                            showCustomSnackBar('please_enter_the_max_min_delivery_time'.tr);
+                          }else if(valid && double.parse(minTime) > double.parse(maxTime)) {
+                            showCustomSnackBar('maximum_delivery_time_can_not_be_smaller_then_minimum_delivery_time'.tr);
+                          }else if(addressController.restaurantLocation == null) {
+                            showCustomSnackBar('set_store_location'.tr);
+                          }else{
+                            _scrollController.jumpTo(_scrollController.position.minScrollExtent);
+                            authController.storeStatusChange(0.6);
+                            firstTime = true;
+                          }
                         }
+                      }else if(authController.storeStatus == 0.6){
+                        if(_formKeySecond!.currentState!.validate()){
+                          if(fName.isEmpty) {
+                            showCustomSnackBar('enter_your_first_name'.tr);
+                          }else if(lName.isEmpty) {
+                            showCustomSnackBar('enter_your_last_name'.tr);
+                          }else if(phone.isEmpty) {
+                            showCustomSnackBar('enter_phone_number'.tr);
+                          }else if(email.isEmpty) {
+                            showCustomSnackBar('enter_email_address'.tr);
+                          }else if(!GetUtils.isEmail(email)) {
+                            showCustomSnackBar('enter_a_valid_email_address'.tr);
+                          }else if(password.isEmpty) {
+                            showCustomSnackBar('enter_password'.tr);
+                          }else if(password.length < 6) {
+                            showCustomSnackBar('password_should_be'.tr);
+                          }else if(password != confirmPassword) {
+                            showCustomSnackBar('confirm_password_does_not_matched'.tr);
+                          }else {
+                            _scrollController.jumpTo(_scrollController.position.minScrollExtent);
+                            authController.storeStatusChange(0.9);
+                          }
+                        }
+                      }else{
+                        authController.storeStatusChange(0.9);
                       }
                     }else{
-
-                      String numberWithCountryCode = (_countryDialCode ?? '')+phone;
-                      PhoneValid phoneValid = await CustomValidatorHelper.isPhoneValid(numberWithCountryCode);
-                      numberWithCountryCode = phoneValid.phone;
-
-                      if(_formKeySecond!.currentState!.validate()){
-                        if(fName.isEmpty) {
-                          showCustomSnackBar('enter_your_first_name'.tr);
-                        }else if(lName.isEmpty) {
-                          showCustomSnackBar('enter_your_last_name'.tr);
-                        }else if(phone.isEmpty) {
-                          showCustomSnackBar('enter_phone_number'.tr);
-                        }
-                        // else if(!phoneValid.isValid) {
-                        //   showCustomSnackBar('enter_a_valid_phone_number'.tr);
-                        // }
-                        else if(email.isEmpty) {
-                          showCustomSnackBar('enter_email_address'.tr);
-                        }else if(!GetUtils.isEmail(email)) {
-                          showCustomSnackBar('enter_a_valid_email_address'.tr);
-                        }else if(password.isEmpty) {
-                          showCustomSnackBar('enter_password'.tr);
-                        }else if(password.length < 6) {
-                          showCustomSnackBar('password_should_be'.tr);
-                        }else if(password != confirmPassword) {
-                          showCustomSnackBar('confirm_password_does_not_matched'.tr);
-                        }else {
-                          List<Translation> translation = [];
-                          for(int index=0; index<_languageList.length; index++) {
-                            translation.add(Translation(
-                              locale: _languageList[index].key, key: 'name',
-                              value: _nameController[index].text.trim().isNotEmpty ? _nameController[index].text.trim()
-                                  : _nameController[0].text.trim(),
-                            ));
-                            translation.add(Translation(
-                              locale: _languageList[index].key, key: 'address',
-                              value: _addressController[index].text.trim().isNotEmpty ? _addressController[index].text.trim()
-                                  : _addressController[0].text.trim(),
-                            ));
-                          }
-
-                          Map<String, String> data = {};
-
-                          data.addAll(StoreBodyModel(
-                            translation: jsonEncode(translation), tax: vat, minDeliveryTime: minTime,
-                            maxDeliveryTime: maxTime, lat: addressController.restaurantLocation!.latitude.toString(), email: email,
-                            lng: addressController.restaurantLocation!.longitude.toString(), fName: fName, lName: lName, phone: phoneWithCountryCode,
-                            password: password, zoneId: addressController.zoneList![addressController.selectedZoneIndex!].id.toString(),
-                            moduleId: addressController.moduleList![addressController.selectedModuleIndex!].id.toString(),
-                            deliveryTimeType: authController.deliveryTimeTypeList[authController.deliveryTimeTypeIndex],
-                            taxID: taxId, registerNo: regiNo,
-                          ).toJson());
-
-                          authController.registerStore(data);
-
-                        }
+                      List<Translation> translation = [];
+                      for(int index=0; index<_languageList.length; index++) {
+                        translation.add(Translation(
+                          locale: _languageList[index].key, key: 'name',
+                          value: _nameController[index].text.trim().isNotEmpty ? _nameController[index].text.trim()
+                              : _nameController[0].text.trim(),
+                        ));
+                        translation.add(Translation(
+                          locale: _languageList[index].key, key: 'address',
+                          value: _addressController[index].text.trim().isNotEmpty ? _addressController[index].text.trim()
+                              : _addressController[0].text.trim(),
+                        ));
                       }
+
+                      Map<String, String> data = {};
+
+                      data.addAll(StoreBodyModel(
+                        translation: jsonEncode(translation), tax: vat, minDeliveryTime: minTime,
+                        maxDeliveryTime: maxTime, lat: addressController.restaurantLocation!.latitude.toString(), email: email,
+                        lng: addressController.restaurantLocation!.longitude.toString(), fName: fName, lName: lName, phone: phoneWithCountryCode,
+                        password: password, zoneId: addressController.zoneList![addressController.selectedZoneIndex!].id.toString(),
+                        moduleId: addressController.moduleList![addressController.selectedModuleIndex!].id.toString(),
+                        deliveryTimeType: authController.deliveryTimeTypeList[authController.deliveryTimeTypeIndex],
+                        businessPlan: authController.businessIndex == 0 ? 'commission' : 'subscription',
+                        packageId: authController.packageModel!.packages != null && authController.packageModel!.packages!.isNotEmpty ? authController.packageModel!.packages![authController.activeSubscriptionIndex].id!.toString() : '',
+                      ).toJson());
+
+                      authController.registerStore(data);
                     }
+
                   },
                 ),
               ) : const Center(child: CircularProgressIndicator()),
@@ -944,74 +831,6 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
       description: 'are_you_sure_to_go_back'.tr, isLogOut: true,
       onYesPressed: () => Get.offAllNamed(RouteHelper.getSignInRoute()),
     ), useSafeArea: false);
-  }
-
-  /// Returns a widget corresponding to the file type based on the file extension.
-  Widget getFileWidget(String filePath) {
-    String fileName = filePath.split('/').last; // Extracting file name
-    String extension = fileName.split('.').last.toLowerCase(); // Extracting file extension
-    switch (extension) {
-      case 'png':
-      case 'jpg':
-      case 'jpeg':
-      case 'gif':
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.file(File(filePath), width: context.width, height: 120, fit: BoxFit.cover),
-            Text(fileName), // Displaying file name
-          ],
-        );
-      case 'pdf':
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Center(child: Icon(Icons.picture_as_pdf, size: 120, color: Colors.red)), // PDF icon
-            Text(fileName), // Displaying file name
-          ],
-        );
-      case 'doc':
-      case 'docx':
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Center(child: Icon(Icons.description, size: 120, color: Colors.blue)), // Word document icon
-            Text(fileName), // Displaying file name
-          ],
-        );
-      case 'txt':
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Center(child: Icon(Icons.text_snippet, size: 120, color: Colors.orange)), // Text file icon
-            Text(fileName), // Displaying file name
-          ],
-        );
-      case 'pptx':
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Center(child: Icon(Icons.slideshow, size: 120, color: Colors.deepPurple)), // PowerPoint icon
-            Text(fileName), // Displaying file name
-          ],
-        );
-      case 'xlsx':
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Center(child: Icon(Icons.table_chart, size: 120, color: Colors.green)), // Excel icon
-            Text(fileName), // Displaying file name
-          ],
-        );
-      default:
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Center(child: Icon(Icons.file_copy, size: 120, color: Colors.grey)), // Default file icon
-            Text(fileName), // Displaying file name
-          ],
-        );
-    }
   }
 
 }

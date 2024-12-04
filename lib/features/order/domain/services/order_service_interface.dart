@@ -1,4 +1,3 @@
-import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sixam_mart_store/api/api_client.dart';
 import 'package:sixam_mart_store/common/models/response_model.dart';
@@ -19,5 +18,4 @@ abstract class OrderServiceInterface {
   List<MultipartBody> processMultipartData(List<XFile> pickedPrescriptions);
   Future<void> setBluetoothAddress(String? address);
   String? getBluetoothAddress();
-  Future<ResponseModel> assignThirdParty(int? orderID, String companyName, String trackingUrl, String serialNumber);
 }

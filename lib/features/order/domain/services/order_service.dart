@@ -1,4 +1,3 @@
-import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sixam_mart_store/api/api_client.dart';
 import 'package:sixam_mart_store/common/models/response_model.dart';
@@ -69,9 +68,4 @@ class OrderService implements OrderServiceInterface {
 
   @override
   String? getBluetoothAddress() => orderRepositoryInterface.getBluetoothAddress();
-
-  @override
-  Future<ResponseModel> assignThirdParty(int? orderID, String companyName, String trackingUrl, String serialNumber) async {
-    return await orderRepositoryInterface.assignThirdParty(orderID, companyName, trackingUrl, serialNumber);
-  }
 }

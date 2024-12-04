@@ -21,7 +21,7 @@ class MenuScreen extends StatelessWidget {
 
     if(Get.find<ProfileController>().modulePermission!.item!) {
       menuList.add(MenuModel(
-        icon: Images.addFood, title: 'add_item'.tr, route: RouteHelper.getItemRoute(null),
+        icon: Images.addFood, title: 'add_item'.tr, route: RouteHelper.getAddItemRoute(null),
         isBlocked: !Get.find<ProfileController>().profileModel!.stores![0].itemSection!,
       ));
     }
@@ -36,18 +36,23 @@ class MenuScreen extends StatelessWidget {
     if(Get.find<ProfileController>().modulePermission!.campaign!) {
       menuList.add(MenuModel(icon: Images.bannerIcon, title: 'banner'.tr, route: RouteHelper.getBannerListRoute()));
     }
+
+    menuList.add(MenuModel(icon: Images.adsMenu, title: 'advertisements'.tr, route: RouteHelper.getAdvertisementListRoute()));
+
     if(Get.find<ProfileController>().modulePermission!.campaign!) {
       menuList.add(MenuModel(icon: Images.campaign, title: 'campaign'.tr, route: RouteHelper.getCampaignRoute()));
     }
 
     if(Get.find<ProfileController>().profileModel!.stores![0].selfDeliverySystem == 1 && Get.find<AuthController>().getUserType() == 'owner' && Get.find<ProfileController>().profileModel!.stores![0].storeBusinessModel != 'subscription') {
-      menuList.add(MenuModel(icon: Images.deliveryMan, title: 'delivery_man'.tr, route: RouteHelper.getDeliveryManRoute()));
+      menuList.add(MenuModel(icon: Images.deliveryMan, iconColor: Colors.white, title: 'delivery_man'.tr, route: RouteHelper.getDeliveryManRoute()));
     } else if(Get.find<ProfileController>().profileModel!.stores![0].storeBusinessModel == 'subscription') {
       menuList.add(MenuModel(
-        icon: Images.deliveryMan, title: 'delivery_man'.tr, route: RouteHelper.getDeliveryManRoute(),
+        icon: Images.deliveryMan, iconColor: Colors.white, title: 'delivery_man'.tr, route: RouteHelper.getDeliveryManRoute(),
         isNotSubscribe: Get.find<ProfileController>().profileModel!.stores![0].storeBusinessModel == 'subscription' && Get.find<ProfileController>().profileModel!.subscription!.selfDelivery == 0,
       ));
     }
+
+    menuList.add(MenuModel(icon: Images.warning, iconColor: Colors.white, title: 'low_stock'.tr, route: RouteHelper.getLowStockRoute()));
 
     menuList.add(MenuModel(icon: Images.review, title: 'reviews'.tr, route: RouteHelper.getCustomerReviewRoute(), isNotSubscribe: Get.find<ProfileController>().profileModel!.stores![0].storeBusinessModel == 'subscription' && Get.find<ProfileController>().profileModel!.subscription!.review == 0));
 
@@ -64,7 +69,7 @@ class MenuScreen extends StatelessWidget {
         ),
       );
     }
-    // menuList.add(MenuModel(icon: Images.language, title: 'language'.tr, route: RouteHelper.getLanguageRoute('menu')));
+    menuList.add(MenuModel(icon: Images.language, title: 'language'.tr, route: '', isLanguage: true));
     menuList.add(MenuModel(icon: Images.coupon, title: 'coupon'.tr, route: RouteHelper.getCouponRoute()));
     menuList.add(MenuModel(icon: Images.expense, title: 'expense_report'.tr, route: RouteHelper.getExpenseRoute()));
 

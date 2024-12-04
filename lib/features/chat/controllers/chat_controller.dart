@@ -80,7 +80,7 @@ class ChatController extends GetxController implements GetxService {
     update();
   }
 
-  Future<void> getMessages(int offset, NotificationBody notificationBody, User? user, int? conversationID, {bool firstLoad = false}) async {
+  Future<void> getMessages(int offset, NotificationBodyModel notificationBody, User? user, int? conversationID, {bool firstLoad = false}) async {
     if(firstLoad) {
       _messageModel = null;
     }
@@ -113,7 +113,7 @@ class ChatController extends GetxController implements GetxService {
     update();
   }
 
-  Future<bool> sendMessage({required String message, required NotificationBody? notificationBody, required int? conversationId}) async {
+  Future<bool> sendMessage({required String message, required NotificationBodyModel? notificationBody, required int? conversationId}) async {
     bool isSuccess = false;
     _isLoading = true;
     update();

@@ -38,7 +38,9 @@ class CustomTextFieldWidget extends StatefulWidget {
   final String? Function(String?)? validator;
   final double? labelTextSize;
   final Widget? suffixChild;
-
+  final int? maxLength;
+  final bool hideEnableText;
+  final Function? onEditingComplete;
 
   const CustomTextFieldWidget({
     super.key,
@@ -73,6 +75,9 @@ class CustomTextFieldWidget extends StatefulWidget {
     this.validator,
     this.labelTextSize,
     this.suffixChild,
+    this.maxLength,
+    this.hideEnableText = false,
+    this.onEditingComplete,
   });
 
   @override
@@ -98,11 +103,12 @@ class CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
           validator: widget.validator,
           style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeLarge),
           textInputAction: widget.inputAction,
-          keyboardType: widget.isAmount ? TextInputType.number : widget.inputType,
+          keyboardType: widget.isAmount ? const TextInputType.numberWithOptions(decimal: true) : widget.isNumber ? TextInputType.number : widget.inputType,
           cursorColor: Theme.of(context).primaryColor,
           textCapitalization: widget.capitalization,
           enabled: widget.isEnabled,
           autofocus: false,
+          maxLength: widget.maxLength,
           autofillHints: widget.inputType == TextInputType.name ? [AutofillHints.name]
               : widget.inputType == TextInputType.emailAddress ? [AutofillHints.email]
               : widget.inputType == TextInputType.phone ? [AutofillHints.telephoneNumber]
@@ -111,7 +117,7 @@ class CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
               : widget.inputType == TextInputType.visiblePassword ? [AutofillHints.password] : null,
           obscureText: widget.isPassword ? _obscureText : false,
           inputFormatters: widget.inputType == TextInputType.phone ? <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp('[0-9+]'))]
-              : widget.isAmount ? [FilteringTextInputFormatter.allow(RegExp(r'\d'))] : widget.isNumber ? [FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))] : null,
+              : widget.isAmount ? [FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))] : widget.isNumber ? [FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))] : null,
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
@@ -138,7 +144,6 @@ class CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
             fillColor: Theme.of(context).cardColor,
             hintStyle: robotoRegular.copyWith(fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).hintColor),
             filled: true,
-
             labelStyle : widget.showLabelText ? robotoRegular.copyWith(fontSize: Dimensions.fontSizeDefault, color: Theme.of(context).hintColor) : null,
             errorStyle: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall),
 
@@ -197,6 +202,7 @@ class CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
           onFieldSubmitted: (text) => widget.nextFocus != null ? FocusScope.of(context).requestFocus(widget.nextFocus)
               : widget.onSubmit != null ? widget.onSubmit!(text) : null,
           onChanged: widget.onChanged as void Function(String)?,
+          onEditingComplete: widget.onEditingComplete as void Function()?,
         ),
 
         widget.divider ? const Padding(padding: EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge), child: Divider()) : const SizedBox(),

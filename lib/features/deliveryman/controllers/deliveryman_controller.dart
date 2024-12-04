@@ -1,4 +1,3 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:sixam_mart_store/features/deliveryman/domain/models/delivery_man_model.dart';
 import 'package:sixam_mart_store/features/store/domain/models/review_model.dart';
 import 'package:sixam_mart_store/common/widgets/custom_snackbar_widget.dart';
@@ -19,7 +18,7 @@ class DeliveryManController extends GetxController implements GetxService {
   List<XFile> _pickedIdentities = [];
   List<XFile> get pickedIdentities => _pickedIdentities;
 
-  final List<String> _identityTypeList = ['nid'];
+  final List<String> _identityTypeList = ['passport', 'driving_license', 'nid'];
   List<String> get identityTypeList => _identityTypeList;
 
   int _identityTypeIndex = 0;
@@ -33,9 +32,6 @@ class DeliveryManController extends GetxController implements GetxService {
 
   bool _isSuspended = false;
   bool get isSuspended => _isSuspended;
-
-  XFile? _pickedAgreement;
-  XFile? get pickedAgreement => _pickedAgreement;
 
   Future<void> getDeliveryManList() async {
     List<DeliveryManModel>? deliveryManList = await deliverymanServiceInterface.getDeliveryManList();
@@ -127,14 +123,6 @@ class DeliveryManController extends GetxController implements GetxService {
 
   void removeIdentityImage(int index) {
     _pickedIdentities.removeAt(index);
-    update();
-  }
-
-  void pickAgreement() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles( type: FileType.custom, allowedExtensions: ['png','jpg','jpeg','pdf','doc','docx','gif','txt','pptx','xlsx']);
-    if (result != null) {
-      _pickedAgreement = XFile(result.files.single.path!);
-    }
     update();
   }
 

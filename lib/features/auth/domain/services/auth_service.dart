@@ -3,7 +3,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sixam_mart_store/common/models/response_model.dart';
 import 'package:sixam_mart_store/features/auth/domain/repositories/auth_repository_interface.dart';
 import 'package:sixam_mart_store/features/auth/domain/services/auth_service_interface.dart';
-import 'package:sixam_mart_store/features/business/screens/business_plan_screen.dart';
+import 'package:sixam_mart_store/features/business/domain/models/package_model.dart';
+import 'package:sixam_mart_store/features/business/screens/subscription_payment_screen.dart';
 import 'package:sixam_mart_store/features/profile/controllers/profile_controller.dart';
 import 'package:sixam_mart_store/helper/route_helper.dart';
 
@@ -17,14 +18,21 @@ class AuthService implements AuthServiceInterface {
   }
 
   @override
-  Future<Response> registerRestaurant(Map<String, String> data, XFile? logo, XFile? cover,  XFile? tax, XFile? registration) async {
-    Response response = await authRepositoryInterface.registerRestaurant(data, logo, cover, tax, registration);
-    if(response.statusCode == 200) {
-      int? storeId = response.body['store_id'];
-      Get.offAllNamed(RouteHelper.getBusinessPlanRoute(storeId));
-    }
-    return response;
+  Future<Response> registerRestaurant(Map<String, String> data, XFile? logo, XFile? cover) async {
+    return await authRepositoryInterface.registerRestaurant(data, logo, cover);
   }
+
+
+  // @override
+  // Future<Response> registerRestaurant(Map<String, String> data, XFile? logo, XFile? cover) async {
+  //   Response response = await authRepositoryInterface.registerRestaurant(data, logo, cover);
+  //   if(response.statusCode == 200) {
+  //     int? storeId = response.body['store_id'];
+  //     Get.offAllNamed(RouteHelper.getBusinessPlanRoute(storeId));
+  //   }
+  //   return response;
+  // }
+
 
   @override
   Future<Response> updateToken() async {
@@ -77,8 +85,8 @@ class AuthService implements AuthServiceInterface {
   }
 
   @override
-  void setNotificationActive(bool isActive) {
-    return authRepositoryInterface.setNotificationActive(isActive);
+  Future<void> setNotificationActive(bool isActive) async{
+    return await authRepositoryInterface.setNotificationActive(isActive);
   }
 
   @override
@@ -107,8 +115,19 @@ class AuthService implements AuthServiceInterface {
     if (response.statusCode == 200) {
       if(response.body['subscribed'] != null){
         int? storeId = response.body['subscribed']['store_id'];
-        Get.to(()=> BusinessPlanScreen(storeId: storeId));
-        responseModel = ResponseModel(false, 'please_choose_a_business_plan'.tr);
+        int? packageId = response.body['subscribed']['package_id'];
+
+        if(packageId == null) {
+
+          saveUserToken(response.body['subscribed']['token'], response.body['subscribed']['zone_wise_topic'], type);
+          await updateToken();
+          await Get.find<ProfileController>().getProfile();
+
+          Get.toNamed(RouteHelper.getMySubscriptionRoute(fromNotification: true));
+        } else {
+          Get.to(()=> SubscriptionPaymentScreen(storeId: storeId!, packageId: packageId));
+          responseModel = ResponseModel(false, 'please_select_payment_method'.tr);
+        }
       }else{
         saveUserToken(response.body['token'], response.body['zone_wise_topic'], type);
         await updateToken();
@@ -119,6 +138,11 @@ class AuthService implements AuthServiceInterface {
       responseModel = ResponseModel(false, response.statusText);
     }
     return responseModel;
+  }
+
+  @override
+  Future<PackageModel?> getPackageList() async {
+    return await authRepositoryInterface.getList();
   }
 
 }

@@ -1,6 +1,4 @@
-import 'package:http/http.dart';
 import 'package:sixam_mart_store/api/api_client.dart';
-import 'package:sixam_mart_store/common/models/response_model.dart';
 import 'package:sixam_mart_store/features/order/domain/models/update_status_body_model.dart';
 import 'package:sixam_mart_store/interface/repository_interface.dart';
 
@@ -12,5 +10,4 @@ abstract class OrderRepositoryInterface implements RepositoryInterface {
   Future<dynamic> sendDeliveredNotification(int? orderID);
   Future<void> setBluetoothAddress(String? address);
   String? getBluetoothAddress();
-  Future<ResponseModel> assignThirdParty(int? orderID, String companyName, String trackingUrl, String serialNumber);
 }

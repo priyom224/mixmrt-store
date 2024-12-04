@@ -15,7 +15,8 @@ import 'package:sixam_mart_store/util/dimensions.dart';
 import 'package:sixam_mart_store/util/styles.dart';
 
 class MySubscriptionScreen extends StatefulWidget {
-  const MySubscriptionScreen({super.key});
+  final bool fromNotification;
+  const MySubscriptionScreen({super.key, this.fromNotification = false});
 
   @override
   State<MySubscriptionScreen> createState() => _MySubscriptionScreenState();
@@ -33,7 +34,7 @@ class _MySubscriptionScreenState extends State<MySubscriptionScreen> with Ticker
     if(Get.find<AuthController>().isLoggedIn()) {
       Get.find<SubscriptionController>().getProfile(Get.find<ProfileController>().profileModel);
     } else {
-      Get.find<SubscriptionController>().getProfile(Get.find<ProfileController>().profileModel);
+      Get.find<SubscriptionController>().getProfile(Get.find<AuthController>().profileModel);
     }
 
     Get.find<SubscriptionController>().initSetDate();
@@ -62,16 +63,27 @@ class _MySubscriptionScreenState extends State<MySubscriptionScreen> with Ticker
     return GetBuilder<SubscriptionController>(builder: (subscriptionController) {
 
       bool businessIsCommission = subscriptionController.profileModel!.stores![0].storeBusinessModel == 'commission';
+      bool businessIsNone = subscriptionController.profileModel!.stores![0].storeBusinessModel == 'none';
+      bool businessIsUnsubscribed = subscriptionController.profileModel!.stores![0].storeBusinessModel == 'unsubscribed';
 
       return PopScope(
-        canPop: true,
-        onPopInvoked: (didPop) {
+        canPop: Navigator.canPop(context),
+        onPopInvokedWithResult: (didPop, result) {
           Get.find<ProfileController>().trialWidgetShow(route: '');
+          if(widget.fromNotification && !didPop) {
+            Get.offAllNamed(RouteHelper.getInitialRoute());
+          } else {
+            return;
+          }
         },
         child: Scaffold(
           appBar: CustomAppBarWidget(title: 'my_business_plan'.tr, onTap: () {
             Get.find<ProfileController>().trialWidgetShow(route: '');
-            Get.back();
+            if(widget.fromNotification){
+              Get.offAllNamed(RouteHelper.getInitialRoute());
+            }else{
+              Get.back();
+            }
           }),
           body: subscriptionController.profileModel != null ? (businessIsCommission && !subscriptionController.profileModel!.subscriptionTransactions!) ? Column(children: [
 
@@ -94,7 +106,9 @@ class _MySubscriptionScreenState extends State<MySubscriptionScreen> with Ticker
                     const SizedBox(height: Dimensions.paddingSizeDefault),
 
                     Text(
-                      '${Get.find<SplashController>().configModel?.adminCommission} %',
+                      '${Get.find<ProfileController>().profileModel != null && Get.find<ProfileController>().profileModel!.stores?[0].comission != null && Get.find<ProfileController>().profileModel!.stores![0].comission! > 0
+                          ? Get.find<ProfileController>().profileModel!.stores![0].comission!
+                          :  Get.find<SplashController>().configModel?.adminCommission} %',
                       style: robotoBold.copyWith(color: Colors.teal, fontSize: 24),
                     ),
                     const SizedBox(height: Dimensions.paddingSizeDefault),
@@ -116,6 +130,61 @@ class _MySubscriptionScreenState extends State<MySubscriptionScreen> with Ticker
               padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
               child: CustomButtonWidget(
                 buttonText: 'change_business_plan'.tr,
+                radius: Dimensions.radiusDefault,
+                height: 55,
+                onPressed: () {
+                  showCustomBottomSheet(
+                    child: ChangeSubscriptionPlanBottomSheet(businessIsCommission: businessIsCommission),
+                  );
+                },
+              ),
+            ),
+
+          ]) : (businessIsNone || (businessIsUnsubscribed && (subscriptionController.profileModel?.subscription == null))) ? Column(children: [
+
+            Expanded(
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(Dimensions.paddingSizeExtraLarge),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                ),
+                child: Column(children: [
+
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(Dimensions.paddingSizeExtraLarge),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                      color: Theme.of(context).colorScheme.error.withOpacity(0.6),
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          'you_have_no_business_plan'.tr,
+                          style: robotoBold.copyWith(color: Theme.of(context).cardColor, fontSize: Dimensions.fontSizeLarge),
+                        ),
+                        const SizedBox(height: Dimensions.paddingSizeDefault),
+
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: context.width * 0.05),
+                          child: Text(
+                            "chose_a_business_plan_from_the_list_so_that_you_get_more_options_to_join_the_business_for_the_growth_and_success".tr,
+                            style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeDefault, color: Theme.of(context).cardColor, height: 2), textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                ]),
+              ),
+            ),
+
+            Container(
+              padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+              child: CustomButtonWidget(
+                buttonText: (businessIsNone || (businessIsUnsubscribed && (subscriptionController.profileModel?.subscription == null))) ? 'chose_business_plan'.tr : 'change_business_plan'.tr,
                 radius: Dimensions.radiusDefault,
                 height: 55,
                 onPressed: () {

@@ -11,7 +11,8 @@ class SubscriptionSuccessOrFailedScreen extends StatefulWidget {
   final bool success;
   final bool fromSubscription;
   final int? storeId;
-  const SubscriptionSuccessOrFailedScreen({super.key, required this.success, required this.fromSubscription, this.storeId});
+  final int? packageId;
+  const SubscriptionSuccessOrFailedScreen({super.key, required this.success, required this.fromSubscription, this.storeId, this.packageId});
 
   @override
   State<SubscriptionSuccessOrFailedScreen> createState() => _SubscriptionSuccessOrFailedScreenState();
@@ -22,12 +23,12 @@ class _SubscriptionSuccessOrFailedScreenState extends State<SubscriptionSuccessO
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) async {
+      onPopInvokedWithResult: (didPop, result) async{
         if(widget.success) {
           Get.find<AuthController>().saveIsStoreRegistrationSharedPref(true);
           Get.offAllNamed(RouteHelper.getSignInRoute());
         } else {
-          Get.offAllNamed(RouteHelper.getBusinessPlanRoute(widget.storeId));
+          Get.offAllNamed(RouteHelper.getSubscriptionPaymentRoute(storeId: widget.storeId, packageId: widget.packageId));
         }
       },
       child: Scaffold(
@@ -127,7 +128,7 @@ class _SubscriptionSuccessOrFailedScreenState extends State<SubscriptionSuccessO
 
                       TextButton(
                         onPressed: () {
-                          Get.offAllNamed(RouteHelper.getBusinessPlanRoute(widget.storeId));
+                          Get.offAllNamed(RouteHelper.getSubscriptionPaymentRoute(storeId: widget.storeId, packageId: widget.packageId));
                         },
                         child: Text(
                           'try_again'.tr,

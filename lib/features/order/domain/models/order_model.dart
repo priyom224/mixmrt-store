@@ -184,22 +184,13 @@ class OrderModel {
     storeLogoFullUrl = json['store_logo_full_url'];
     itemCampaign = json['item_campaign'];
     detailsCount = json['details_count'];
-    if(json['order_attachment_full_url'] != null){
-      if(json['order_attachment_full_url'].toString().startsWith('[')){
-        orderAttachmentFullUrl = [];
-        if(json['order_attachment_full_url'] is String) {
-          jsonDecode(json['order_attachment_full_url']).forEach((v) {
-            orderAttachmentFullUrl!.add(v);
-          });
-        }else{
-          json['order_attachment_full_url'].forEach((v) {
-            orderAttachmentFullUrl!.add(v);
-          });
+    if (json['order_attachment_full_url'] != null) {
+      orderAttachmentFullUrl = [];
+      json['order_attachment_full_url'].forEach((v) {
+        if(v != null) {
+          orderAttachmentFullUrl!.add(v);
         }
-      }else{
-        orderAttachmentFullUrl = [];
-        orderAttachmentFullUrl!.add(json['order_attachment_full_url'].toString());
-      }
+      });
     }
     moduleType = json['module_type'];
     prescriptionOrder = json['prescription_order'];
@@ -497,4 +488,3 @@ class Payments {
     return data;
   }
 }
-

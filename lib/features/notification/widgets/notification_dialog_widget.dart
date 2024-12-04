@@ -34,7 +34,7 @@ class NotificationDialogWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
                 child: CustomImageWidget(
                   isNotification: true,
-                  image: '${notificationModel.imageFullUrl}',
+                  image: '${notificationModel.imageFullUrl}', height: 200,
                   width: MediaQuery.of(context).size.width, fit: BoxFit.contain,
                 ),
               ),

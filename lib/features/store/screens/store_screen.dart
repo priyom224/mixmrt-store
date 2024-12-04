@@ -36,8 +36,8 @@ class _StoreScreenState extends State<StoreScreen> with TickerProviderStateMixin
     _tabController!.addListener(() {
       Get.find<StoreController>().setTabIndex(_tabController!.index);
     });
-    Get.find<StoreController>().getItemList('1', 'all');
-    Get.find<StoreController>().getStoreReviewList(Get.find<ProfileController>().profileModel!.stores![0].id, '');
+    Get.find<StoreController>().getItemList('1', 'all', willUpdate: false);
+    Get.find<StoreController>().getStoreReviewList(Get.find<ProfileController>().profileModel!.stores![0].id, '', willUpdate: false);
   }
 
   @override
@@ -59,23 +59,25 @@ class _StoreScreenState extends State<StoreScreen> with TickerProviderStateMixin
         return Scaffold(
           backgroundColor: Theme.of(context).cardColor,
 
-          floatingActionButton: storeController.tabIndex == 0 && Get.find<ProfileController>().modulePermission!.item! ? Padding(
-            padding: EdgeInsets.only(bottom: isShowingTrialContent ? 100 : 0),
-            child: FloatingActionButton(
-              heroTag: 'nothing',
-              onPressed: () {
-                if(Get.find<ProfileController>().profileModel!.stores![0].itemSection!) {
-                  if (store != null) {
-                    Get.toNamed(RouteHelper.getItemRoute(null));
+          floatingActionButton: GetBuilder<StoreController>(builder: (storeController) {
+            return storeController.isFabVisible && (storeController.tabIndex == 0 && Get.find<ProfileController>().modulePermission!.item!) ? Padding(
+              padding: EdgeInsets.only(bottom: isShowingTrialContent ? 100 : 0),
+              child: FloatingActionButton(
+                heroTag: 'nothing',
+                onPressed: () {
+                  if(Get.find<ProfileController>().profileModel!.stores![0].itemSection!) {
+                    if (store != null) {
+                      Get.toNamed(RouteHelper.getAddItemRoute(null));
+                    }
+                  }else {
+                    showCustomSnackBar('this_feature_is_blocked_by_admin'.tr);
                   }
-                }else {
-                  showCustomSnackBar('this_feature_is_blocked_by_admin'.tr);
-                }
-              },
-              backgroundColor: Theme.of(context).primaryColor,
-              child: Icon(Icons.add_circle_outline, color: Theme.of(context).cardColor, size: 30),
-            ),
-          ) : null,
+                },
+                backgroundColor: Theme.of(context).primaryColor,
+                child: Icon(Icons.add_circle_outline, color: Theme.of(context).cardColor, size: 30),
+              ),
+            ) : const SizedBox();
+          }),
 
           body: store != null ? CustomScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
@@ -88,10 +90,13 @@ class _StoreScreenState extends State<StoreScreen> with TickerProviderStateMixin
                 backgroundColor: Theme.of(context).primaryColor,
                 actions: [IconButton(
                   icon: Container(
-                    height: 50, width: 50, alignment: Alignment.center,
+                    height: 50, width: 40, alignment: Alignment.center,
                     padding: const EdgeInsets.all(7),
-                    decoration: BoxDecoration(color: Theme.of(context).primaryColor, borderRadius: BorderRadius.circular(Dimensions.radiusSmall)),
-                    child: Image.asset(Images.edit),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor, borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                      border: Border.all(color: Theme.of(context).cardColor.withOpacity(0.7), width: 1.5),
+                    ),
+                    child: Icon(Icons.edit, color: Theme.of(context).cardColor, size: 20),
                   ),
                   onPressed: () {
                     if(Get.find<ProfileController>().modulePermission!.storeSetup! && Get.find<ProfileController>().modulePermission!.myShop!){
@@ -112,32 +117,51 @@ class _StoreScreenState extends State<StoreScreen> with TickerProviderStateMixin
               SliverToBoxAdapter(child: Center(child: Container(
                 width: 1170,
                 padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-                color: Theme.of(context).cardColor,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  boxShadow: const [BoxShadow(color:Colors.black12, spreadRadius: 1, blurRadius: 5)],
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(Dimensions.radiusLarge),
+                    bottomRight: Radius.circular(Dimensions.radiusLarge),
+                  ),
+                ),
                 child: Column(children: [
                   Row(children: [
-                    Builder(
-                      builder: (context) {
-                        return ClipRRect(
-                          borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                          child: CustomImageWidget(
-                            image: '${store.logoFullUrl}',
-                            height: 40, width: 50, fit: BoxFit.cover,
-                          ),
-                        );
-                      }
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                      child: CustomImageWidget(
+                        image: '${store.coverPhotoFullUrl}',
+                        height: 70, width: 80, fit: BoxFit.cover,
+                      ),
                     ),
-                    const SizedBox(width: Dimensions.paddingSizeSmall),
-                    Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    const SizedBox(width: Dimensions.paddingSizeDefault),
+
+                    Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                       Text(
-                        store.name!, style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge),
+                        store.name ?? '', style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge),
                         maxLines: 1, overflow: TextOverflow.ellipsis,
                       ),
+
                       Text(
                         store.address ?? '', maxLines: 1, overflow: TextOverflow.ellipsis,
                         style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor),
                       ),
+
+                      Row(children: [
+                        Icon(Icons.star_rounded, color: Theme.of(context).hintColor, size: 18),
+                        Text(
+                          store.avgRating!.toStringAsFixed(1),
+                          style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall),
+                        ),
+                        const SizedBox(width: Dimensions.paddingSizeSmall),
+                        Text(
+                          '${store.ratingCount ?? 0} ${'ratings'.tr}',
+                          style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeExtraSmall, color: Theme.of(context).disabledColor),
+                        ),
+                      ]),
+
                     ])),
-                    
+
                     InkWell(
                       onTap: () => Get.toNamed(RouteHelper.getAnnouncementRoute(announcementStatus: store.isAnnouncementActive!, announcementMessage: store.announcementMessage ?? '')),
                       child: Container(
@@ -152,47 +176,22 @@ class _StoreScreenState extends State<StoreScreen> with TickerProviderStateMixin
                       ),
                     ),
                   ]),
-                  const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-
-                  Row(children: [
-                    Icon(Icons.star, color: Theme.of(context).primaryColor, size: 18),
-                    Text(
-                      store.avgRating!.toStringAsFixed(1),
-                      style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall),
-                    ),
-                    const SizedBox(width: Dimensions.paddingSizeSmall),
-                    Text(
-                      '${store.ratingCount ?? 0} ${'ratings'.tr}',
-                      style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeExtraSmall, color: Theme.of(context).disabledColor),
-                    ),
-                  ]),
-                  const SizedBox(height: Dimensions.paddingSizeSmall),
+                  SizedBox(height: store.discount != null ? Dimensions.paddingSizeDefault : 0),
 
                   store.discount != null ? Container(
                     width: context.width,
                     margin: const EdgeInsets.only(bottom: Dimensions.paddingSizeSmall),
                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(Dimensions.radiusSmall), color: Theme.of(context).primaryColor),
                     padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-                    child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      Text(
-                        '${store.discount!.discount}% ${'off'.tr}',
-                        style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).cardColor),
-                      ),
-                      Text(
-                        '${'enjoy'.tr} ${store.discount!.discount}% ${Get.find<SplashController>().configModel!.moduleConfig!.module!.showRestaurantText! ? 'off_on_all_foods'.tr : 'off_on_all_items'.tr}',
-                        style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).cardColor),
-                      ),
-                      SizedBox(height: (store.discount!.minPurchase != 0 || store.discount!.maxDiscount != 0) ? 5 : 0),
-                      store.discount!.minPurchase != 0 ? Text(
-                        '[ ${'minimum_purchase'.tr}: ${PriceConverterHelper.convertPrice(store.discount!.minPurchase)} ]',
-                        style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeExtraSmall, color: Theme.of(context).cardColor),
-                      ) : const SizedBox(),
-                      store.discount!.maxDiscount != 0 ? Text(
-                        '[ ${'maximum_discount'.tr}: ${PriceConverterHelper.convertPrice(store.discount!.maxDiscount)} ]',
-                        style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeExtraSmall, color: Theme.of(context).cardColor),
-                      ) : const SizedBox(),
-                    ]),
+                    child: Text(
+                      '${store.discount!.discount}% ${'off'.tr} ${'enjoy'.tr} ${store.discount!.discount}% ${Get.find<SplashController>().configModel!.moduleConfig!.module!.showRestaurantText! ? 'off_on_all_foods'.tr : 'off_on_all_items'.tr} '
+                      '${store.discount!.minPurchase != 0 ? '[ ${'minimum_purchase'.tr}: ${PriceConverterHelper.convertPrice(store.discount!.minPurchase)} ]' : ''} '
+                      '${store.discount!.maxDiscount != 0 ? '[ ${'maximum_discount'.tr}: ${PriceConverterHelper.convertPrice(store.discount!.maxDiscount)} ]' : ''}',
+                      style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall, color: Colors.white),
+                      textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                    ),
                   ) : const SizedBox(),
+                  SizedBox(height: (store.delivery! && store.freeDelivery!) ? Dimensions.paddingSizeSmall : 0),
 
                   (store.delivery! && store.freeDelivery!) ? Text(
                     'free_delivery'.tr,
@@ -209,11 +208,13 @@ class _StoreScreenState extends State<StoreScreen> with TickerProviderStateMixin
                   decoration: BoxDecoration(color: Theme.of(context).cardColor),
                   child: TabBar(
                     controller: _tabController,
-                    indicatorColor: Theme.of(context).primaryColor,
+                    indicatorColor: Theme.of(context).hintColor,
                     indicatorWeight: 3,
-                    labelColor: Theme.of(context).primaryColor,
+                    padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    labelColor: Theme.of(context).textTheme.bodyLarge!.color,
                     unselectedLabelColor: Theme.of(context).disabledColor,
-                    unselectedLabelStyle: robotoRegular.copyWith(color: Theme.of(context).disabledColor, fontSize: Dimensions.fontSizeSmall),
+                    unselectedLabelStyle: robotoBold.copyWith(color: Theme.of(context).disabledColor),
                     labelStyle: robotoBold.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).primaryColor),
                     tabs: _review! ? [
                       Tab(text: 'all_items'.tr),
