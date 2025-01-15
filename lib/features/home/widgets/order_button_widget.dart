@@ -33,15 +33,15 @@ class OrderButtonWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-            color: isSelected ? Theme.of(context).primaryColor : Theme.of(context).cardColor,
+            color: isSelected ? const Color(0xff93A2AE) : Theme.of(context).cardColor,
           ),
           alignment: Alignment.center,
           child: Text(
-            '$title${fromHistory ? '' : ' ($length)'}',
+            '$title${fromHistory ? '' : isSelected ? ' ($length)' : ''}',
             maxLines: 1, overflow: TextOverflow.ellipsis,
             style: robotoMedium.copyWith(
-              fontSize: Dimensions.fontSizeExtraSmall,
-              color: isSelected ? Theme.of(context).cardColor : Theme.of(context).textTheme.bodyLarge!.color,
+              fontSize: Dimensions.fontSizeDefault, fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+              color: isSelected ? Theme.of(context).cardColor : Theme.of(context).disabledColor,
             ),
           ),
         ),

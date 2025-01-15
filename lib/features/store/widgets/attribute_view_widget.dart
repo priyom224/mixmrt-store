@@ -25,11 +25,9 @@ class _AttributeViewWidgetState extends State<AttributeViewWidget> {
 
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
-      Text(
-        'attribute'.tr,
-        style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor),
-      ),
+      Text('attribute'.tr, style: robotoBold),
       const SizedBox(height: Dimensions.paddingSizeExtraSmall),
+
       SizedBox(
         height: 50,
         child: ListView.builder(

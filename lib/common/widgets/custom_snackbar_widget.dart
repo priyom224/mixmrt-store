@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 void showCustomSnackBar(String? message, {bool isError = true}) {
-  Get..closeAllSnackbars()..showSnackbar(GetSnackBar(
+  Get.showSnackbar(GetSnackBar(
     backgroundColor: isError ? Colors.red : Colors.green,
     message: message,
     duration: const Duration(seconds: 3),

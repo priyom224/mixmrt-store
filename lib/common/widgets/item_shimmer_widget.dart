@@ -1,4 +1,4 @@
-import 'package:sixam_mart_store/common/widgets/rating_bar_widget.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:sixam_mart_store/util/dimensions.dart';
 import 'package:flutter/material.dart';
 
@@ -9,56 +9,44 @@ class ItemShimmerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 2, spreadRadius: 0)],
+      ),
+      padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+      margin: const EdgeInsets.only(bottom: Dimensions.paddingSizeDefault),
+      child: Row(children: [
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeExtraSmall),
-            child: Row(children: [
-
-              Container(
-                height: 65, width: 80,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                  color: Colors.grey[300],
-                ),
-              ),
-              const SizedBox(width: Dimensions.paddingSizeSmall),
-
-              Expanded(
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
-
-                  Container(height: 15, width: double.maxFinite, color: Colors.grey[300]),
-                  const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-
-                  const RatingBarWidget(rating: 0, size: 12, ratingCount: 0),
-                  Row(children: [
-                    Container(height: 15, width: 30, color: Colors.grey[300]),
-                    const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-                    Container(height: 10, width: 20, color: Colors.grey[300]),
-                  ]),
-
-                ]),
-              ),
-
-              Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                const Icon(Icons.add, size: 25),
-                Icon(
-                  Icons.favorite_border,  size: 25,
-                  color: Theme.of(context).disabledColor,
-                ),
-              ]),
-
-            ]),
+        Shimmer(
+          child: Container(
+            width: 90,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+              color: Theme.of(context).shadowColor,
+            ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(left: 90),
-          child: Divider(color: hasDivider ? Theme.of(context).disabledColor : Colors.transparent),
+        const SizedBox(width: Dimensions.paddingSizeSmall),
+
+        Expanded(
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Shimmer(child: Container(height: 15, width: double.maxFinite, color: Theme.of(context).shadowColor)),
+            Shimmer(child: Container(height: 10, width: 120, color: Theme.of(context).shadowColor)),
+            Shimmer(child: Container(height: 12, width: 70, color: Theme.of(context).shadowColor)),
+            Shimmer(child: Container(height: 10, width: 120, color: Theme.of(context).shadowColor)),
+          ]),
         ),
-      ],
+        const SizedBox(width: 15),
+
+        Row(children: [
+          Icon(Icons.add_circle, size: 25, color: Theme.of(context).shadowColor),
+          Icon(Icons.edit, size: 25, color: Theme.of(context).shadowColor),
+          Icon(Icons.delete,  size: 25, color: Theme.of(context).shadowColor),
+        ]),
+
+      ]),
     );
   }
 }

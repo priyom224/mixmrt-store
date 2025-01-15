@@ -28,4 +28,13 @@ class ProfileService implements ProfileServiceInterface {
     profileRepositoryInterface.updateHeader(moduleID);
   }
 
+  // @override
+  // Future<bool> saveLowStockStatus(bool status) async {
+  //   return await profileRepositoryInterface.saveLowStockStatus(status);
+  // }
+  // @override
+  // bool getLowStockStatus() {
+  //   return profileRepositoryInterface.getLowStockStatus();
+  // }
+
 }

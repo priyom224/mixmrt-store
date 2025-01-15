@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
+import 'package:sixam_mart_store/common/widgets/custom_tool_tip_widget.dart';
 import 'package:sixam_mart_store/features/store/controllers/store_controller.dart';
 import 'package:sixam_mart_store/features/profile/controllers/profile_controller.dart';
 import 'package:sixam_mart_store/features/splash/controllers/splash_controller.dart';
@@ -41,6 +42,7 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
   final TextEditingController _maximumController = TextEditingController();
   final TextEditingController _deliveryChargePerKmController = TextEditingController();
   final TextEditingController _extraPackagingController = TextEditingController();
+  final TextEditingController _minimumStockController = TextEditingController();
 
   final List<TextEditingController> _metaTitleController = [];
   final List<TextEditingController> _metaDescriptionController = [];
@@ -54,6 +56,7 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
   final FocusNode _maximumNode = FocusNode();
   final FocusNode _minimumProcessingTimeNode = FocusNode();
   final FocusNode _deliveryChargePerKmNode = FocusNode();
+  final FocusNode _minimumStockNode = FocusNode();
   final List<FocusNode> _metaTitleNode = [];
   final List<FocusNode> _metaDescriptionNode = [];
   late profile.Store _store;
@@ -100,6 +103,7 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
     _gstController.text = widget.store.gstCode!;
     _processingTimeController.text = widget.store.orderPlaceToScheduleInterval.toString();
     _extraPackagingController.text = widget.store.extraPackagingAmount.toString();
+    _minimumStockController.text = widget.store.minimumStockForWarning.toString();
     if(widget.store.deliveryTime != null && widget.store.deliveryTime!.isNotEmpty) {
       try {
         List<String> typeList = widget.store.deliveryTime!.split(' ');
@@ -326,11 +330,41 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
                   hintText: 'minimum_processing_time'.tr,
                   controller: _processingTimeController,
                   focusNode: _minimumProcessingTimeNode,
-                  nextFocus: _deliveryChargePerKmNode,
+                  nextFocus: _minimumStockNode,
                   inputType: TextInputType.number,
                   isAmount: true,
                 ) : const SizedBox(),
                 SizedBox(height: _module.orderPlaceToScheduleInterval! ? Dimensions.paddingSizeLarge : 0),
+
+                !_module.showRestaurantText! ? Column(
+                  children: [
+
+                    Row(children: [
+                      Text(
+                        'minimum_stock_for_warning'.tr,
+                        style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor),
+                      ),
+                      const SizedBox(width: Dimensions.paddingSizeExtraSmall),
+
+                      CustomToolTip(
+                        preferredDirection: AxisDirection.up,
+                        message: 'minimum_stock_for_warning_tooltip'.tr,
+                      ),
+                    ]),
+
+                    TextFieldWidget(
+                      hintText: 'minimum_stock_for_warning'.tr,
+                      controller: _minimumStockController,
+                      focusNode: _minimumStockNode,
+                      title: false,
+                      // nextFocus: _deliveryChargePerKmNode,
+                      inputAction: TextInputAction.done,
+                      inputType: TextInputType.number,
+                      isAmount: true,
+                    ),
+                  ],
+                ) : const SizedBox(),
+                SizedBox(height: !_module.showRestaurantText! ? Dimensions.paddingSizeLarge : 0),
 
                 ListView.builder(
                   itemCount: _languageList.length,
@@ -484,37 +518,36 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
                 SizedBox(height: _module.alwaysOpen! ? 0 : Dimensions.paddingSizeLarge),
 
                 Get.find<SplashController>().configModel!.scheduleOrder! ? SwitchButtonWidget(
-                  icon: Icons.alarm_add, title: 'schedule_order'.tr, isButtonActive: widget.store.scheduleOrder, onTap: () {
-                    _store.scheduleOrder = !_store.scheduleOrder!;
+                  icon: Icons.alarm_add, title: 'schedule_order'.tr, isButtonActive: storeController.isScheduleOrderEnabled, onTap: () {
+                    storeController.toggleScheduleOrder();
                   },
                 ) : const SizedBox(),
                 SizedBox(height: Get.find<SplashController>().configModel!.scheduleOrder! ? Dimensions.paddingSizeSmall : 0),
 
-                SwitchButtonWidget(icon: Icons.delivery_dining, title: 'delivery'.tr, isButtonActive: widget.store.delivery, onTap: () {
-                  _store.delivery = !_store.delivery!;
+                SwitchButtonWidget(icon: Icons.delivery_dining, title: 'delivery'.tr, isButtonActive: storeController.isDeliveryEnabled, onTap: () {
+                  storeController.toggleDelivery();
                 }),
                 const SizedBox(height: Dimensions.paddingSizeSmall),
 
-                widget.store.module!.moduleType.toString() == 'food' ? SwitchButtonWidget(icon: Icons.flatware, title: 'cutlery'.tr, isButtonActive: widget.store.cutlery, onTap: () {
-                  _store.cutlery = !_store.cutlery!;
+                widget.store.module!.moduleType.toString() == 'food' ? SwitchButtonWidget(icon: Icons.flatware, title: 'cutlery'.tr, isButtonActive: storeController.isCutleryEnabled, onTap: () {
+                  storeController.toggleCutlery();
                 }) : const SizedBox(),
                 SizedBox(height: widget.store.module!.moduleType.toString() == 'food' ? Dimensions.paddingSizeSmall : 0),
 
-                _store.selfDeliverySystem == 1 ? SwitchButtonWidget(icon: Icons.deblur_outlined, title: 'free_delivery'.tr, isButtonActive: widget.store.freeDelivery, onTap: () {
-                  _store.freeDelivery = !_store.freeDelivery!;
+                _store.selfDeliverySystem == 1 ? SwitchButtonWidget(icon: Icons.deblur_outlined, title: 'free_delivery'.tr, isButtonActive: storeController.isFreeDeliveryEnabled, onTap: () {
+                  storeController.toggleFreeDelivery();
                 }) : const SizedBox(),
                 SizedBox(height: _store.selfDeliverySystem == 1 ? Dimensions.paddingSizeSmall : 0),
 
-                SwitchButtonWidget(icon: Icons.house_siding, title: 'take_away'.tr, isButtonActive: widget.store.takeAway, onTap: () {
-                  _store.takeAway = !_store.takeAway!;
+                SwitchButtonWidget(icon: Icons.house_siding, title: 'take_away'.tr, isButtonActive: storeController.isTakeAwayEnabled, onTap: () {
+                  storeController.toggleTakeAway();
                 }),
                 SizedBox(height: widget.store.module!.moduleType.toString() == 'pharmacy' ? Dimensions.paddingSizeSmall : 0),
 
-                (widget.store.module!.moduleType.toString() == 'pharmacy' && Get.find<SplashController>().configModel!.prescriptionOrderStatus!)
-                    ? SwitchButtonWidget(
-                  icon: Icons.local_hospital_outlined, title: 'prescription_order'.tr, isButtonActive: widget.store.prescriptionStatus,
+                (widget.store.module!.moduleType.toString() == 'pharmacy' && Get.find<SplashController>().configModel!.prescriptionOrderStatus!) ? SwitchButtonWidget(
+                  icon: Icons.local_hospital_outlined, title: 'prescription_order'.tr, isButtonActive: storeController.isPrescriptionStatusEnable,
                   onTap: () {
-                  _store.prescriptionStatus = !_store.prescriptionStatus!;
+                    storeController.togglePrescription();
                   },
                 ) : const SizedBox(),
 
@@ -603,6 +636,7 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
                 String extraPackagingAmount = _extraPackagingController.text.trim();
                 String maximumFee = _maximumDeliveryFeeController.text.trim();
                 bool? showRestaurantText = _module.showRestaurantText;
+                String minimumStockForWarning = _minimumStockController.text.trim();
                 if(defaultNameNull) {
                   showCustomSnackBar(showRestaurantText! ? 'enter_your_restaurant_name'.tr : 'enter_your_store_name'.tr);
                 }else if(contact.isEmpty) {
@@ -677,6 +711,13 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
                   _store.nonVeg = (!_module.vegNonVeg! || storeController.isStoreNonVeg!) ? 1 : 0;
                   _store.extraPackagingStatus = storeController.isExtraPackagingEnabled;
                   _store.extraPackagingAmount = extraPackagingAmount.isNotEmpty ? double.parse(extraPackagingAmount) : 0;
+                  _store.scheduleOrder = storeController.isScheduleOrderEnabled;
+                  _store.delivery = storeController.isDeliveryEnabled;
+                  _store.cutlery = storeController.isCutleryEnabled;
+                  _store.freeDelivery = storeController.isFreeDeliveryEnabled;
+                  _store.takeAway = storeController.isTakeAwayEnabled;
+                  _store.prescriptionStatus = storeController.isPrescriptionStatusEnable;
+                  _store.minimumStockForWarning = double.parse(minimumStockForWarning);
 
                   storeController.updateStore(_store, minimum, maximum, storeController.durations[storeController.durationIndex-1], translation);
                 }

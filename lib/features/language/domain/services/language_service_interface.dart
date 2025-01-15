@@ -7,4 +7,6 @@ abstract class LanguageServiceInterface {
   Locale getLocaleFromSharedPref();
   int setSelectedLanguageIndex(List<LanguageModel> languages, Locale locale);
   void saveLanguage(Locale locale);
+  void saveCacheLanguage(Locale locale);
+  Locale getCacheLocaleFromSharedPref();
 }

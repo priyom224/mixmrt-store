@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart_store/common/widgets/custom_button_widget.dart';
 import 'package:sixam_mart_store/common/widgets/custom_image_widget.dart';
+import 'package:sixam_mart_store/common/widgets/custom_snackbar_widget.dart';
 import 'package:sixam_mart_store/features/business/domain/models/package_model.dart';
 import 'package:sixam_mart_store/features/business/widgets/curve_clipper_widget.dart';
 import 'package:sixam_mart_store/features/profile/controllers/profile_controller.dart';
@@ -19,7 +20,8 @@ class RenewSubscriptionPlanBottomSheet extends StatelessWidget {
   final Packages package;
   final Packages? activePackage;
   final CheckProductLimitModel? checkProductLimitModel;
-  const RenewSubscriptionPlanBottomSheet({super.key, this.isRenew = false, required this.package, this.activePackage, required this.checkProductLimitModel});
+  final bool nonSubscription;
+  const RenewSubscriptionPlanBottomSheet({super.key, this.isRenew = false, required this.package, this.activePackage, required this.checkProductLimitModel, this.nonSubscription = false});
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +56,7 @@ class RenewSubscriptionPlanBottomSheet extends StatelessWidget {
               child: Column(mainAxisSize: MainAxisSize.min, children: [
 
 
-                Text(isRenew ? 'renew_subscription_plan'.tr : businessIsCommission ? 'shift_to_new_business_plan'.tr : 'shift_to_new_subscription_plan'.tr, style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge)),
+                Text(isRenew && (nonSubscription == false) ? 'renew_subscription_plan'.tr : (isRenew && nonSubscription) ? 'choose_subscription_plan'.tr : businessIsCommission ? 'shift_to_new_business_plan'.tr : 'shift_to_new_subscription_plan'.tr, style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge)),
                 const SizedBox(height: Dimensions.paddingSizeLarge),
 
                 Padding(
@@ -402,7 +404,11 @@ class RenewSubscriptionPlanBottomSheet extends StatelessWidget {
                 flex: 2,
                 child: !subscriptionController.isLoading ? CustomButtonWidget(
                   onPressed: () {
-                    subscriptionController.renewBusinessPlan(storeId: subscriptionController.profileModel!.stores![0].id.toString(), isCommission: package.id == -1);
+                    if(!subscriptionController.isSelect && !subscriptionController.isDigitalPaymentSelect){
+                      showCustomSnackBar('please_select_payment_method'.tr);
+                    }else {
+                      subscriptionController.renewBusinessPlan(storeId: subscriptionController.profileModel!.stores![0].id.toString(), isCommission: package.id == -1);
+                    }
                   },
                   buttonText: isRenew ? 'renew_subscription_plan'.tr : 'shift_subscription_plan'.tr,
                   radius: Dimensions.radiusDefault,

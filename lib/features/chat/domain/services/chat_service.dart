@@ -41,7 +41,7 @@ class ChatService implements ChatServiceInterface {
   }
 
   @override
-  Future<MessageModel?> processGetMessage(int offset, NotificationBody notificationBody, int? conversationID) async {
+  Future<MessageModel?> processGetMessage(int offset, NotificationBodyModel notificationBody, int? conversationID) async {
     MessageModel? messageModel;
     if(notificationBody.customerId != null || notificationBody.type == AppConstants.customer || notificationBody.type == AppConstants.user) {
       messageModel = await getMessages(offset, notificationBody.customerId, AppConstants.user, conversationID);
@@ -52,7 +52,7 @@ class ChatService implements ChatServiceInterface {
   }
 
   @override
-  Future<MessageModel?> processSendMessage(NotificationBody? notificationBody, List<MultipartBody> chatImage, String message, int? conversationId) async {
+  Future<MessageModel?> processSendMessage(NotificationBodyModel? notificationBody, List<MultipartBody> chatImage, String message, int? conversationId) async {
     MessageModel? messageModel;
     if(notificationBody != null && (notificationBody.customerId != null || notificationBody.type == AppConstants.customer)) {
       messageModel = await sendMessage(message, chatImage, conversationId, notificationBody.customerId, AppConstants.customer);

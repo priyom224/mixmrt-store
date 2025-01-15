@@ -7,4 +7,6 @@ abstract class ProfileRepositoryInterface implements RepositoryInterface {
   Future<dynamic> updateProfile(ProfileModel userInfoModel, XFile? data, String token);
   Future<dynamic> deleteVendor();
   updateHeader(int? moduleID);
+  // Future<bool> saveLowStockStatus(bool status);
+  // bool getLowStockStatus();
 }

@@ -1,7 +1,9 @@
+import 'package:sixam_mart_store/common/widgets/custom_bottom_sheet_widget.dart';
 import 'package:sixam_mart_store/common/widgets/custom_image_widget.dart';
 import 'package:sixam_mart_store/features/auth/controllers/auth_controller.dart';
 import 'package:sixam_mart_store/features/profile/controllers/profile_controller.dart';
 import 'package:sixam_mart_store/common/controllers/theme_controller.dart';
+import 'package:sixam_mart_store/features/profile/widgets/notification_status_change_bottom_sheet.dart';
 import 'package:sixam_mart_store/helper/route_helper.dart';
 import 'package:sixam_mart_store/util/app_constants.dart';
 import 'package:sixam_mart_store/util/dimensions.dart';
@@ -77,12 +79,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
               }),
               const SizedBox(height: Dimensions.paddingSizeSmall),
 
-              SwitchButtonWidget(
-                icon: Icons.notifications, title: 'notification'.tr,
-                isButtonActive: Get.find<AuthController>().notification, onTap: () {
-                Get.find<AuthController>().setNotificationActive(!Get.find<AuthController>().notification);
-                },
-              ),
+              GetBuilder<AuthController>(builder: (authController) {
+                return SwitchButtonWidget(
+                  icon: Icons.notifications, title: 'notification'.tr,
+                  isButtonActive: authController.notification, onTap: () {
+                    showCustomBottomSheet(
+                      child: const NotificationStatusChangeBottomSheet(),
+                    );
+                  },
+                );
+              }),
               const SizedBox(height: Dimensions.paddingSizeSmall),
 
               _isOwner ? SwitchButtonWidget(icon: Icons.lock, title: 'change_password'.tr, onTap: () {

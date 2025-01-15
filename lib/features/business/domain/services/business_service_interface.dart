@@ -3,6 +3,6 @@ import 'package:sixam_mart_store/features/business/domain/models/package_model.d
 
 abstract class BusinessServiceInterface{
   Future<PackageModel?> getPackageList();
-  Future<String> processesBusinessPlan(String businessPlanStatus, int paymentIndex, int restaurantId, PackageModel? packageModel, String? digitalPaymentName, int activeSubscriptionIndex);
-  Future<String> setUpBusinessPlan(BusinessPlanBody businessPlanBody, String? digitalPaymentName, String businessPlanStatus, int restaurantId);
+  Future<String> processesBusinessPlan(String businessPlanStatus, int paymentIndex, int storeId, String? digitalPaymentName, int? selectedPackageId);
+  Future<String> setUpBusinessPlan(BusinessPlanBody businessPlanBody, String? digitalPaymentName, String businessPlanStatus, int storeId, int? packageId);
 }

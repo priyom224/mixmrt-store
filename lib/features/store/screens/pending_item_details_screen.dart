@@ -305,7 +305,7 @@ class EnglishLanguageItemTab extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
             child: CustomButtonWidget(
-              onPressed: () => Get.toNamed(RouteHelper.getItemRoute(item)),
+              onPressed: () =>  Get.toNamed(RouteHelper.getAddItemRoute(item)),
               buttonText: 'edit_and_resubmit'.tr,
             ),
           ),

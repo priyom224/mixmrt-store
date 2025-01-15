@@ -13,7 +13,7 @@ class LocationSearchDialogWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController controller = TextEditingController();
+    final TextEditingController searchController = TextEditingController();
 
     return Scrollable(viewportBuilder: (context, viewPostOffset) => Container(
       margin: const EdgeInsets.only(top:  0),
@@ -23,7 +23,7 @@ class LocationSearchDialogWidget extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimensions.radiusSmall)),
         child: SizedBox(width: context.width, child: TypeAheadField(
           textFieldConfiguration: TextFieldConfiguration(
-            controller: controller,
+            controller: searchController,
             textInputAction: TextInputAction.search,
             autofocus: true,
             textCapitalization: TextCapitalization.words,

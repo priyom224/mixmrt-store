@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
+import 'package:sixam_mart_store/common/widgets/custom_bottom_sheet_widget.dart';
 import 'package:sixam_mart_store/features/store/controllers/store_controller.dart';
+import 'package:sixam_mart_store/features/store/widgets/announcement_status_bottom_sheet.dart';
 import 'package:sixam_mart_store/util/dimensions.dart';
 import 'package:sixam_mart_store/util/styles.dart';
 import 'package:sixam_mart_store/common/widgets/custom_app_bar_widget.dart';
@@ -22,11 +24,10 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
 
   final tooltipController = JustTheController();
   final TextEditingController _announcementController = TextEditingController();
-  bool announcementStatus = false;
 
   @override
   void initState() {
-    announcementStatus = widget.announcementStatus == 1 ? true : false;
+    Get.find<StoreController>().setAnnouncementStatus(widget.announcementStatus == 1 ? true : false, willUpdate: false);
     _announcementController.text = widget.announcementMessage;
     super.initState();
   }
@@ -42,11 +43,9 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
               child: CupertinoSwitch(
                 trackColor: Theme.of(context).primaryColor.withOpacity(0.5),
                 activeColor: Theme.of(context).primaryColor,
-                value: announcementStatus,
+                value: storeController.announcementStatus,
                 onChanged: (value) {
-                  setState(() {
-                    announcementStatus = value;
-                  });
+                  showCustomBottomSheet(child: const AnnouncementStatusBottomSheet());
                 },
               ),
             ),
@@ -92,7 +91,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                   if(_announcementController.text.isEmpty) {
                     showCustomSnackBar('enter_announcement'.tr);
                   }else {
-                    storeController.updateAnnouncement(announcementStatus ? 1 : 0, _announcementController.text);
+                    storeController.updateAnnouncement(storeController.announcementStatus ? 1 : 0, _announcementController.text);
                   }
                 },
                 buttonText: 'publish'.tr,

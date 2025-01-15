@@ -20,7 +20,7 @@ class NotificationRepository implements NotificationRepositoryInterface {
         NotificationModel notification = NotificationModel.fromJson(notify);
         notification.title = notify['data']['title'];
         notification.description = notify['data']['description'].toString();
-        notification.imageFullUrl = notify['data']['image_full_url'];
+        notification.imageFullUrl = notify['image_full_url'];
         notificationList!.add(notification);
       });
     }

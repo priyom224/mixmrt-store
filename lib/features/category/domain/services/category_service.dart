@@ -19,11 +19,11 @@ class CategoryService implements CategoryServiceInterface {
 
   @override
   int? categoryIndex(List<CategoryModel>? categoryList, Item? item) {
-    int? categoryIndex = 0;
+    int? categoryIndex;
     for(int index = 0; index < categoryList!.length; index++) {
       if(item != null) {
         if(categoryList[index].id.toString() == item.categoryIds![0].id) {
-          categoryIndex = index + 1;
+          categoryIndex = index;
         }
       }
     }
@@ -32,11 +32,11 @@ class CategoryService implements CategoryServiceInterface {
 
   @override
   int? subCategoryIndex(List<CategoryModel>? subCategoryList, Item? item) {
-    int? subCategoryIndex = 0;
+    int? subCategoryIndex;
     for(int index = 0; index < subCategoryList!.length; index++) {
       if(item != null && item.categoryIds!.length > 1) {
         if(subCategoryList[index].id.toString() == item.categoryIds![1].id) {
-          subCategoryIndex = index + 1;
+          subCategoryIndex = index;
         }
       }
     }

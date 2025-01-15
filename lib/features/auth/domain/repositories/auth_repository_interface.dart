@@ -15,7 +15,7 @@ abstract class AuthRepositoryInterface implements RepositoryInterface {
   String getUserPassword();
   String getUserType();
   bool isNotificationActive();
-  void setNotificationActive(bool isActive);
+  Future<void> setNotificationActive(bool isActive);
   Future<bool> clearUserNumberAndPassword();
   Future<dynamic> toggleStoreClosedStatus();
   Future<bool> saveIsStoreRegistration(bool status);

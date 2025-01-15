@@ -48,7 +48,7 @@ class _SignInScreenState extends State<SignInScreen> {
     if(canShowBottomSheet){
       Future.delayed(const Duration(seconds: 1), () {
         showModalBottomSheet(
-          context: context, isScrollControlled: true, backgroundColor: Colors.transparent,
+          context: Get.context!, isScrollControlled: true, backgroundColor: Colors.transparent,
           builder: (con) => const StoreRegistrationSuccessBottomSheet(),
         ).then((value) {
           Get.find<AuthController>().saveIsStoreRegistrationSharedPref(false);

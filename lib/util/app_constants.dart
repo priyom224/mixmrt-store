@@ -3,11 +3,13 @@ import 'package:sixam_mart_store/util/images.dart';
 
 class AppConstants {
   static const String appName = 'MIXMRT Store';
-  static const double appVersion = 2.8;
+  static const double appVersion = 2.12;
 
   static const String fontFamily = 'Roboto';
+  static const double limitOfPickedVideoSizeInMB = 50;
+  static const double maxSizeOfASingleFile = 10;
 
-  static String baseUrl = 'https://mixmrt.com/zm';
+  static String baseUrl = 'https://dev.mixmrt.com';
 
   static void setBaseUrl(String url) {
     baseUrl = url;
@@ -42,6 +44,7 @@ class AppConstants {
   static const String deleteAddonUri = '/api/v1/vendor/addon/delete';
   static const String attributeUri = '/api/v1/vendor/attributes';
   static const String vendorUpdateUri = '/api/v1/vendor/update-business-setup';
+  static const String itemStockUpdateUri = '/api/v1/vendor/item/stock-update';
   static const String addItemUri = '/api/v1/vendor/item/store';
   static const String updateItemUri = '/api/v1/vendor/item/update';
   static const String deleteItemUri = '/api/v1/vendor/item/delete';
@@ -62,9 +65,9 @@ class AppConstants {
   static const String addSchedule = '/api/v1/vendor/schedule/store';
   static const String deleteSchedule = '/api/v1/vendor/schedule/';
   static const String unitListUri = '/api/v1/vendor/unit';
-  static const String aboutUsUri = '/about-us';
-  static const String privacyPolicyUri = '/privacy-policy';
-  static const String termsAndConditionsUri = '/terms-and-conditions';
+  static const String aboutUsUri = '/api/v1/about-us';
+  static const String privacyPolicyUri = '/api/v1/privacy-policy';
+  static const String termsAndConditionsUri = '/api/v1/terms-and-conditions';
   static const String vendorRemoveUri = '/api/v1/vendor/remove-account';
   static const String zoneListUri = '/api/v1/zone/list';
   static const String searchLocationUri = '/api/v1/config/place-api-autocomplete';
@@ -107,6 +110,11 @@ class AppConstants {
   static const String updateReplyUri = '/api/v1/vendor/item/reply-update';
   static const String checkZoneUri = '/api/v1/zone/check';
   static const String getAgreementUri = '/api/v1/show-agreement/store';
+  static const String getNutritionSuggestionUri = '/api/v1/item/get-nutrition-name-list';
+  static const String getAllergicIngredientsSuggestionUri = '/api/v1/item/get-allergy-name-list';
+  static const String getGenericNameSuggestionUri = '/api/v1/item/get-generic-name-list';
+  static const String stockLimitItemsUri = '/api/v1/vendor/item/stock-limit-list';
+  static const String suitableTagUri = '/api/v1/common-condition/list';
 
 
   /// Subscription url
@@ -131,6 +139,14 @@ class AppConstants {
   static const String sendMessageUri = '/api/v1/vendor/message/send';
   static const String searchConversationListUri = '/api/v1/vendor/message/search-list';
 
+  ///Advertisement
+  static const String getAdvertisementListUri = '/api/v1/vendor/advertisement';
+  static const String advertisementDetailsUri = '/api/v1/vendor/advertisement/details';
+  static const String addAdvertisementUri = '/api/v1/vendor/advertisement/store';
+  static const String updateAdvertisementUri = '/api/v1/vendor/advertisement/update';
+  static const String deleteAdvertisementUri = '/api/v1/vendor/advertisement/delete/';
+  static const String changeAdvertisementStatusUri = '/api/v1/vendor/advertisement/status';
+  static const String copyAddAdvertisementUri = '/api/v1/vendor/advertisement/copy-add-post';
 
   /// Shared Key
   static const String theme = '6am_mart_store_theme';
@@ -139,6 +155,8 @@ class AppConstants {
   static const String type = '6am_mart_store_type';
   static const String countryCode = '6am_mart_store_country_code';
   static const String languageCode = '6am_mart_store_language_code';
+  static const String cacheCountryCode = 'cache_country_code';
+  static const String cacheLanguageCode = 'cache_language_code';
   static const String cartList = '6am_mart_store_cart_list';
   static const String userPassword = '6am_mart_store_user_password';
   static const String userAddress = '6am_mart_store_user_address';
@@ -149,6 +167,7 @@ class AppConstants {
   static const String searchHistory = '6am_mart_store_search_history';
   static const String isStoreRegister = 'stackfood_store_registration';
   static const String bluetoothMacAddress = 'bluetooth_mac_address';
+  static const String lowStockStatus = '6am_mart_store_low_stock';
 
   static const String topic = 'all_zone_store';
   static const String zoneTopic = 'zone_topic';

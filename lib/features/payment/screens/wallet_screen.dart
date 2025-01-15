@@ -34,23 +34,21 @@ class _WalletScreenState extends State<WalletScreen> {
     Get.find<PaymentController>().getWithdrawMethodList();
     Get.find<PaymentController>().getWalletPaymentList();
     Get.find<PaymentController>().getOfflineList();
+    if(Get.find<ProfileController>().profileModel == null) {
+      Get.find<ProfileController>().getProfile();
+    }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-
-    if(Get.find<ProfileController>().profileModel == null) {
-      Get.find<ProfileController>().getProfile();
-    }
-
     return Scaffold(
 
       appBar: CustomAppBarWidget(title: 'wallet'.tr, isBackButtonExist: false),
 
       body: GetBuilder<ProfileController>(builder: (profileController) {
         return GetBuilder<PaymentController>(builder: (bankController) {
-          return profileController.modulePermission!.wallet! ? (profileController.profileModel != null && bankController.withdrawList != null) ? RefreshIndicator(
+          return (profileController.profileModel != null && bankController.withdrawList != null) ? profileController.modulePermission!.wallet! ? RefreshIndicator(
             onRefresh: () async {
               await Get.find<ProfileController>().getProfile();
               await Get.find<PaymentController>().getWithdrawList();
@@ -267,7 +265,7 @@ class _WalletScreenState extends State<WalletScreen> {
                             const SizedBox(height: Dimensions.paddingSizeExtraSmall),
 
                             Container(
-                              height: 3, width: 105,
+                              height: 3, width: 120,
                               margin: const EdgeInsets.only(top: Dimensions.paddingSizeExtraSmall),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
@@ -311,8 +309,8 @@ class _WalletScreenState extends State<WalletScreen> {
 
                       Text("transaction_history".tr, style: robotoMedium),
 
-                      (bankController.selectedIndex == 0 && bankController.withdrawList!.isEmpty)
-                      || (bankController.selectedIndex == 1 && bankController.transactions!.isEmpty) ? const SizedBox() : InkWell(
+                      (bankController.selectedIndex == 0 && (bankController.withdrawList != null && bankController.withdrawList!.isNotEmpty))
+                      || (bankController.selectedIndex == 1 && (bankController.transactions != null && bankController.transactions!.isNotEmpty)) ? InkWell(
                         onTap: () {
                           if(bankController.selectedIndex == 0) {
                             Get.toNamed(RouteHelper.getWithdrawHistoryRoute());
@@ -331,7 +329,7 @@ class _WalletScreenState extends State<WalletScreen> {
                             fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).primaryColor,
                           )),
                         ),
-                      ),
+                      ) : const SizedBox(),
 
                     ]),
                     const SizedBox(height: Dimensions.paddingSizeSmall),
@@ -347,7 +345,7 @@ class _WalletScreenState extends State<WalletScreen> {
                             showDivider: index != (bankController.withdrawList!.length > 25 ? 25 : bankController.withdrawList!.length-1),
                           );
                         },
-                      ) : Center(child: Padding(padding: const EdgeInsets.only(top: 70), child: Text('no_transaction_found'.tr)))
+                      ) : Center(child: Padding(padding: const EdgeInsets.only(top: 70, bottom: 100), child: Text('no_transaction_found'.tr)))
                           : const Center(child: Padding(padding: EdgeInsets.only(top: 100), child: CircularProgressIndicator())),
 
                     if (bankController.selectedIndex == 1)
@@ -389,7 +387,7 @@ class _WalletScreenState extends State<WalletScreen> {
                             const Divider(height: 1),
                           ]);
                         },
-                      ) : Center(child: Padding(padding: const EdgeInsets.only(top: 70), child: Text('no_transaction_found'.tr)))
+                      ) : Center(child: Padding(padding: const EdgeInsets.only(top: 70, bottom: 100), child: Text('no_transaction_found'.tr)))
                           : const Center(child: Padding(padding: EdgeInsets.only(top: 100), child: CircularProgressIndicator())),
 
                     if(bankController.selectedIndex == 2)
@@ -416,7 +414,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 ? WalletAttentionAlertWidget(isOverFlowBlockWarning: profileController.profileModel!.overFlowBlockWarning!) : const SizedBox(),
 
             ]),
-          ) : const Center(child: CircularProgressIndicator()) : Center(child: Text('you_have_no_permission_to_access_this_feature'.tr, style: robotoMedium));
+          ) : Center(child: Text('you_have_no_permission_to_access_this_feature'.tr, style: robotoMedium)) : const Center(child: CircularProgressIndicator());
         });
       }),
     );

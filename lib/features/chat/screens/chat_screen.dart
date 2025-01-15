@@ -18,7 +18,7 @@ import 'package:sixam_mart_store/common/widgets/paginated_list_widget.dart';
 import 'package:sixam_mart_store/features/chat/widgets/message_bubble_widget.dart';
 
 class ChatScreen extends StatefulWidget {
-  final NotificationBody? notificationBody;
+  final NotificationBodyModel? notificationBody;
   final User? user;
   final int? conversationId;
   final bool fromNotification;
@@ -55,7 +55,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
       return PopScope(
         canPop: Navigator.canPop(context),
-        onPopInvoked: (didPop) async{
+        onPopInvokedWithResult: (didPop, result) async{
           if(widget.fromNotification && !didPop) {
             Get.offAllNamed(RouteHelper.getInitialRoute());
           } else {

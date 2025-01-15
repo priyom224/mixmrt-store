@@ -19,6 +19,5 @@ class Dimensions {
   static const double radiusLarge = 15.0;
   static const double radiusExtraLarge = 20.0;
 
-  static const double webMaxWidth = 1170;
   static const int messageInputLength = 250;
 }

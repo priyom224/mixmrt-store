@@ -175,14 +175,14 @@ class _SubscriptionDetailsWidgetState extends State<SubscriptionDetailsWidget> {
                   child: Text('expired'.tr, style: robotoMedium.copyWith(color: Colors.white)),
                 ) : const SizedBox(),
 
-                widget.subscriptionController.profileModel!.subscription!.isCanceled == 1 ? Container(
+                widget.subscriptionController.profileModel!.subscription!.status == 0 ? widget.subscriptionController.profileModel!.subscription!.isCanceled == 1 ? Container(
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.error,
                     borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall, vertical: 5),
                   child: Text('canceled'.tr, style: robotoMedium.copyWith(color: Colors.white)),
-                ) : const SizedBox(),
+                ) : const SizedBox() : const SizedBox(),
               ]),
               const SizedBox(height: Dimensions.paddingSizeDefault),
 

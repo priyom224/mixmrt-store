@@ -21,7 +21,7 @@ class OfflinePaymentButton extends StatelessWidget {
     return (offlineMethodList.isNotEmpty) ? InkWell(
       onTap: onTap as void Function()?,
       child: Container(
-        width: Dimensions.webMaxWidth,
+        width: double.infinity,
         decoration: BoxDecoration(
           color: isSelected ? Theme.of(context).primaryColor.withOpacity(0.1) : Colors.transparent,
           borderRadius: BorderRadius.circular(Dimensions.radiusDefault),

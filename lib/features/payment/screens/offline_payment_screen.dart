@@ -5,7 +5,6 @@ import 'package:sixam_mart_store/common/widgets/custom_app_bar_widget.dart';
 import 'package:sixam_mart_store/common/widgets/custom_button_widget.dart';
 import 'package:sixam_mart_store/common/widgets/custom_snackbar_widget.dart';
 import 'package:sixam_mart_store/common/widgets/custom_text_field_widget.dart';
-import 'package:sixam_mart_store/features/auth/controllers/auth_controller.dart';
 import 'package:sixam_mart_store/features/payment/controllers/payment_controller.dart';
 import 'package:sixam_mart_store/features/store/domain/models/offline_method_model.dart';
 import 'package:sixam_mart_store/helper/price_converter_helper.dart';
@@ -62,7 +61,7 @@ class _OfflinePaymentScreenState extends State<OfflinePaymentScreen> {
             return paymentController.offlineMethodList != null ? Column(children: [
               Expanded(child: SingleChildScrollView(
                 child: SizedBox(
-                    width: Dimensions.webMaxWidth,
+                    width: double.infinity,
                     child: Column(mainAxisSize: MainAxisSize.min, children: [
                       const SizedBox(height: Dimensions.paddingSizeLarge),
 

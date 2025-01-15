@@ -45,4 +45,14 @@ class LanguageService implements LanguageServiceInterface {
     languageRepositoryInterface.saveLanguage(locale);
   }
 
+  @override
+  void saveCacheLanguage(Locale locale) {
+    languageRepositoryInterface.saveCacheLanguage(locale);
+  }
+
+  @override
+  Locale getCacheLocaleFromSharedPref() {
+    return languageRepositoryInterface.getCacheLocaleFromSharedPref();
+  }
+
 }

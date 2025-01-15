@@ -1,9 +1,9 @@
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:sixam_mart_store/features/html/controllers/html_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:sixam_mart_store/util/dimensions.dart';
 import 'package:sixam_mart_store/common/widgets/custom_app_bar_widget.dart';
 import 'package:get/get.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class HtmlViewerScreen extends StatefulWidget {
@@ -36,17 +36,14 @@ class _HtmlViewerScreenState extends State<HtmlViewerScreen> {
           child: htmlController.htmlText != null ? SingleChildScrollView(
             padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
             physics: const BouncingScrollPhysics(),
-            child: Html(
-              data: htmlController.htmlText ?? '', shrinkWrap: true,
+            child: HtmlWidget(
+              htmlController.htmlText ?? '',
               key: Key(widget.isPrivacyPolicy ? 'privacy_policy' : widget.isAgreement ? 'contact' : 'terms_condition'),
-              onLinkTap: (url, attributes, element) {
-                if(url!.startsWith('www.')) {
-                  url = 'https://$url';
-                }
-                debugPrint('Redirect to url: $url');
-                launchUrlString(url, mode: LaunchMode.externalApplication);
+              onTapUrl: (String url) {
+                return launchUrlString(url, mode: LaunchMode.externalApplication);
               },
             ),
+
           ) : const Center(child: CircularProgressIndicator()),
         );
       }),

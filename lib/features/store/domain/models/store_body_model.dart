@@ -15,6 +15,8 @@ class StoreBodyModel {
   String? deliveryTimeType;
   String? taxID;
   String? registerNo;
+  String? businessPlan;
+  String? packageId;
 
   StoreBodyModel({
     this.translation,
@@ -32,7 +34,9 @@ class StoreBodyModel {
     this.moduleId,
     this.deliveryTimeType,
     this.taxID,
-    this.registerNo
+    this.registerNo,
+    this.businessPlan,
+    this.packageId,
   });
 
   StoreBodyModel.fromJson(Map<String, dynamic> json) {
@@ -52,6 +56,8 @@ class StoreBodyModel {
     deliveryTimeType = json['delivery_time_type'];
     taxID = json['tax_id'];
     registerNo = json['register_no'];
+    businessPlan = json['business_plan'];
+    packageId = json['package_id'];
   }
 
   Map<String, String> toJson() {
@@ -72,6 +78,8 @@ class StoreBodyModel {
     data['delivery_time_type'] = deliveryTimeType!;
     data['tax_id'] = taxID!;
     data['register_no'] = registerNo!;
+    data['business_plan'] = businessPlan ?? '';
+    data['package_id'] = packageId!;
     return data;
   }
 }

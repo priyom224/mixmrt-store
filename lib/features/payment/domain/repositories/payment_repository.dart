@@ -94,7 +94,7 @@ class PaymentRepository implements PaymentRepositoryInterface {
       if(GetPlatform.isWeb) {
         // html.window.open(redirectUrl,"_self");
       } else{
-        Get.toNamed(RouteHelper.getPaymentRoute(null, redirectUrl, null, false));
+        Get.toNamed(RouteHelper.getPaymentRoute(null, redirectUrl, null, false, null));
       }
       responseModel = ResponseModel(true, response.body.toString());
     } else {

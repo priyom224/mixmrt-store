@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:sixam_mart_store/api/api_checker.dart';
 import 'package:sixam_mart_store/features/payment/domain/models/bank_info_body_model.dart';

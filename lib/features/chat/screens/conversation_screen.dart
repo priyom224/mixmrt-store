@@ -119,9 +119,9 @@ class _ConversationScreenState extends State<ConversationScreen> {
                                   onTap: (){
                                     if(user != null){
                                       Get.toNamed(RouteHelper.getChatRoute(
-                                        notificationBody: NotificationBody(
+                                        notificationBody: NotificationBodyModel(
                                           type: conversation.senderType,
-                                          notificationType: NotificationTypeModel.message,
+                                          notificationType: NotificationType.message,
                                           customerId: type == AppConstants.customer ? user.userId : null,
                                           deliveryManId: type == AppConstants.deliveryMan ? user.id : null,
                                         ),

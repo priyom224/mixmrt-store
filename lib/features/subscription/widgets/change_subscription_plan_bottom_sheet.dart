@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart_store/common/widgets/custom_bottom_sheet_widget.dart';
 import 'package:sixam_mart_store/common/widgets/custom_button_widget.dart';
+import 'package:sixam_mart_store/features/auth/controllers/auth_controller.dart';
 import 'package:sixam_mart_store/features/business/domain/models/package_model.dart';
 import 'package:sixam_mart_store/features/business/widgets/package_card_widget.dart';
+import 'package:sixam_mart_store/features/splash/controllers/splash_controller.dart';
 import 'package:sixam_mart_store/features/subscription/controllers/subscription_controller.dart';
 import 'package:sixam_mart_store/features/subscription/widgets/renew_subscription_plan_bottom_sheet.dart';
 import 'package:sixam_mart_store/features/subscription/widgets/subscription_dialog_widget.dart';
@@ -53,6 +55,8 @@ class _ChangeSubscriptionPlanBottomSheetState extends State<ChangeSubscriptionPl
     return GetBuilder<SubscriptionController>(builder: (subscriptionController) {
 
       bool businessIsCommission = subscriptionController.profileModel!.stores![0].storeBusinessModel == 'commission';
+      bool businessIsUnsubscribed = subscriptionController.profileModel!.stores![0].storeBusinessModel == 'unsubscribed';
+      bool businessIsNone = subscriptionController.profileModel!.stores![0].storeBusinessModel == 'none';
 
       if(subscriptionController.packageList != null){
         for (var element in subscriptionController.packageList!) {
@@ -87,10 +91,16 @@ class _ChangeSubscriptionPlanBottomSheetState extends State<ChangeSubscriptionPl
             ),
           ),
 
-          Text('change_subscription_plan'.tr, style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge)),
+          Text(
+            (businessIsNone || (businessIsUnsubscribed && (subscriptionController.profileModel?.subscription == null))) ? 'chose_a_business'.tr : 'change_subscription_plan'.tr,
+            style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge),
+          ),
           const SizedBox(height: Dimensions.paddingSizeDefault),
 
-          Text('renew_or_shift_your_plan_to_get_better_experience'.tr, style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).textTheme.bodyLarge!.color?.withOpacity(0.5))),
+          Text(
+            (businessIsNone || (businessIsUnsubscribed && (subscriptionController.profileModel?.subscription == null))) ? 'chose_a_business_plan_to_get_better_experience'.tr : 'renew_or_shift_your_plan_to_get_better_experience'.tr,
+            style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).textTheme.bodyLarge!.color?.withOpacity(0.5)),
+          ),
           const SizedBox(height: Dimensions.paddingSizeDefault),
 
            SizedBox(
@@ -122,18 +132,22 @@ class _ChangeSubscriptionPlanBottomSheetState extends State<ChangeSubscriptionPl
                        child: !subscriptionController.isLoading ? CustomButtonWidget(
                          color: subscriptionController.activeSubscriptionIndex == index ? Colors.deepOrangeAccent.withOpacity(0.9) : Colors.cyan.shade700,
                          buttonText: (subscriptionController.isActivePackage != null && subscriptionController.isActivePackage! && activePackageIndex != -1 && (!isCommission && !widget.businessIsCommission))
-                             ? 'renew'.tr : (isCommission && widget.businessIsCommission) ? 'current_plan'.tr : 'shift_this_plan'.tr,
+                             ? 'renew'.tr : (isCommission && widget.businessIsCommission) ? 'current_plan'.tr : (businessIsNone || (businessIsUnsubscribed && (subscriptionController.profileModel?.subscription == null))) ? 'purchase'.tr : 'shift_this_plan'.tr,
                          radius: Dimensions.radiusDefault,
                          onPressed: (isCommission && widget.businessIsCommission) ? null : () {
-                           if(subscriptionController.isActivePackage! && activePackageIndex != -1){
+
+                           if(((subscriptionController.isActivePackage! && activePackageIndex != -1) && (businessIsUnsubscribed || businessIsNone))
+                               || (businessIsUnsubscribed && (subscriptionController.profileModel!.subscription == null)
+                                   && (Get.find<SplashController>().configModel!.subscriptionBusinessModel != 0) && (Get.find<AuthController>().packageModel != null && Get.find<AuthController>().packageModel!.packages!.isNotEmpty)) || businessIsNone) {
                              showCustomBottomSheet(
                                child: RenewSubscriptionPlanBottomSheet(
                                  isRenew: true,
                                  package: package,
                                  checkProductLimitModel: null,
+                                 nonSubscription: businessIsNone || (businessIsUnsubscribed && (subscriptionController.profileModel?.subscription == null)),
                                ),
                              );
-                           } else if(isCommission) {
+                           }else if((isCommission && (businessIsUnsubscribed || businessIsNone)) || isCommission) {
                              Get.dialog(SubscriptionDialogWidget(
                                icon: Images.support,
                                title: 'are_you_sure'.tr,

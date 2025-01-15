@@ -14,7 +14,8 @@ class PaymentScreen extends StatefulWidget {
   final String? redirectUrl;
   final int? storeId;
   final bool? isSubscriptionPayment;
-  const PaymentScreen({super.key,required this.paymentMethod, this.redirectUrl, this.storeId, this.isSubscriptionPayment});
+  final int? packageId;
+  const PaymentScreen({super.key,required this.paymentMethod, this.redirectUrl, this.storeId, this.isSubscriptionPayment, this.packageId});
 
   @override
   PaymentScreenState createState() => PaymentScreenState();
@@ -39,7 +40,7 @@ class PaymentScreenState extends State<PaymentScreen> {
 
     await Get.find<ProfileController>().trialWidgetShow(route: RouteHelper.payment);
 
-    browser = MyInAppBrowser(redirectUrl: widget.redirectUrl, storeId: widget.storeId, isSubscriptionPayment: widget.isSubscriptionPayment);
+    browser = MyInAppBrowser(redirectUrl: widget.redirectUrl, storeId: widget.storeId, isSubscriptionPayment: widget.isSubscriptionPayment, packageId: widget.packageId);
 
     if(!GetPlatform.isIOS) {
       await InAppWebViewController.setWebContentsDebuggingEnabled(true);
@@ -73,7 +74,7 @@ class PaymentScreenState extends State<PaymentScreen> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, result) {
         _exitApp().then((value) => value);
         Get.find<ProfileController>().trialWidgetShow(route: RouteHelper.payment);
       },
@@ -109,7 +110,8 @@ class MyInAppBrowser extends InAppBrowser {
   final String? redirectUrl;
   final int? storeId;
   final bool? isSubscriptionPayment;
-  MyInAppBrowser({super.windowId, super.initialUserScripts, this.redirectUrl, this.storeId, this.isSubscriptionPayment});
+  final int? packageId;
+  MyInAppBrowser({super.windowId, super.initialUserScripts, this.redirectUrl, this.storeId, this.isSubscriptionPayment, this.packageId});
 
   bool _canRedirect = true;
 
@@ -125,7 +127,7 @@ class MyInAppBrowser extends InAppBrowser {
     if (kDebugMode) {
       print("\n\nStarted: $url\n\n");
     }
-    _redirect(url.toString(), storeId, isSubscriptionPayment);
+    _redirect(url.toString(), storeId, isSubscriptionPayment, packageId);
   }
 
   @override
@@ -134,7 +136,7 @@ class MyInAppBrowser extends InAppBrowser {
     if (kDebugMode) {
       print("\n\nStopped: $url\n\n");
     }
-    _redirect(url.toString(), storeId, isSubscriptionPayment);
+    _redirect(url.toString(), storeId, isSubscriptionPayment, packageId);
   }
 
   @override
@@ -191,7 +193,7 @@ class MyInAppBrowser extends InAppBrowser {
     }
   }
 
-  void _redirect(String url, int? storeId, bool? isSubscriptionPayment) {
+  void _redirect(String url, int? storeId, bool? isSubscriptionPayment, int? packageId) {
     if (kDebugMode) {
       print('---url---$url');
     }
@@ -210,7 +212,7 @@ class MyInAppBrowser extends InAppBrowser {
           Get.back();
         }
         if(isSubscriptionPayment == true){
-          Get.offAllNamed(RouteHelper.getSubscriptionSuccessRoute(status: isSuccess ? 'success' : isFailed ? 'fail' : 'cancel', fromSubscription: true, storeId: storeId));
+          Get.offAllNamed(RouteHelper.getSubscriptionSuccessRoute(status: isSuccess ? 'success' : isFailed ? 'fail' : 'cancel', fromSubscription: true, storeId: storeId, packageId: packageId));
         }else {
           Get.back();
           Get.toNamed(RouteHelper.getSuccessRoute(isSuccess ? 'success' : isFailed ? 'fail' : 'cancel',

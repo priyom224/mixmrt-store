@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:sixam_mart_store/features/business/controllers/business_controller.dart';
+import 'package:sixam_mart_store/features/auth/controllers/auth_controller.dart';
 import 'package:sixam_mart_store/util/dimensions.dart';
 import 'package:sixam_mart_store/util/styles.dart';
 
 class BaseCardWidget extends StatelessWidget {
-  final BusinessController businessController;
+  final AuthController authController;
   final String title;
   final String? description;
   final int index;
   final Function onTap;
-  const BaseCardWidget({super.key, required this.businessController, required this.title, required this.index, required this.onTap, this.description});
+  const BaseCardWidget({super.key, required this.authController, required this.title, required this.index, required this.onTap, this.description});
 
   @override
   Widget build(BuildContext context) {
@@ -21,20 +21,20 @@ class BaseCardWidget extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-            color: businessController.businessIndex == index ? Theme.of(context).primaryColor.withOpacity(0.05) : Theme.of(context).cardColor,
-            border: Border.all(color: businessController.businessIndex == index ? Theme.of(context).primaryColor
+            color: authController.businessIndex == index ? Theme.of(context).primaryColor.withOpacity(0.05) : Theme.of(context).cardColor,
+            border: Border.all(color: authController.businessIndex == index ? Theme.of(context).primaryColor
                 : Theme.of(context).disabledColor.withOpacity(0.2), width: 1),
           ),
           padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault, vertical: Dimensions.paddingSizeLarge),
           child: Align(
             alignment: Alignment.center,
-            child: Text(title, style: robotoMedium.copyWith(color: businessController.businessIndex == index ? Theme.of(context).primaryColor : Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.7), fontSize: Dimensions.fontSizeDefault,
-              fontWeight: businessController.businessIndex == index ? FontWeight.w600 : FontWeight.w400,
+            child: Text(title, style: robotoMedium.copyWith(color: authController.businessIndex == index ? Theme.of(context).primaryColor : Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.7), fontSize: Dimensions.fontSizeDefault,
+              fontWeight: authController.businessIndex == index ? FontWeight.w600 : FontWeight.w400,
             )),
           ),
         ),
 
-        businessController.businessIndex == index ? Positioned(
+        authController.businessIndex == index ? Positioned(
           top: -10, right: -10,
           child: Container(
             padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),

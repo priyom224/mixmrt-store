@@ -1,4 +1,6 @@
 import 'package:sixam_mart_store/features/auth/controllers/auth_controller.dart';
+import 'package:sixam_mart_store/features/language/controllers/language_controller.dart';
+import 'package:sixam_mart_store/features/language/widgets/language_bottom_sheet_widget.dart';
 import 'package:sixam_mart_store/features/profile/controllers/profile_controller.dart';
 import 'package:sixam_mart_store/features/menu/domain/models/menu_model.dart';
 import 'package:sixam_mart_store/features/subscription/controllers/subscription_controller.dart';
@@ -28,6 +30,9 @@ class MenuButtonWidget extends StatelessWidget {
           showCustomSnackBar('this_feature_is_blocked_by_admin'.tr);
         } else if(menu.isNotSubscribe) {
           showCustomSnackBar('you_have_no_available_subscription'.tr);
+        }else if(menu.isLanguage){
+          Get.back();
+          _manageLanguageFunctionality();
         } else {
           if (isLogout) {
             Get.back();
@@ -68,7 +73,7 @@ class MenuButtonWidget extends StatelessWidget {
             boxShadow: Get.isDarkMode ? null : [BoxShadow(color: Colors.grey[200]!, spreadRadius: 1, blurRadius: 5)],
           ),
           alignment: Alignment.center,
-          child: isProfile ? ProfileImageWidget(size: size) : Image.asset(menu.icon, width: size, height: size, color: Colors.white),
+          child: isProfile ? ProfileImageWidget(size: size) : Image.asset(menu.icon, width: size, height: size, color: menu.iconColor),
         ),
         const SizedBox(height: Dimensions.paddingSizeExtraSmall),
 
@@ -77,6 +82,26 @@ class MenuButtonWidget extends StatelessWidget {
       ]),
     );
   }
+
+  _manageLanguageFunctionality() {
+    Get.find<LocalizationController>().saveCacheLanguage(null);
+    Get.find<LocalizationController>().searchSelectedLanguage();
+
+    showModalBottomSheet(
+      isScrollControlled: true, useRootNavigator: true, context: Get.context!,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(Dimensions.radiusExtraLarge), topRight: Radius.circular(Dimensions.radiusExtraLarge)),
+      ),
+      builder: (context) {
+        return ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.8),
+          child: const LanguageBottomSheetWidget(),
+        );
+      },
+    ).then((value) => Get.find<LocalizationController>().setLanguage(Get.find<LocalizationController>().getCacheLocaleFromSharedPref()));
+  }
+
 }
 
 class ProfileImageWidget extends StatelessWidget {
