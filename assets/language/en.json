@@ -1027,5 +1027,7 @@
   "choose_subscription_plan": "Choose Subscription Plan",
   "Approved": "Approved",
   "Denied": "Denied",
-  "Pending": "Pending"
+  "Pending": "Pending",
+
+  "collect_otp_from_deliveryman" : "Collect OTP from deliveryman"
 }

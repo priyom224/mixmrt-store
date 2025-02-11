@@ -7,6 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:sixam_mart_store/features/language/controllers/language_controller.dart';
 import 'package:sixam_mart_store/features/order/controllers/order_controller.dart';
+import 'package:sixam_mart_store/features/order/widgets/delivery_man_otp_verification_bottom_sheet.dart';
 import 'package:sixam_mart_store/features/profile/controllers/profile_controller.dart';
 import 'package:sixam_mart_store/features/splash/controllers/splash_controller.dart';
 import 'package:sixam_mart_store/features/notification/domain/models/notification_body_model.dart';
@@ -891,7 +892,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> with WidgetsBin
                     }
 
                     else if(controllerOrderModel.orderStatus == 'processing') {
-                      Get.find<OrderController>().updateOrderStatus(widget.orderId, AppConstants.handover);
+                      Get.bottomSheet(DeliveryManOtpVerificationBottomSheet(orderId: widget.orderId), isScrollControlled: true);
                     }
 
                     else if(controllerOrderModel.orderStatus == 'confirmed' || (controllerOrderModel.orderStatus == 'accepted'

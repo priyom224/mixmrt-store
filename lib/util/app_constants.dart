@@ -9,7 +9,7 @@ class AppConstants {
   static const double limitOfPickedVideoSizeInMB = 50;
   static const double maxSizeOfASingleFile = 10;
 
-  static String baseUrl = 'https://dev.mixmrt.com';
+  static String baseUrl = 'https://mixmrt.com/zm';
 
   static void setBaseUrl(String url) {
     baseUrl = url;

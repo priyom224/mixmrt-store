@@ -213,7 +213,7 @@ class OrderController extends GetxController implements GetxService {
     update();
     List<MultipartBody> pickedPrescriptions = orderServiceInterface.processMultipartData(_pickedPrescriptions);
     UpdateStatusBodyModel updateStatusBody = UpdateStatusBodyModel(
-      orderId: orderID, status: status, otp: status == 'delivered' ? _otp : null, processingTime: processingTime, reason: reason,
+      orderId: orderID, status: status, otp: (status == 'delivered') || (status == 'handover') ? _otp : null, processingTime: processingTime, reason: reason,
     );
     ResponseModel responseModel = await orderServiceInterface.updateOrderStatus(updateStatusBody, pickedPrescriptions);
     Get.back(result: responseModel.isSuccess);
