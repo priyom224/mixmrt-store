@@ -99,8 +99,8 @@ class _CouponScreenState extends State<CouponScreen> {
                                       Transform.scale(
                                         scale: 0.7,
                                         child: CupertinoSwitch(
-                                          activeColor: Theme.of(context).primaryColor,
-                                          trackColor: Theme.of(context).primaryColor.withOpacity(0.5),
+                                          activeTrackColor: Theme.of(context).primaryColor,
+                                          inactiveTrackColor: Theme.of(context).primaryColor.withValues(alpha: 0.5),
                                           value: couponController.coupons![index].status == 1 ? true : false,
                                           onChanged: (bool status){
                                             couponController.changeStatus(couponController.coupons![index].id, status).then((success) {

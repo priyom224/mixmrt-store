@@ -11,7 +11,8 @@ class PackageCardWidget extends StatelessWidget {
   final int? currentIndex;
   final Packages package;
   final bool fromChangePlan;
-  const PackageCardWidget({super.key, this.currentIndex, required this.package, this.fromChangePlan = false});
+  final bool isRental;
+  const PackageCardWidget({super.key, this.currentIndex, required this.package, this.fromChangePlan = false, this.isRental = false});
 
   @override
   Widget build(BuildContext context) {
@@ -58,21 +59,21 @@ class PackageCardWidget extends StatelessWidget {
               style: robotoBold.copyWith(fontSize: 30, color: currentIndex != null ? Theme.of(context).cardColor : Theme.of(context).primaryColor),
             ),
 
-            isCommission ? const SizedBox() : Text('${package.validity} ' 'days'.tr, style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Colors.white.withOpacity(0.7))),
+            isCommission ? const SizedBox() : Text('${package.validity} ' '${'days'.tr}', style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).cardColor)),
 
-            isCommission ? const SizedBox() : Divider(color: currentIndex != null ? Theme.of(context).cardColor.withOpacity(0.2) : Theme.of(context).disabledColor.withOpacity(0.3), indent: 70, endIndent: 70, thickness: 1),
+            isCommission ? const SizedBox() : Divider(color: currentIndex != null ? Theme.of(context).cardColor.withValues(alpha: 0.2) : Theme.of(context).disabledColor.withValues(alpha: 0.3), indent: 70, endIndent: 70, thickness: 1),
             const SizedBox(height: Dimensions.paddingSizeDefault),
 
             isCommission ? Padding(
               padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
               child: Text(package.description ?? '', textAlign: TextAlign.center,
-                  style: robotoRegular.copyWith(color: currentIndex != null ? Theme.of(context).cardColor.withOpacity(0.8) : Theme.of(context).disabledColor.withOpacity(0.3)),
+                  style: robotoRegular.copyWith(color: currentIndex != null ? Theme.of(context).cardColor.withValues(alpha: 0.8) : Theme.of(context).disabledColor.withValues(alpha: 0.3)),
               ),
             ) : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
-              PackageWidget(title: '${'max_order'.tr} (${package.maxOrder})', isSelect: currentIndex != null ? true : false),
+              PackageWidget(title: '${isRental ? 'max_trip'.tr : 'max_order'.tr} (${package.maxOrder?.tr})', isSelect: currentIndex != null ? true : false),
 
-              PackageWidget(title: '${'max_product'.tr} (${package.maxProduct})', isSelect: currentIndex != null ? true : false),
+              PackageWidget(title: '${isRental ? 'max_vehicle'.tr : 'max_product'.tr} (${package.maxProduct?.tr})', isSelect: currentIndex != null ? true : false),
 
               package.pos != 0 ? PackageWidget(title: 'pos'.tr, isSelect: currentIndex != null ? true : false) : const SizedBox(),
 

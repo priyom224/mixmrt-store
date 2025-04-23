@@ -31,7 +31,7 @@ class _AnnouncementStatusBottomSheetState extends State<AnnouncementStatusBottom
           Container(
             height: 5, width: 50,
             decoration: BoxDecoration(
-              color: Theme.of(context).hintColor.withOpacity(0.2),
+              color: Theme.of(context).hintColor.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
             ),
           ),
@@ -74,7 +74,7 @@ class _AnnouncementStatusBottomSheetState extends State<AnnouncementStatusBottom
                   Get.back();
                 },
                 buttonText: 'no'.tr,
-                color: Theme.of(context).disabledColor.withOpacity(0.5),
+                color: Theme.of(context).disabledColor.withValues(alpha: 0.5),
                 textColor: Theme.of(context).textTheme.bodyLarge!.color,
               ),
             ),

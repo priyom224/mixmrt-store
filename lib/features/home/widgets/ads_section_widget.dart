@@ -28,7 +28,7 @@ class AdsSectionWidget extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Dimensions.radiusLarge),
-                  color: Theme.of(context).primaryColor.withOpacity(0.1),
+                  color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
                 ),
                 padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
                 child: Row(children: [

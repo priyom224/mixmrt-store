@@ -9,7 +9,7 @@ ThemeData dark = ThemeData(
   brightness: Brightness.dark,
   hintColor: const Color(0xFFbebebe),
   cardColor: Colors.black,
-  shadowColor: Colors.white.withOpacity(0.03),
+  shadowColor: Colors.white.withValues(alpha: 0.03),
   textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(foregroundColor: const Color(0xFF54b46b))),
   colorScheme: const ColorScheme.dark(primary: Color(0xFF54b46b), secondary: Color(0xFF54b46b)).copyWith(error: const Color(0xFFdd3135)),
   popupMenuTheme: const PopupMenuThemeData(color: Color(0xFF29292D), surfaceTintColor: Color(0xFF29292D)),

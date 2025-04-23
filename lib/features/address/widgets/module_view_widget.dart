@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart_store/features/address/controllers/address_controller.dart';
+import 'package:sixam_mart_store/features/auth/controllers/auth_controller.dart';
 import 'package:sixam_mart_store/util/dimensions.dart';
 import 'package:sixam_mart_store/common/widgets/custom_dropdown_widget.dart';
 import 'package:sixam_mart_store/util/styles.dart';
@@ -39,6 +40,7 @@ class ModuleViewWidget extends StatelessWidget {
           child: CustomDropdown<int>(
             onChange: (int? value, int index) {
               addressController.selectModuleIndex(value);
+              Get.find<AuthController>().getPackageList(moduleId: addressController.moduleList![value!].id);
             },
             dropdownButtonStyle: DropdownButtonStyle(
               height: 50,
@@ -54,7 +56,7 @@ class ModuleViewWidget extends StatelessWidget {
             items: moduleList,
             child: Padding(
               padding: const EdgeInsets.only(left: 8),
-              child: Text('select_module_type'.tr),
+              child: Text(addressController.selectedModuleIndex == -1 ? 'select_module'.tr : addressController.moduleList![addressController.selectedModuleIndex!].moduleName.toString()),
             ),
           ),
         ),

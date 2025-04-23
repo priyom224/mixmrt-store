@@ -14,8 +14,8 @@ class TitleTagWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
 
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor.withOpacity(0.05),
-        border: Border.symmetric(horizontal: BorderSide(color: Theme.of(context).primaryColor.withOpacity(0.1))),
+        color: Theme.of(context).primaryColor.withValues(alpha: 0.05),
+        border: Border.symmetric(horizontal: BorderSide(color: Theme.of(context).primaryColor.withValues(alpha: 0.1))),
       ),
       child: Text(title, style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeDefault)),
     );

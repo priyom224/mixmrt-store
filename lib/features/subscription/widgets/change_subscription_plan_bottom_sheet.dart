@@ -57,6 +57,7 @@ class _ChangeSubscriptionPlanBottomSheetState extends State<ChangeSubscriptionPl
       bool businessIsCommission = subscriptionController.profileModel!.stores![0].storeBusinessModel == 'commission';
       bool businessIsUnsubscribed = subscriptionController.profileModel!.stores![0].storeBusinessModel == 'unsubscribed';
       bool businessIsNone = subscriptionController.profileModel!.stores![0].storeBusinessModel == 'none';
+      bool isRentalModule = Get.find<AuthController>().getModuleType() == 'rental';
 
       if(subscriptionController.packageList != null){
         for (var element in subscriptionController.packageList!) {
@@ -86,7 +87,7 @@ class _ChangeSubscriptionPlanBottomSheetState extends State<ChangeSubscriptionPl
             margin: const EdgeInsets.only(top: Dimensions.paddingSizeLarge, bottom: Dimensions.paddingSizeDefault),
             height: 5, width: 50,
             decoration: BoxDecoration(
-              color: Theme.of(context).disabledColor.withOpacity(0.2),
+              color: Theme.of(context).disabledColor.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
             ),
           ),
@@ -99,7 +100,7 @@ class _ChangeSubscriptionPlanBottomSheetState extends State<ChangeSubscriptionPl
 
           Text(
             (businessIsNone || (businessIsUnsubscribed && (subscriptionController.profileModel?.subscription == null))) ? 'chose_a_business_plan_to_get_better_experience'.tr : 'renew_or_shift_your_plan_to_get_better_experience'.tr,
-            style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).textTheme.bodyLarge!.color?.withOpacity(0.5)),
+            style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).textTheme.bodyLarge!.color?.withValues(alpha: 0.5)),
           ),
           const SizedBox(height: Dimensions.paddingSizeDefault),
 
@@ -122,7 +123,7 @@ class _ChangeSubscriptionPlanBottomSheetState extends State<ChangeSubscriptionPl
 
                    PackageCardWidget(
                      currentIndex: subscriptionController.activeSubscriptionIndex == index ? index : null,
-                     package: package, fromChangePlan: true,
+                     package: package, fromChangePlan: true, isRental: isRentalModule,
                    ),
 
                    Positioned(
@@ -130,7 +131,7 @@ class _ChangeSubscriptionPlanBottomSheetState extends State<ChangeSubscriptionPl
                      child: Padding(
                        padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtremeLarge, vertical: Dimensions.paddingSizeLarge),
                        child: !subscriptionController.isLoading ? CustomButtonWidget(
-                         color: subscriptionController.activeSubscriptionIndex == index ? Colors.deepOrangeAccent.withOpacity(0.9) : Colors.cyan.shade700,
+                         color: subscriptionController.activeSubscriptionIndex == index ? Colors.deepOrangeAccent.withValues(alpha: 0.9) : Colors.cyan.shade700,
                          buttonText: (subscriptionController.isActivePackage != null && subscriptionController.isActivePackage! && activePackageIndex != -1 && (!isCommission && !widget.businessIsCommission))
                              ? 'renew'.tr : (isCommission && widget.businessIsCommission) ? 'current_plan'.tr : (businessIsNone || (businessIsUnsubscribed && (subscriptionController.profileModel?.subscription == null))) ? 'purchase'.tr : 'shift_this_plan'.tr,
                          radius: Dimensions.radiusDefault,

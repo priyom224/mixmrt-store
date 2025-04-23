@@ -130,6 +130,7 @@ class StoreRepository implements StoreRepositoryInterface {
       'discount_type': item.discountType!, 'category_id': item.categoryIds![0].id!,
       'translations': jsonEncode(item.translations), 'tags': tags, 'maximum_cart_quantity': item.maxOrderQuantity.toString(),
       'weight' : item.weight.toString(), 'module_type' : moduleType,
+      'vmw_height' : item.vmwHeight.toString(), 'vmw_width' : item.vmwWidth.toString(), 'vmw_length' : item.vmwLength.toString(), 'static_weight' : item.staticWeight.toString(),
     });
 
     if(Get.find<ProfileController>().profileModel!.stores![0].module!.moduleType == 'grocery' || Get.find<ProfileController>().profileModel!.stores![0].module!.moduleType == 'food') {

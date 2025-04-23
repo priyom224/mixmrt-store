@@ -70,8 +70,8 @@ class PreviewProviderPromotionWidget extends StatelessWidget {
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(Dimensions.radiusLarge),
-                          color: Theme.of(context).hintColor.withOpacity(0.1),
-                          border: Border.all(color: Theme.of(context).hintColor.withOpacity(0.2)),
+                          color: Theme.of(context).hintColor.withValues(alpha: 0.1),
+                          border: Border.all(color: Theme.of(context).hintColor.withValues(alpha: 0.2)),
                         ),
                         padding: const EdgeInsets.only(bottom: 25),
                         child: pickedCoverImage != null && pickedCoverImage!.isNotEmpty
@@ -128,7 +128,7 @@ class PreviewProviderPromotionWidget extends StatelessWidget {
                           image: networkProfileImage!,
                           fit: BoxFit.cover,
                         ) : pickedProfileImage != null && pickedProfileImage!.isNotEmpty ? Image.file(File(pickedProfileImage!), fit: BoxFit.cover)
-                            : Container(color: Theme.of(context).hintColor.withOpacity(0.2)),
+                            : Container(color: Theme.of(context).hintColor.withValues(alpha: 0.2)),
                       ),
                     ),
                     const SizedBox(width: Dimensions.paddingSizeDefault),
@@ -139,7 +139,7 @@ class PreviewProviderPromotionWidget extends StatelessWidget {
                           height: 17, width: double.infinity,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                            color: Theme.of(context).hintColor.withOpacity(0.1),
+                            color: Theme.of(context).hintColor.withValues(alpha: 0.1),
                           ),
                         ) : Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                           Expanded(
@@ -158,7 +158,7 @@ class PreviewProviderPromotionWidget extends StatelessWidget {
                           height: 17, width: 150,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                            color: Theme.of(context).hintColor.withOpacity(0.1),
+                            color: Theme.of(context).hintColor.withValues(alpha: 0.1),
                           ),
                         ): Text(description!, maxLines: 2, overflow: TextOverflow.ellipsis, style: robotoRegular.copyWith(
                           color: Theme.of(context).hintColor,

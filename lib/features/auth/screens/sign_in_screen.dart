@@ -2,6 +2,7 @@ import 'package:sixam_mart_store/features/auth/controllers/auth_controller.dart'
 import 'package:sixam_mart_store/features/auth/widgets/store_registartion_success_bottom_sheet.dart';
 import 'package:sixam_mart_store/features/profile/controllers/profile_controller.dart';
 import 'package:sixam_mart_store/features/splash/controllers/splash_controller.dart';
+import 'package:sixam_mart_store/features/rental_module/profile/controllers/taxi_profile_controller.dart';
 import 'package:sixam_mart_store/helper/route_helper.dart';
 import 'package:sixam_mart_store/helper/validate_check.dart';
 import 'package:sixam_mart_store/util/dimensions.dart';
@@ -93,9 +94,9 @@ class _SignInScreenState extends State<SignInScreen> {
 
                             Expanded(
                               child: Center(child: Text(
-                                'store_owner'.tr,
+                                'vendor_owner'.tr,
                                 style: robotoMedium.copyWith(color: authController.vendorTypeIndex == 0
-                                    ? Theme.of(context).textTheme.bodyLarge!.color : Theme.of(context).textTheme.bodyLarge!.color!.withOpacity(0.3)),
+                                    ? Theme.of(context).textTheme.bodyLarge!.color : Theme.of(context).textTheme.bodyLarge!.color!.withValues(alpha: 0.3)),
                               )),
                             ),
 
@@ -115,9 +116,9 @@ class _SignInScreenState extends State<SignInScreen> {
 
                             Expanded(
                               child: Center(child: Text(
-                                'store_employee'.tr,
+                                'vendor_employee'.tr,
                                 style: robotoMedium.copyWith(color: authController.vendorTypeIndex == 1
-                                    ? Theme.of(context).textTheme.bodyLarge!.color : Theme.of(context).textTheme.bodyLarge!.color!.withOpacity(0.3)),
+                                    ? Theme.of(context).textTheme.bodyLarge!.color : Theme.of(context).textTheme.bodyLarge!.color!.withValues(alpha: 0.3)),
                               )),
                             ),
 
@@ -194,10 +195,11 @@ class _SignInScreenState extends State<SignInScreen> {
                   ]),
                   const SizedBox(height: Dimensions.paddingSizeExtraLarge),
 
-                  !authController.isLoading ? CustomButtonWidget(
+                  CustomButtonWidget(
+                    isLoading: authController.isLoading,
                     buttonText: 'sign_in'.tr,
                     onPressed: () => _login(authController),
-                  ) : const Center(child: CircularProgressIndicator()),
+                  ),
                   SizedBox(height: Get.find<SplashController>().configModel != null && Get.find<SplashController>().configModel!.toggleStoreRegistration! ? Dimensions.paddingSizeSmall : 0),
 
                   Get.find<SplashController>().configModel != null && Get.find<SplashController>().configModel!.toggleStoreRegistration! ? TextButton(
@@ -210,7 +212,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     child: RichText(text: TextSpan(children: [
                       TextSpan(text: '${'join_as'.tr} ', style: robotoRegular.copyWith(color: Theme.of(context).disabledColor)),
                       TextSpan(
-                        text: 'store'.tr,
+                        text: 'vendor'.tr,
                         style: robotoMedium.copyWith(color: Theme.of(context).textTheme.bodyLarge!.color),
                       ),
                     ])),
@@ -248,7 +250,8 @@ class _SignInScreenState extends State<SignInScreen> {
               } else {
                 authController.clearUserNumberAndPassword();
               }
-              await Get.find<ProfileController>().getProfile();
+              authController.getModuleType() == 'rental' ? await Get.find<TaxiProfileController>().getProfile() : await Get.find<ProfileController>().getProfile();
+              Get.find<ProfileController>().initTrialWidgetNotShow();
               Get.offAllNamed(RouteHelper.getInitialRoute());
             }else {
               showCustomSnackBar(status.message);

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:file_picker/file_picker.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:sixam_mart_store/api/api_checker.dart';
 import 'package:sixam_mart_store/common/models/error_response.dart';
@@ -73,10 +74,10 @@ class ApiClient extends GetxService {
     }
   }
 
-  Future<Response> postMultipartData(String uri, Map<String, String> body, List<MultipartBody> multipartBody, {Map<String, String>? headers, bool handleError = true}) async {
+  Future<Response> postMultipartData(String uri, Map<String, String> body, List<MultipartBody> multipartBody, {List<MultipartDocument>? multipartDocument, Map<String, String>? headers, bool handleError = true}) async {
     try {
       debugPrint('====> API Call: $uri\nHeader: $_mainHeaders');
-      debugPrint('====> API Body: $body with ${multipartBody.length}');
+      debugPrint('====> API Body: $body with ${multipartBody.length} and multipart ${multipartDocument?.length}');
       http.MultipartRequest request = http.MultipartRequest('POST', Uri.parse(appBaseUrl+uri));
       request.headers.addAll(headers ?? _mainHeaders);
       for(MultipartBody multipart in multipartBody) {
@@ -96,6 +97,16 @@ class ApiClient extends GetxService {
           }
         }
       }
+
+      if(multipartDocument != null && multipartDocument.isNotEmpty){
+        for(MultipartDocument file in multipartDocument){
+          File other = File(file.file!.files.single.path!);
+          Uint8List list0 = await other.readAsBytes();
+          var part = http.MultipartFile(file.key, other.readAsBytes().asStream(), list0.length, filename: basename(other.path));
+          request.files.add(part);
+        }
+      }
+
       request.fields.addAll(body);
       http.Response response = await http.Response.fromStream(await request.send());
       return handleResponse(response, uri, handleError);
@@ -170,4 +181,10 @@ class MultipartBody {
   XFile? file;
 
   MultipartBody(this.key, this.file);
+}
+
+class MultipartDocument {
+  String key;
+  FilePickerResult? file;
+  MultipartDocument(this.key, this.file);
 }

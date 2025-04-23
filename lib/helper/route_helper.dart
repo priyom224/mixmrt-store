@@ -379,7 +379,7 @@ class RouteHelper {
         List<int> decode = base64Decode(Get.parameters['data']!.replaceAll(' ', '+'));
         storeBannerListModel = StoreBannerListModel.fromJson(jsonDecode(utf8.decode(decode)));
       }
-      return AddBannerScreen(storeBannerListModel: storeBannerListModel, isUpdate: Get.parameters['is_update'] == 'true');
+      return AddBannerScreen(storeBannerListModel: storeBannerListModel);
     }),
     GetPage(name: announcement, page: () => AnnouncementScreen(
       announcementStatus: int.parse(Get.parameters['announcement_status']!), announcementMessage: Get.parameters['announcement_message']!,

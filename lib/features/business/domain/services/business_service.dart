@@ -52,7 +52,7 @@ class BusinessService implements BusinessServiceInterface{
         Get.toNamed(RouteHelper.getPaymentRoute(digitalPaymentName, redirectUrl, storeId, true, packageId));
       }else {
         businessPlanStatus = 'complete';
-        Get.offAllNamed(RouteHelper.getSubscriptionSuccessRoute(status: 'success', fromSubscription: false, storeId: storeId, packageId: packageId));
+        Get.offAllNamed(RouteHelper.getSubscriptionSuccessRoute(status: 'success', fromSubscription: packageId != null ? true : false, storeId: storeId, packageId: packageId));
       }
     }
     return businessPlanStatus;

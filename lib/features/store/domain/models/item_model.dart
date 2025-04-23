@@ -99,6 +99,10 @@ class Item {
   List<NutritionsData>? nutritionsData;
   List<AllergiesData>? allergiesData;
   List<GenericData>? genericNameData;
+  double? vmwHeight;
+  double? vmwWidth;
+  double? vmwLength;
+  double? staticWeight;
 
   Item({
     this.id,
@@ -151,6 +155,10 @@ class Item {
     this.nutritionsData,
     this.allergiesData,
     this.genericNameData,
+    this.vmwHeight,
+    this.vmwWidth,
+    this.vmwLength,
+    this.staticWeight
   });
 
   Item.fromJson(Map<String, dynamic> json) {
@@ -243,7 +251,7 @@ class Item {
     brandId = json['brand_id'];
     isHalal = json['is_halal'];
     halalTagStatus = json['halal_tag_status'];
-    weight =  json['weight'] != null ? json['weight'].toDouble() : 0;
+    weight =  json['weight'] != null ? double.parse(json['weight'].toString()) : 0;
     if(json['nutritions_name'] != null) {
       nutrition = [];
       for(String v in json['nutritions_name']) {
@@ -284,6 +292,10 @@ class Item {
         genericNameData!.add(GenericData.fromJson(v));
       });
     }
+    vmwHeight = json['vmw_height'] != null ? double.parse(json['vmw_height'].toString()) : 0;
+    vmwWidth = json['vmw_width'] != null ? double.parse(json['vmw_width'].toString()) : 0;
+    vmwLength = json['vmw_length'] != null ? double.parse(json['vmw_length'].toString()) : 0;
+    staticWeight = json['static_weight'] != null ? double.parse(json['static_weight'].toString()) : 0;
   }
 
   Map<String, dynamic> toJson() {
@@ -363,6 +375,10 @@ class Item {
     if (genericNameData != null) {
       data['generic_name_data'] = genericNameData!.map((v) => v.toJson()).toList();
     }
+    data['vmw_height'] = vmwHeight;
+    data['vmw_width'] = vmwWidth;
+    data['vmw_length'] = vmwLength;
+    data['static_weight'] = staticWeight;
     return data;
   }
 }

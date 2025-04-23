@@ -2,7 +2,7 @@ import 'package:sixam_mart_store/util/dimensions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-void showCustomBottomSheet({required Widget child}) {
+void showCustomBottomSheet({required Widget child, double? height}) {
   showModalBottomSheet(
     isScrollControlled: true, useRootNavigator: true, context: Get.context!,
     backgroundColor: Colors.white,
@@ -14,7 +14,7 @@ void showCustomBottomSheet({required Widget child}) {
     ),
     builder: (context) {
       return ConstrainedBox(
-        constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.85),
+        constraints: BoxConstraints(maxHeight: height ?? MediaQuery.of(context).size.height * 0.85),
         child: child,
       );
     },

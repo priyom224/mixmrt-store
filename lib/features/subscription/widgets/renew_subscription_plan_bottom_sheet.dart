@@ -46,7 +46,7 @@ class RenewSubscriptionPlanBottomSheet extends StatelessWidget {
             margin: const EdgeInsets.only(top: Dimensions.paddingSizeLarge, bottom: Dimensions.paddingSizeDefault),
             height: 5, width: 50,
             decoration: BoxDecoration(
-              color: Theme.of(context).disabledColor.withOpacity(0.2),
+              color: Theme.of(context).disabledColor.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
             ),
           ),
@@ -74,7 +74,7 @@ class RenewSubscriptionPlanBottomSheet extends StatelessWidget {
                               color: Theme.of(context).cardColor,
                               borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
                               boxShadow:  const [BoxShadow(color: Colors.black12, spreadRadius: 1, blurRadius: 5)],
-                              border: Border.all(color: Theme.of(context).disabledColor.withOpacity(0.1)),
+                              border: Border.all(color: Theme.of(context).disabledColor.withValues(alpha: 0.1)),
                             ),
                           ),
                         ),
@@ -98,7 +98,7 @@ class RenewSubscriptionPlanBottomSheet extends StatelessWidget {
 
                             Text(businessIsCommission ? 'commission_base_plan'.tr : activePackage?.packageName ?? '', style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge, color: Colors.cyan.shade700), textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis),
 
-                            Divider(color: Theme.of(context).disabledColor.withOpacity(0.2), indent: 40, endIndent: 40, thickness: 1),
+                            Divider(color: Theme.of(context).disabledColor.withValues(alpha: 0.2), indent: 40, endIndent: 40, thickness: 1),
 
                             Text(
                               businessIsCommission ? '${Get.find<SplashController>().configModel!.adminCommission}%' : PriceConverterHelper.convertPrice(activePackage?.price ?? 0),
@@ -152,14 +152,14 @@ class RenewSubscriptionPlanBottomSheet extends StatelessWidget {
 
                           Text(package.packageName ?? '', style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).cardColor), textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis),
 
-                          Divider(color: Colors.white.withOpacity(0.2), indent: 40, endIndent: 40, thickness: 1),
+                          Divider(color: Colors.white.withValues(alpha: 0.2), indent: 40, endIndent: 40, thickness: 1),
 
                           Text(
                             PriceConverterHelper.convertPrice(package.price),
                             style: robotoBold.copyWith(fontSize: 25, color: Theme.of(context).cardColor),
                           ),
 
-                          Text('${package.validity} ' 'days'.tr, style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Colors.white.withOpacity(0.8))),
+                          Text('${package.validity} ' 'days'.tr, style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Colors.white.withValues(alpha: 0.8))),
                           const SizedBox(height: Dimensions.paddingSizeDefault),
 
                         ]),
@@ -199,14 +199,14 @@ class RenewSubscriptionPlanBottomSheet extends StatelessWidget {
 
                             Text(package.packageName ?? '', style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).cardColor), textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis),
 
-                            Divider(color: Colors.white.withOpacity(0.2), indent: 40, endIndent: 40, thickness: 1),
+                            Divider(color: Colors.white.withValues(alpha: 0.2), indent: 40, endIndent: 40, thickness: 1),
 
                             Text(
                               PriceConverterHelper.convertPrice(package.price),
                               style: robotoBold.copyWith(fontSize: 25, color: Theme.of(context).cardColor),
                             ),
 
-                            Text('${package.validity} ' 'days'.tr, style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Colors.white.withOpacity(0.8))),
+                            Text('${package.validity} ' 'days'.tr, style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Colors.white.withValues(alpha: 0.8))),
                             const SizedBox(height: Dimensions.paddingSizeDefault),
 
                           ]),
@@ -223,9 +223,9 @@ class RenewSubscriptionPlanBottomSheet extends StatelessWidget {
                   padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
                   margin: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).disabledColor.withOpacity(0.05),
+                    color: Theme.of(context).disabledColor.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                    border: Border.all(color: Theme.of(context).disabledColor.withOpacity(0.1)),
+                    border: Border.all(color: Theme.of(context).disabledColor.withValues(alpha: 0.1)),
                   ),
                   child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
 
@@ -286,9 +286,9 @@ class RenewSubscriptionPlanBottomSheet extends StatelessWidget {
                     padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
                     margin: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
                     decoration: BoxDecoration(
-                      color: subscriptionController.isSelect && subscriptionController.paymentIndex == 0 ? Theme.of(context).primaryColor.withOpacity(0.05) : Theme.of(context).cardColor,
+                      color: subscriptionController.isSelect && subscriptionController.paymentIndex == 0 ? Theme.of(context).primaryColor.withValues(alpha: 0.05) : Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                      border: Border.all(color: subscriptionController.isSelect && subscriptionController.paymentIndex == 0 ? Theme.of(context).primaryColor : Theme.of(context).disabledColor.withOpacity(0.2)),
+                      border: Border.all(color: subscriptionController.isSelect && subscriptionController.paymentIndex == 0 ? Theme.of(context).primaryColor : Theme.of(context).disabledColor.withValues(alpha: 0.2)),
                     ),
                     child:  Row(children: [
                       Container(
@@ -343,9 +343,9 @@ class RenewSubscriptionPlanBottomSheet extends StatelessWidget {
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                          color: isSelected ? Theme.of(context).primaryColor.withOpacity(0.05) : Theme.of(context).cardColor,
+                          color: isSelected ? Theme.of(context).primaryColor.withValues(alpha: 0.05) : Theme.of(context).cardColor,
                           borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                          border: Border.all(color: isSelected ? Theme.of(context).primaryColor : Theme.of(context).disabledColor.withOpacity(0.2)),
+                          border: Border.all(color: isSelected ? Theme.of(context).primaryColor : Theme.of(context).disabledColor.withValues(alpha: 0.2)),
                         ),
                         padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault, vertical: Dimensions.paddingSizeDefault),
                         child: Row(children: [
@@ -394,8 +394,8 @@ class RenewSubscriptionPlanBottomSheet extends StatelessWidget {
                   onPressed: () => Get.back(),
                   buttonText: 'cancel'.tr,
                   radius: Dimensions.radiusDefault,
-                  color: Theme.of(context).disabledColor.withOpacity(0.2),
-                  textColor: Theme.of(context).textTheme.bodyLarge!.color?.withOpacity(0.8),
+                  color: Theme.of(context).disabledColor.withValues(alpha: 0.2),
+                  textColor: Theme.of(context).textTheme.bodyLarge!.color?.withValues(alpha: 0.8),
                 ),
               ),
               const SizedBox(width: Dimensions.paddingSizeDefault),

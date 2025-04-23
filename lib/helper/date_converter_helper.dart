@@ -158,4 +158,22 @@ class DateConverterHelper {
     return DateFormat('dd MMM, yyyy').format(DateTime.parse(dateTime).toLocal());
   }
 
+  static String dayDateTime(String dateTime) {
+    return DateFormat('EEEE, dd MMMM yyyy, hh:mm a').format(DateTime.parse(dateTime).toLocal());
+  }
+
+  static DateTime formattingTripDateTime(DateTime pickedTime, DateTime pickedDate) {
+    return DateTime(pickedDate.year, pickedDate.month, pickedDate.day, pickedTime.hour, pickedTime.minute);
+  }
+
+  static bool isSameDate(DateTime pickedTime) {
+    return pickedTime.year == DateTime.now().year && pickedTime.month == DateTime.now().month && pickedTime.day == DateTime.now().day && pickedTime.hour == DateTime.now().hour;
+  }
+
+  static bool isAfterCurrentDateTime(DateTime pickedTime) {
+    DateTime pick = DateTime(pickedTime.year, pickedTime.month, pickedTime.day, pickedTime.hour, pickedTime.minute);
+    DateTime current = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
+    return pick.isAfter(current);
+  }
+
 }

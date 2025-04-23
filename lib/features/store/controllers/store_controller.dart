@@ -13,6 +13,7 @@ import 'package:sixam_mart_store/features/store/domain/models/pending_item_model
 import 'package:sixam_mart_store/features/profile/domain/models/profile_model.dart';
 import 'package:sixam_mart_store/features/store/domain/models/review_model.dart';
 import 'package:sixam_mart_store/features/store/domain/models/unit_model.dart';
+import 'package:sixam_mart_store/features/rental_module/profile/controllers/taxi_profile_controller.dart';
 import 'package:sixam_mart_store/helper/route_helper.dart';
 import 'package:sixam_mart_store/util/app_constants.dart';
 import 'package:sixam_mart_store/common/widgets/custom_snackbar_widget.dart';
@@ -237,8 +238,6 @@ class StoreController extends GetxController implements GetxService {
       _selectedAllergicIngredientsList = [];
       if(item != null) {
         if(item.nutrition == null && item.nutritionsData != null) {
-          print('======controller: ${item.nutritionsData}');
-
           item.nutritionsData?.forEach((nutrition) {
             _selectedNutritionList!.add(nutrition.nutrition);
           });
@@ -960,6 +959,7 @@ class StoreController extends GetxController implements GetxService {
       Get.back();
       showCustomSnackBar('announcement_updated_successfully'.tr, isError: false);
       Get.find<ProfileController>().getProfile();
+      Get.find<TaxiProfileController>().getProfile();
     }
     _isLoading = false;
     update();

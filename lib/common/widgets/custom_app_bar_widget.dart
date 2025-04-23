@@ -23,7 +23,7 @@ class CustomAppBarWidget extends StatelessWidget implements PreferredSizeWidget 
       ) : const SizedBox(),
       backgroundColor: Theme.of(context).cardColor,
       surfaceTintColor: Theme.of(context).cardColor,
-      shadowColor: Theme.of(context).disabledColor.withOpacity(0.5),
+      shadowColor: Theme.of(context).disabledColor.withValues(alpha: 0.5),
       elevation: 2,
       actions: menuWidget != null ? [menuWidget!] : null,
     );

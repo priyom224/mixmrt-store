@@ -45,7 +45,7 @@ class _SubscriptionSuccessOrFailedScreenState extends State<SubscriptionSuccessO
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
                     Text(
-                      'store_registration'.tr,
+                      'vendor_registration'.tr,
                       style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge),
                     ),
 

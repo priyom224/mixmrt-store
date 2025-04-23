@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:sixam_mart_store/util/images.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -12,15 +13,10 @@ class CustomImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    return FadeInImage.assetNetwork(
-      height: height, width: width, fit: fit,
-      placeholder: isNotification ? Images.notificationPlaceholder : Images.placeholder,
-      image: image,
-      imageErrorBuilder: (c, o, s) => Image.asset(
-        (placeholder != null && placeholder!.isNotEmpty) ? placeholder! : isNotification ? Images.notificationPlaceholder : Images.placeholder,
-        height: height, width: width, fit: fit,
-      ),
+    return CachedNetworkImage(
+      imageUrl: image, height: height, width: width, fit: fit,
+      placeholder: (context, url) => Image.asset(isNotification ? Images.notificationPlaceholder : Images.placeholder, height: height, width: width, fit: fit),
+      errorWidget: (context, url, error) => Image.asset(isNotification ? Images.notificationPlaceholder : Images.placeholder, height: height, width: width, fit: fit),
     );
   }
 }

@@ -131,7 +131,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
                                       showCustomSnackBar('${'sorry_cannot_view_this_conversation'.tr} ${type!.tr} ${'may_have_been_removed_from'.tr} ${AppConstants.appName}');
                                     }
                                   },
-                                  highlightColor: Theme.of(context).colorScheme.surface.withOpacity(0.05),
+                                  highlightColor: Theme.of(context).colorScheme.surface.withValues(alpha: 0.05),
                                   radius: Dimensions.radiusSmall,
                                   child: Stack(children: [
                                     Padding(

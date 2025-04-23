@@ -37,7 +37,7 @@ dependencies:
   google_maps_flutter: ^2.9.0
   geolocator: ^13.0.1
   cached_network_image: ^3.4.1
-  print_bluetooth_thermal: ^1.1.1
+  print_bluetooth_thermal: ^1.1.5
   flutter_esc_pos_utils: ^1.0.1
   screenshot: ^3.0.0
   http_parser: ^4.1.0
@@ -56,6 +56,11 @@ dependencies:
   chewie: ^1.8.4
   fluttertoast: ^8.2.8
 
+  #Rental Module
+  dropdown_button2: ^2.3.9
+  lottie: ^3.2.0
+  syncfusion_flutter_datepicker: ^27.2.3
+
 dependency_overrides:
   collection: ^1.19.0
   web: ^1.0.0
@@ -71,7 +76,9 @@ flutter:
 
   assets:
     - assets/image/
+    - assets/image/taxi_image/
     - assets/language/
+    - assets/json/
     - assets/notification.mp3
 
   fonts:

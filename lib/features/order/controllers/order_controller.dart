@@ -291,7 +291,7 @@ class OrderController extends GetxController implements GetxService {
           || order.orderType == 'take_away' || Get.find<ProfileController>().profileModel!.stores![0].selfDeliverySystem == 1)
           && (_campaignOnly ? order.itemCampaign == 1 : true)) {
         _runningOrders![0].orderList.add(order);
-      }else if((order.orderStatus == 'confirmed' || (order.orderStatus == 'accepted' && order.confirmed != null))
+      }else if((order.orderStatus == 'confirmed' || (order.orderStatus == 'accepted' && order.confirmed != null) || (order.orderStatus == 'accepted' && order.confirmed == null))
           && (_campaignOnly ? order.itemCampaign == 1 : true)) {
         _runningOrders![1].orderList.add(order);
       }else if(order.orderStatus == 'processing' && (_campaignOnly ? order.itemCampaign == 1 : true)) {

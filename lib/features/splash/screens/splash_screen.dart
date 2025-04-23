@@ -7,6 +7,9 @@ import 'package:sixam_mart_store/common/widgets/custom_image_widget.dart';
 import 'package:sixam_mart_store/features/auth/controllers/auth_controller.dart';
 import 'package:sixam_mart_store/features/dashboard/screens/dashboard_screen.dart';
 import 'package:sixam_mart_store/features/profile/controllers/profile_controller.dart';
+import 'package:sixam_mart_store/features/rental_module/chat/screens/taxi_chat_screen.dart';
+import 'package:sixam_mart_store/features/rental_module/profile/controllers/taxi_profile_controller.dart';
+import 'package:sixam_mart_store/features/rental_module/trips/screens/trip_details_screen.dart';
 import 'package:sixam_mart_store/features/splash/controllers/splash_controller.dart';
 import 'package:sixam_mart_store/features/notification/domain/models/notification_body_model.dart';
 import 'package:sixam_mart_store/helper/route_helper.dart';
@@ -104,9 +107,9 @@ class SplashScreenState extends State<SplashScreen> {
     return null;
   }
 
-  /// Check if the country is supported (Malawi, Tanzania, Zambia)
+  /// Check if the country is supported (Malawi, Tanzania, Zimbabwe,  Zambia)
   bool _isSupportedCountry(String countryCode) {
-    return ['MW', 'TZ', 'ZM'].contains(countryCode);
+    return ['MW', 'TZ', 'ZM', 'ZW'].contains(countryCode);
   }
 
   /// Set the base URL based on the detected or selected country
@@ -116,6 +119,9 @@ class SplashScreenState extends State<SplashScreen> {
         AppConstants.setBaseUrl('https://dev.mixmrt.com');
         break;
       case 'TZ':
+        AppConstants.setBaseUrl('https://dev.mixmrt.com');
+        break;
+      case 'ZW':
         AppConstants.setBaseUrl('https://dev.mixmrt.com');
         break;
       case 'ZM':
@@ -168,6 +174,14 @@ class SplashScreenState extends State<SplashScreen> {
                 dialCode: '+255',
                 flagUrl: 'https://www.countryflags.com/wp-content/uploads/tanzania-flag-png-large.png',
                 countryCode: 'TZ',
+              ),
+              const Divider(),
+
+              _buildCountryTile(
+                countryName: 'Zimbabwe',
+                dialCode: '+263',
+                flagUrl: 'https://www.countryflags.com/wp-content/uploads/zimbabwe-flag-png-large.png',
+                countryCode: 'ZW',
               ),
               const Divider(),
 
@@ -258,16 +272,29 @@ class SplashScreenState extends State<SplashScreen> {
     final notificationType = notificationBody?.notificationType;
 
     final Map<NotificationType, Function> notificationActions = {
-      NotificationType.order: () => Get.toNamed(RouteHelper.getOrderDetailsRoute(notificationBody?.orderId, fromNotification: true)),
+      NotificationType.order: () {
+        if(Get.find<AuthController>().getModuleType() == 'rental'){
+          Get.to(()=> TripDetailsScreen(tripId: notificationBody!.orderId!, fromNotification: true));
+        }else{
+          Get.toNamed(RouteHelper.getOrderDetailsRoute(notificationBody?.orderId, fromNotification: true));
+        }
+      },
       NotificationType.advertisement: () => Get.toNamed(RouteHelper.getAdvertisementDetailsScreen(advertisementId: notificationBody?.advertisementId, fromNotification: true)),
       NotificationType.block: () => Get.offAllNamed(RouteHelper.getSignInRoute()),
       NotificationType.unblock: () => Get.offAllNamed(RouteHelper.getSignInRoute()),
       NotificationType.withdraw: () => Get.to(const DashboardScreen(pageIndex: 3)),
       NotificationType.campaign: () => Get.toNamed(RouteHelper.getCampaignDetailsRoute(id: notificationBody?.campaignId, fromNotification: true)),
-      NotificationType.message: () => Get.toNamed(RouteHelper.getChatRoute(notificationBody: notificationBody, conversationId: notificationBody?.conversationId, fromNotification: true)),
+      NotificationType.message: () {
+        if(Get.find<AuthController>().getModuleType() == 'rental'){
+          Get.to(()=> TaxiChatScreen(notificationBody: notificationBody, conversationId: notificationBody?.conversationId, fromNotification: true));
+        }else{
+          Get.toNamed(RouteHelper.getChatRoute(notificationBody: notificationBody, conversationId: notificationBody?.conversationId, fromNotification: true));
+        }
+      },
       NotificationType.subscription: () => Get.toNamed(RouteHelper.getMySubscriptionRoute(fromNotification: true)),
       NotificationType.product_approve: () => Get.toNamed(RouteHelper.getNotificationRoute(fromNotification: true)),
       NotificationType.product_rejected: () => Get.toNamed(RouteHelper.getPendingItemRoute(fromNotification: true)),
+      NotificationType.offlinePayment: () => Get.toNamed(RouteHelper.getOffLineHistoryRoute(fromNotification: true)),
       NotificationType.general: () => Get.toNamed(RouteHelper.getNotificationRoute(fromNotification: true)),
     };
 
@@ -277,7 +304,7 @@ class SplashScreenState extends State<SplashScreen> {
   Future<void> _handleDefaultRouting() async {
     if (Get.find<AuthController>().isLoggedIn()) {
       await Get.find<AuthController>().updateToken();
-      await Get.find<ProfileController>().getProfile();
+      Get.find<AuthController>().getModuleType() == 'rental' ? await Get.find<TaxiProfileController>().getProfile() : await Get.find<ProfileController>().getProfile();
       Get.offNamed(RouteHelper.getInitialRoute());
     } else {
       Get.offNamed(RouteHelper.getSignInRoute());

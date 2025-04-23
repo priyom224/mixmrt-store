@@ -138,7 +138,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> with WidgetsBin
             bool restConfModel = Get.find<SplashController>().configModel!.orderConfirmationModel != 'deliveryman';
             bool showSlider = controllerOrderModel != null ? (controllerOrderModel.orderStatus == 'pending' && (controllerOrderModel.orderType == 'take_away' || restConfModel || selfDelivery))
                 || controllerOrderModel.orderStatus == 'confirmed' || controllerOrderModel.orderStatus == 'processing'
-                || (controllerOrderModel.orderStatus == 'accepted' && controllerOrderModel.confirmed != null)
+                || ((controllerOrderModel.orderStatus == 'accepted' && controllerOrderModel.confirmed != null) || (controllerOrderModel.orderStatus == 'accepted' && controllerOrderModel.confirmed == null))
                 || (controllerOrderModel.orderStatus == 'handover' && (selfDelivery || controllerOrderModel.orderType == 'take_away')) : false;
             bool showBottomView = controllerOrderModel != null ? showSlider || controllerOrderModel.orderStatus == 'picked_up' || widget.isRunningOrder : false;
             bool showDeliveryConfirmImage = orderController.showDeliveryImageField;
@@ -895,8 +895,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> with WidgetsBin
                       Get.bottomSheet(DeliveryManOtpVerificationBottomSheet(orderId: widget.orderId), isScrollControlled: true);
                     }
 
-                    else if(controllerOrderModel.orderStatus == 'confirmed' || (controllerOrderModel.orderStatus == 'accepted'
-                        && controllerOrderModel.confirmed != null)) {
+                    else if(controllerOrderModel.orderStatus == 'confirmed' || ((controllerOrderModel.orderStatus == 'accepted' && controllerOrderModel.confirmed != null) || (controllerOrderModel.orderStatus == 'accepted' && controllerOrderModel.confirmed == null))) {
                       debugPrint('accepted & confirm call----------------');
 
                       if(Get.find<SplashController>().getModuleConfig(order.moduleType).newVariation!){
@@ -941,7 +940,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> with WidgetsBin
                   },
                   label: Text(
                     (controllerOrderModel.orderStatus == 'pending' && (controllerOrderModel.orderType == 'take_away' || restConfModel || selfDelivery)) ? 'swipe_to_confirm_order'.tr
-                        : (controllerOrderModel.orderStatus == 'confirmed' || (controllerOrderModel.orderStatus == 'accepted' && controllerOrderModel.confirmed != null))
+                        : (controllerOrderModel.orderStatus == 'confirmed' || ((controllerOrderModel.orderStatus == 'accepted' && controllerOrderModel.confirmed != null) || (controllerOrderModel.orderStatus == 'accepted' && controllerOrderModel.confirmed == null)))
                         ? Get.find<SplashController>().configModel!.moduleConfig!.module!.showRestaurantText! ? 'swipe_to_cooking'.tr : 'swipe_to_process'.tr
                         : (controllerOrderModel.orderStatus == 'processing') ? 'swipe_if_ready_for_handover'.tr
                         : (controllerOrderModel.orderStatus == 'handover' && (controllerOrderModel.orderType == 'take_away' || selfDelivery)) ? 'swipe_to_deliver_order'.tr : '',

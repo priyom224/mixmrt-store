@@ -76,6 +76,48 @@ class Images {
   static const String deleteDialogIcon = 'assets/image/delete_dialog_icon.png';
   static const String pauseDialogIcon = 'assets/image/pause_dialog_icon.png';
   static const String resumeDialogIcon = 'assets/image/resume_dialog_icon.png';
+  static const String chatIcon = 'assets/image/chat_icon.png';
+  static const String callIcon = 'assets/image/call_icon.png';
+
+  ///Taxi module
+  static const String homeUnselect = 'assets/image/home_unselect.png';
+  static const String homeSelect = 'assets/image/home_select.png';
+  static const String orderUnselect = 'assets/image/order_unselect.png';
+  static const String orderSelect = 'assets/image/order_select.png';
+  static const String menu = 'assets/image/menu.png';
+  static const String menuUnselect = 'assets/image/menu_unselect.png';
+  static const String walletUnSelect = 'assets/image/wallet_unselect.png';
+  static const String walletSelect = 'assets/image/wallet_select.png';
+  static const String taxiHome = 'assets/image/taxi_home.png';
+
+  static const String mapIconExtended = 'assets/json/map-picker-1.json';
+  static const String mapIconMinimised = 'assets/json/map-picker-2.json';
+  static const String navigationArrowIcon = 'assets/image/taxi_image/navigation_arrow.png';
+  static const String taxiPickup = 'assets/image/taxi_image/taxi_pickup.png';
+  static const String taxiDestination = 'assets/image/taxi_image/taxi_destination.png';
+
+  static const String editIcon = 'assets/image/taxi_image/edit_icon.png';
+  static const String deleteIcon = 'assets/image/taxi_image/delete_icon.png';
+  static const String filterIcon = 'assets/image/taxi_image/filter_icon.png';
+  static const String uploadIcon = 'assets/image/taxi_image/upload_icon.png';
+  static const String hourlyIcon = 'assets/image/taxi_image/hourly_icon.png';
+  static const String distanceIcon = 'assets/image/taxi_image/distance_icon.png';
+  static const String confirmPaymentIcon = 'assets/image/taxi_image/confirm_payment_icon.png';
+  static const String editIconOutlined = 'assets/image/taxi_image/edit_icon_outlined.png';
+  static const String automaticIcon = 'assets/image/taxi_image/automatic_icon.png';
+  static const String breakIcon = 'assets/image/taxi_image/brake_icon.png';
+  static const String carSideIcon = 'assets/image/taxi_image/car_side_icon.png';
+  static const String chargeIcon = 'assets/image/taxi_image/charge_icon.png';
+  static const String fuelExpenseIcon = 'assets/image/taxi_image/fuel_expense_icon.png';
+  static const String fuelIcon = 'assets/image/taxi_image/fuel_icon.png';
+  static const String ratingIcon = 'assets/image/taxi_image/rating_icon.png';
+  static const String setCapacityIcon = 'assets/image/taxi_image/set_capacity_icon.png';
+  static const String acIcon = 'assets/image/taxi_image/ac_icon.png';
+  static const String brandIcon = 'assets/image/taxi_image/brand_icon.png';
+  static const String driverIcon = 'assets/image/taxi_image/driver_icon.png';
+  static const String driverDeleteConformationIcon = 'assets/image/taxi_image/driver_delete_conformation_icon.png';
+  static const String taxiAnnouncementIcon = 'assets/image/taxi_image/announcement_icon.png';
+  static const String taxiAddCarIcon = 'assets/image/taxi_image/add_car_icon.png';
 
   /// SVG Images
   static const String shopIcon = 'assets/image/shop_icon.svg';

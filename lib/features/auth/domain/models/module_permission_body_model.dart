@@ -12,6 +12,7 @@ class ModulePermissionBodyModel{
   bool? reviews;
   bool? pos;
   bool? chat;
+  bool? myWallet;
 
   ModulePermissionBodyModel({
     this.item,
@@ -27,6 +28,7 @@ class ModulePermissionBodyModel{
     this.reviews,
     this.pos,
     this.chat,
+    this.myWallet,
   });
 
   ModulePermissionBodyModel.fromJson(Map<String, dynamic> json) {
@@ -43,6 +45,7 @@ class ModulePermissionBodyModel{
     reviews = json['reviews'];
     pos = json['pos'];
     chat = json['chat'];
+    myWallet = json['my_wallet'];
   }
 
   Map<String, bool?> toJson() {
@@ -60,6 +63,7 @@ class ModulePermissionBodyModel{
     data['reviews'] = reviews;
     data['pos'] = pos;
     data['chat'] = chat;
+    data['my_wallet'] = myWallet;
     return data;
   }
 }

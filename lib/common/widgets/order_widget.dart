@@ -47,7 +47,7 @@ class OrderWidget extends StatelessWidget {
             showStatus ? Container(
               padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall, vertical: Dimensions.paddingSizeExtraSmall),
               decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor.withOpacity(0.1),
+                color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
               ),
               alignment: Alignment.center,

@@ -17,7 +17,7 @@ class VariationView extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
           color: Theme.of(context).cardColor,
-          boxShadow: [BoxShadow(color: Theme.of(context).disabledColor.withOpacity(0.3), blurRadius: 10)],
+          boxShadow: [BoxShadow(color: Theme.of(context).disabledColor.withValues(alpha: 0.3), blurRadius: 10)],
         ),
         padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

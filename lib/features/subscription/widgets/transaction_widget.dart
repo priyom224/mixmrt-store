@@ -76,11 +76,11 @@ class _TransactionWidgetState extends State<TransactionWidget> {
                   hintStyle: robotoRegular.copyWith(color: Theme.of(context).disabledColor),
                   contentPadding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall, vertical: Dimensions.paddingSizeExtraSmall),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(width: 1, color: Theme.of(context).disabledColor.withOpacity(0.4)),
+                    borderSide: BorderSide(width: 1, color: Theme.of(context).disabledColor.withValues(alpha: 0.4)),
                     borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(width: 1, color: Theme.of(context).disabledColor.withOpacity(0.4)),
+                    borderSide: BorderSide(width: 1, color: Theme.of(context).disabledColor.withValues(alpha: 0.4)),
                     borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
                   ),
                   suffixIcon: IconButton(
@@ -116,7 +116,7 @@ class _TransactionWidgetState extends State<TransactionWidget> {
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                  border: Border.all(color: Theme.of(context).disabledColor.withOpacity(0.4)),
+                  border: Border.all(color: Theme.of(context).disabledColor.withValues(alpha: 0.4)),
                 ),
                 padding: const EdgeInsets.all(Dimensions.paddingSizeSmall + 3),
                 child: Icon(Icons.calendar_today_outlined, color: Theme.of(context).disabledColor, size: 20),
@@ -134,7 +134,7 @@ class _TransactionWidgetState extends State<TransactionWidget> {
             padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-              color: Theme.of(context).primaryColor.withOpacity(0.05),
+              color: Theme.of(context).primaryColor.withValues(alpha: 0.05),
             ),
             child: Text(DateConverterHelper.convertDateToDate(subscriptionController.from!), style: robotoMedium),
           ),
@@ -147,7 +147,7 @@ class _TransactionWidgetState extends State<TransactionWidget> {
             padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-              color: Theme.of(context).primaryColor.withOpacity(0.05),
+              color: Theme.of(context).primaryColor.withValues(alpha: 0.05),
             ),
             child: Text(DateConverterHelper.convertDateToDate(subscriptionController.to!), style: robotoMedium),
           ),
@@ -179,16 +179,16 @@ class _TransactionWidgetState extends State<TransactionWidget> {
                       decoration: BoxDecoration(
                         color: Theme.of(context).cardColor,
                         borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                        boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.2), spreadRadius: 1, blurRadius: 10, offset: const Offset(0, 1))],
+                        boxShadow: [BoxShadow(color: Colors.grey.withValues(alpha: 0.2), spreadRadius: 1, blurRadius: 10, offset: const Offset(0, 1))],
                       ),
                       child: Column(children: [
 
                         Container(
                           padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).cardColor.withOpacity(0.8),
+                            color: Theme.of(context).cardColor.withValues(alpha: 0.8),
                             borderRadius: const BorderRadius.only(topLeft: Radius.circular(Dimensions.radiusSmall), topRight: Radius.circular(Dimensions.radiusSmall)),
-                            boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.1), spreadRadius: 1, blurRadius: 5, offset: const Offset(0, 1))],
+                            boxShadow: [BoxShadow(color: Colors.grey.withValues(alpha: 0.1), spreadRadius: 1, blurRadius: 5, offset: const Offset(0, 1))],
                           ),
                           child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
 
@@ -200,14 +200,14 @@ class _TransactionWidgetState extends State<TransactionWidget> {
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall, vertical: Dimensions.paddingSizeExtraSmall),
                               decoration: BoxDecoration(
-                                color: transactions.planType == 'renew' ? Theme.of(context).primaryColor.withOpacity(0.1) : transactions.planType == 'new_plan' ? Colors.blue.withOpacity(0.1) : Colors.deepOrange.withOpacity(0.1),
+                                color: transactions.planType == 'renew' ? Theme.of(context).primaryColor.withValues(alpha: 0.1) : transactions.planType == 'new_plan' ? Colors.blue.withValues(alpha: 0.1) : Colors.deepOrange.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
                               ),
                               child: Text(
                                 transactions.planType == 'renew' ? 'renewed'.tr : transactions.planType == 'new_plan' ? 'migrated'.tr : transactions.planType == 'free_trial' ? 'free_trial'.tr : 'purchased'.tr,
                                 style: robotoMedium.copyWith(
                                   fontSize: Dimensions.fontSizeSmall,
-                                  color: transactions.planType == 'renew' ? Theme.of(context).primaryColor : transactions.planType == 'new_plan' ? Colors.blue : Colors.deepOrange.withOpacity(0.9),
+                                  color: transactions.planType == 'renew' ? Theme.of(context).primaryColor : transactions.planType == 'new_plan' ? Colors.blue : Colors.deepOrange.withValues(alpha: 0.9),
                                 ),
                               ),
                             ),

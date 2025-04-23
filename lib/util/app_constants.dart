@@ -3,7 +3,7 @@ import 'package:sixam_mart_store/util/images.dart';
 
 class AppConstants {
   static const String appName = 'MIXMRT Store';
-  static const double appVersion = 2.12;
+  static const double appVersion = 3.0;
 
   static const String fontFamily = 'Roboto';
   static const double limitOfPickedVideoSizeInMB = 50;
@@ -96,6 +96,7 @@ class AppConstants {
   static const String storeBannerUri = '/api/v1/vendor/banner';
   static const String deleteStoreBannerUri = '/api/v1/vendor/banner/delete';
   static const String updateStoreBannerUri = '/api/v1/vendor/banner/update';
+  static const String storeBannerDetailsUri = '/api/v1/vendor/banner/edit';
   static const String announcementUri = '/api/v1/vendor/update-announcment';
   static const String addWithdrawMethodUri = '/api/v1/vendor/withdraw-method/store';
   static const String disbursementMethodListUri = '/api/v1/vendor/withdraw-method/list';
@@ -148,6 +149,69 @@ class AppConstants {
   static const String changeAdvertisementStatusUri = '/api/v1/vendor/advertisement/status';
   static const String copyAddAdvertisementUri = '/api/v1/vendor/advertisement/copy-add-post';
 
+
+  ///Rental Module API
+  static const String taxiCategoryListUri = '/api/v1/rental/vendor/category/list';
+  static const String taxiBrandListUri = '/api/v1/rental/vendor/brand/list';
+  static const String taxiVehicleListUri = '/api/v1/rental/vendor/vehicle/list';
+  static const String taxiVehicleDetailsUri = '/api/v1/rental/vendor/vehicle/details';
+  static const String taxiAddVehicleUri = '/api/v1/rental/vendor/vehicle/create';
+  static const String taxiUpdateVehicleUri = '/api/v1/rental/vendor/vehicle/update';
+  static const String taxiDeleteVehicleUri = '/api/v1/rental/vendor/vehicle/delete';
+  static const String taxiActiveStatusUri = '/api/v1/rental/vendor/vehicle/status';
+  static const String taxiNewTagStatusUri = '/api/v1/rental/vendor/vehicle/new-tag';
+  static const String taxiVehicleDetailsWithTransUri = '/api/v1/rental/vendor/vehicle/edit';
+
+  ///Rental banner Api
+  static const String taxiBannerListUri = '/api/v1/rental/vendor/banner/list';
+  static const String taxiAddBannerUri = '/api/v1/rental/vendor/banner/create';
+  static const String taxiUpdateBannerUri = '/api/v1/rental/vendor/banner/update';
+  static const String taxiDeleteBannerUri = '/api/v1/rental/vendor/banner/delete';
+  static const String taxiBannerDetailsUri = '/api/v1/rental/vendor/banner/edit';
+
+  ///Rental Coupon Api
+  static const String taxiCouponListUri = '/api/v1/rental/vendor/coupon/list';
+  static const String taxiAddCouponUri = '/api/v1/rental/vendor/coupon/create';
+  static const String taxiUpdateCouponUri = '/api/v1/rental/vendor/coupon/update';
+  static const String taxiDeleteCouponUri = '/api/v1/rental/vendor/coupon/delete';
+  static const String taxiChangeCouponStatusUri = '/api/v1/rental/vendor/coupon/status';
+  static const String taxiCouponDetailsUri = '/api/v1/rental/vendor/coupon/edit';
+
+  ///Rental Profile Api
+  static const String taxiProfileUri = '/api/v1/rental/vendor/profile';
+  static const String taxiUpdateProfileUri = '/api/v1/rental/vendor/profile/update';
+  static const String taxiAddScheduleUri = '/api/v1/rental/vendor/schedule/create';
+  static const String taxiDeleteScheduleUri = '/api/v1/rental/vendor/schedule/delete';
+  static const String taxiUpdateProviderBusinessSetupUri = '/api/v1/rental/vendor/update-business-setup';
+
+  ///Rental Driver Api
+  static const String taxiDriverListUri = '/api/v1/rental/vendor/driver/list';
+  static const String taxiAddDriverUri = '/api/v1/rental/vendor/driver/create';
+  static const String taxiUpdateDriverUri = '/api/v1/rental/vendor/driver/update';
+  static const String taxiDeleteDriverUri = '/api/v1/rental/vendor/driver/delete';
+  static const String taxiUpdateDriverStatusUri = '/api/v1/rental/vendor/driver/status';
+  static const String taxiDriverDetailsUri = '/api/v1/rental/vendor/driver/details';
+
+  ///Rental Trips Api
+  static const String taxiTripListUri = '/api/v1/rental/vendor/trip/list';
+  static const String taxiTripDetailsUri = '/api/v1/rental/vendor/trip/details';
+  static const String taxiUpdateTripStatusUri = '/api/v1/rental/vendor/trip/status';
+  static const String taxiAssignVehicleUri = '/api/v1/rental/vendor/trip/assign-vehicle';
+  static const String taxiAssignDriverUri = '/api/v1/rental/vendor/trip/assign-driver';
+  static const String taxiEditTripUri = '/api/v1/rental/vendor/trip/edit-trip';
+  static const String taxiUpdateTripPaymentStatusUri = '/api/v1/rental/vendor/trip/payment';
+  static const String directionUri = '/api/v1/config/direction-api';
+
+  /// Rental chat Api
+  static const String taxiConversationListUri = '/api/v1/rental/vendor/message/list';
+  static const String taxiMessageDetailsUri = '/api/v1/rental/vendor/message/details';
+  static const String taxiSendMessageUri = '/api/v1/rental/vendor/message/send';
+  static const String taxiSearchConversationListUri = '/api/v1/rental/vendor/message/search-list';
+
+  /// Rental Review Api
+  static const String taxiReviewListUri = '/api/v1/rental/vendor/vehicle/reviews';
+  static const String taxiReviewReplyUri = '/api/v1/rental/vendor/vehicle/reply-update';
+
   /// Shared Key
   static const String theme = '6am_mart_store_theme';
   static const String intro = '6am_mart_store_intro';
@@ -168,6 +232,7 @@ class AppConstants {
   static const String isStoreRegister = 'stackfood_store_registration';
   static const String bluetoothMacAddress = 'bluetooth_mac_address';
   static const String lowStockStatus = '6am_mart_store_low_stock';
+  static const String moduleType = '6am_mart_store_module_type';
 
   static const String topic = 'all_zone_store';
   static const String zoneTopic = 'zone_topic';

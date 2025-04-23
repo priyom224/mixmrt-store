@@ -118,7 +118,7 @@ class _AttributeViewWidgetState extends State<AttributeViewWidget> {
                     padding: const EdgeInsets.only(left: Dimensions.paddingSizeExtraSmall),
                     margin: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor.withOpacity(0.2),
+                      color: Theme.of(context).primaryColor.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
                     ),
                     child: Row(children: [

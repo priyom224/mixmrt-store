@@ -11,7 +11,7 @@ class CreateAdvertisementVideoViewShimmer extends StatelessWidget {
       child: AspectRatio(
         aspectRatio: 16/9,
         child: Container(
-          color: Theme.of(context).hintColor.withOpacity(0.2),
+          color: Theme.of(context).hintColor.withValues(alpha: 0.2),
         ),
       ),
     );

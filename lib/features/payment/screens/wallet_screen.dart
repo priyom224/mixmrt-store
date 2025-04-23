@@ -48,7 +48,7 @@ class _WalletScreenState extends State<WalletScreen> {
 
       body: GetBuilder<ProfileController>(builder: (profileController) {
         return GetBuilder<PaymentController>(builder: (bankController) {
-          return (profileController.profileModel != null && bankController.withdrawList != null) ? profileController.modulePermission!.wallet! ? RefreshIndicator(
+          return (profileController.profileModel != null && bankController.withdrawList != null) ? (profileController.modulePermission!.wallet! || profileController.modulePermission!.myWallet!) ? RefreshIndicator(
             onRefresh: () async {
               await Get.find<ProfileController>().getProfile();
               await Get.find<PaymentController>().getWithdrawList();
@@ -76,7 +76,7 @@ class _WalletScreenState extends State<WalletScreen> {
                         Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
                           Text(
-                            profileController.profileModel!.dynamicBalanceType!,
+                            profileController.profileModel?.dynamicBalanceType?.tr ?? '',
                             style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).cardColor),
                           ),
                           const SizedBox(height: Dimensions.paddingSizeExtraSmall),
@@ -109,7 +109,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                             Expanded(
                                               child: CustomButtonWidget(
                                                 onPressed: () => Get.back(),
-                                                color: Theme.of(context).disabledColor.withOpacity(0.5),
+                                                color: Theme.of(context).disabledColor.withValues(alpha: 0.5),
                                                 buttonText: 'cancel'.tr,
                                               ),
                                             ),
@@ -190,7 +190,7 @@ class _WalletScreenState extends State<WalletScreen> {
                               padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                                color: profileController.profileModel!.showPayNowButton! ? Theme.of(context).cardColor : Theme.of(context).disabledColor.withOpacity(0.8),
+                                color: profileController.profileModel!.showPayNowButton! ? Theme.of(context).cardColor : Theme.of(context).disabledColor.withValues(alpha: 0.8),
                               ),
                               child: Text('pay_now'.tr, textAlign: TextAlign.center, style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall)),
                             ),

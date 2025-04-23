@@ -10,6 +10,7 @@ import 'package:sixam_mart_store/common/widgets/custom_text_field_widget.dart';
 import 'package:sixam_mart_store/features/address/controllers/address_controller.dart';
 import 'package:sixam_mart_store/features/address/domain/models/zone_model.dart';
 import 'package:sixam_mart_store/features/address/widgets/permission_dialog_widget.dart';
+import 'package:sixam_mart_store/features/address/widgets/pickup_zone_widget.dart';
 import 'package:sixam_mart_store/features/address/widgets/zone_selection_widget.dart';
 import 'package:sixam_mart_store/features/splash/controllers/splash_controller.dart';
 import 'package:sixam_mart_store/helper/validate_check.dart';
@@ -40,14 +41,6 @@ class _SelectLocationAndModuleViewWidgetState extends State<SelectLocationAndMod
   Set<Polygon> _polygons = {};
   GoogleMapController? _mapController;
 
-/*  @override
-  void initState() {
-    super.initState();
-    if(Get.find<AddressController>().zoneList != null) {
-      Get.find<AddressController>().getZoneList();
-    }
-  }*/
-
   @override
   Widget build(BuildContext context) {
     return GetBuilder<AddressController>(builder: (addressController) {
@@ -66,6 +59,9 @@ class _SelectLocationAndModuleViewWidgetState extends State<SelectLocationAndMod
         }
       }
 
+      bool isRentalModule = widget.fromView && addressController.moduleList != null && addressController.selectedModuleIndex != -1 &&
+          addressController.moduleList![addressController.selectedModuleIndex!].moduleType == 'rental';
+
       return Container(
         decoration: widget.fromView ? BoxDecoration(
           color: Theme.of(context).cardColor,
@@ -83,10 +79,13 @@ class _SelectLocationAndModuleViewWidgetState extends State<SelectLocationAndMod
               widget.fromView ? ZoneSelectionWidget(addressController: addressController, zoneList: zoneList, callBack: (){
                 _setPolygon(addressController.zoneList![addressController.selectedZoneIndex!]);
               }) : const SizedBox(),
-              widget.fromView ? const SizedBox(height: Dimensions.paddingSizeExtraOverLarge) : const SizedBox(),
+              SizedBox(height: widget.fromView ? Dimensions.paddingSizeExtremeLarge : 0),
 
               widget.fromView ? const ModuleViewWidget() : const SizedBox(),
-              widget.fromView ? const SizedBox(height: Dimensions.paddingSizeExtremeLarge) : const SizedBox(),
+              SizedBox(height: widget.fromView ? Dimensions.paddingSizeExtremeLarge : 0),
+
+              isRentalModule ? const PickupZoneWidget() : const SizedBox(),
+              isRentalModule ? const SizedBox(height: Dimensions.paddingSizeExtremeLarge) : const SizedBox(),
 
               mapView(addressController),
               SizedBox(height: !widget.fromView ? Dimensions.paddingSizeSmall : 0),
@@ -321,7 +320,7 @@ class _SelectLocationAndModuleViewWidgetState extends State<SelectLocationAndMod
         points: zoneLatLongList,
         strokeWidth: 2,
         strokeColor: Get.theme.colorScheme.primary,
-        fillColor: Get.theme.colorScheme.primary.withOpacity(.2),
+        fillColor: Get.theme.colorScheme.primary.withValues(alpha: .2),
       ),
     );
 

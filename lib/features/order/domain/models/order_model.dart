@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class PaginatedOrderModel {
   int? totalSize;
   String? limit;
@@ -202,24 +200,13 @@ class OrderModel {
     cutlery = json['cutlery'];
     unavailableItemNote = json['unavailable_item_note'];
     deliveryInstruction = json['delivery_instruction'];
-    if(json['order_proof_full_url'] != null){
-      if(json['order_proof_full_url'].toString().startsWith('[')){
-        orderProofFullUrl = [];
-        if(json['order_proof_full_url'] is String) {
-          jsonDecode(json['order_proof_full_url']).forEach((v) {
-            orderProofFullUrl!.add(v);
-          });
-        }else{
-          json['order_proof_full_url'].forEach((v) {
-            orderProofFullUrl!.add(v);
-          });
+    if (json['order_proof_full_url'] != null) {
+      orderProofFullUrl = [];
+      json['order_proof_full_url'].forEach((v) {
+        if(v != null) {
+          orderProofFullUrl!.add(v);
         }
-      }else{
-        orderProofFullUrl = [];
-        if(json['order_proof_full_url'] != '') {
-          orderProofFullUrl!.add(json['order_proof_full_url'].toString());
-        }
-      }
+      });
     }
     if (json['payments'] != null) {
       payments = <Payments>[];

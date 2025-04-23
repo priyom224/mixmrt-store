@@ -75,13 +75,13 @@ class _BannerListScreenState extends State<BannerListScreen> {
                     itemCount: bannerController.storeBannerList!.length,
                     itemBuilder: (context, index) {
                       return Container(
-                        height: 180, width: Get.width,
+                        height: 200, width: Get.width,
                         margin: const EdgeInsets.only(bottom: Dimensions.paddingSizeSmall),
                         padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
                           color: Theme.of(context).cardColor,
-                          boxShadow: [BoxShadow(color: Theme.of(context).disabledColor.withOpacity(0.1), blurRadius: 5, spreadRadius: 2, offset: const Offset(0, 0))],
+                          boxShadow: [BoxShadow(color: Theme.of(context).disabledColor.withValues(alpha: 0.1), blurRadius: 5, spreadRadius: 2, offset: const Offset(0, 0))],
                         ),
                         child: Column(children: [
                           Expanded(
@@ -126,7 +126,11 @@ class _BannerListScreenState extends State<BannerListScreen> {
 
                             InkWell(
                               onTap: (){
-                                Get.toNamed(RouteHelper.getAddBannerRoute(storeBannerListModel: bannerController.storeBannerList![index], isUpdate: true));
+                                bannerController.getBannerDetails(bannerController.storeBannerList![index].id!).then((bannerDetails) {
+                                  if(bannerDetails != null) {
+                                    Get.toNamed(RouteHelper.getAddBannerRoute(storeBannerListModel: bannerDetails));
+                                  }
+                                });
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
@@ -162,7 +166,7 @@ class _BannerListScreenState extends State<BannerListScreen> {
                         ]),
                       );
                     },
-                  ) : Center(child: Text('no_banner_found'.tr, style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge))) : const Center(child: CircularProgressIndicator());
+                  ) : Center(child: Text('no_banner_found'.tr)) : const Center(child: CircularProgressIndicator());
                 }
               ),
             ),
@@ -173,7 +177,7 @@ class _BannerListScreenState extends State<BannerListScreen> {
               padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
               child: GetBuilder<BannerController>(builder: (bannerController) {
                 return CustomButtonWidget(
-                  onPressed: () => Get.toNamed(RouteHelper.getAddBannerRoute(storeBannerListModel: null, isUpdate: false)),
+                  onPressed: () => Get.toNamed(RouteHelper.getAddBannerRoute(storeBannerListModel: null)),
                   buttonText: 'add_new_banner'.tr,
                 );
               }),

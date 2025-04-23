@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:vibration/vibration.dart';
 
@@ -99,7 +98,7 @@ class SliderButtonState extends State<SliderButton> {
     height: widget.height,
     width: widget.width,
     decoration: BoxDecoration(
-      color: widget.disable ? Colors.grey.shade700 : Get.isDarkMode ? Colors.white12 : widget.backgroundColor,
+      color: widget.disable ? Colors.grey.shade700 : widget.backgroundColor,
       borderRadius: BorderRadius.circular(widget.radius),
     ),
     alignment: Alignment.centerLeft,

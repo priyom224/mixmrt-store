@@ -214,7 +214,7 @@ class _FoodVariationViewWidgetState extends State<FoodVariationViewWidget> {
           child: Container(
             width: context.width,
             padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall, vertical: Dimensions.paddingSizeLarge),
-            decoration: BoxDecoration(color: Theme.of(context).disabledColor.withOpacity(0.1), borderRadius: BorderRadius.circular(Dimensions.radiusSmall)),
+            decoration: BoxDecoration(color: Theme.of(context).disabledColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(Dimensions.radiusSmall)),
             child: Column(children: [
 
               const Icon(Icons.add, size: 24),

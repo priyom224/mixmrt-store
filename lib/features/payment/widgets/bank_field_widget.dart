@@ -31,7 +31,7 @@ class BankFieldWidget extends StatelessWidget {
           hintText: hintText,
           isDense: true,
           filled: true,
-          fillColor: Theme.of(context).disabledColor.withOpacity(0.2),
+          fillColor: Theme.of(context).disabledColor.withValues(alpha: 0.2),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(Dimensions.radiusSmall), borderSide: BorderSide.none),
           hintStyle: robotoRegular.copyWith(color: Theme.of(context).hintColor),
         ),

@@ -57,7 +57,7 @@ class UpdateProfileScreen extends StatelessWidget {
                 onTap: () => profileController.pickImage(),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.3), shape: BoxShape.circle,
+                    color: Colors.black.withValues(alpha: 0.3), shape: BoxShape.circle,
                     border: Border.all(width: 1, color: Theme.of(context).primaryColor),
                   ),
                   child: Container(

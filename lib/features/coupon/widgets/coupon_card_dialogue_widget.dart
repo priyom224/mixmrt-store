@@ -34,7 +34,7 @@ class CouponCardDialogueWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color: Get.isDarkMode ? Colors.black87 : Colors.transparent,
               image: DecorationImage(image: const AssetImage(Images.couponDetails), fit: BoxFit.fitWidth,
-                  colorFilter: Get.isDarkMode ? ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.dstATop) : null,
+                  colorFilter: Get.isDarkMode ? ColorFilter.mode(Colors.black.withValues(alpha: 0.2), BlendMode.dstATop) : null,
               ),
             ),
             child: Stack(
@@ -72,8 +72,8 @@ class CouponCardDialogueWidget extends StatelessWidget {
                         return Transform.scale(
                           scale: 0.7,
                           child: CupertinoSwitch(
-                            activeColor: Theme.of(context).primaryColor,
-                            trackColor: Theme.of(context).primaryColor.withOpacity(0.5),
+                            activeTrackColor: Theme.of(context).primaryColor,
+                            inactiveTrackColor: Theme.of(context).primaryColor.withValues(alpha: 0.5),
                             value: couponController.coupons![index].status == 1 ? true : false,
                             onChanged: (bool status){
                               couponController.changeStatus(couponController.coupons![index].id, status).then((success) {

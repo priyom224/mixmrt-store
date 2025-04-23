@@ -20,7 +20,7 @@ class CustomButtonWidget extends StatelessWidget {
   final Color? iconColor;
   final bool isLoading;
   const CustomButtonWidget({super.key, this.onPressed, required this.buttonText, this.transparent = false, this.margin, this.iconColor, this.isLoading = false,
-    this.width, this.height, this.fontSize, this.color, this.icon, this.radius = Dimensions.radiusDefault, this.fontWeight, this.isViewReply = false, this.textColor});
+    this.width, this.height, this.fontSize, this.color, this.icon, this.radius = Dimensions.radiusSmall, this.fontWeight, this.isViewReply = false, this.textColor});
 
   @override
   Widget build(BuildContext context) {
@@ -38,16 +38,16 @@ class CustomButtonWidget extends StatelessWidget {
         onPressed: isLoading ? null : onPressed as void Function()?,
         style: flatButtonStyle,
         child: isLoading ? Center(child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          const SizedBox(
+          SizedBox(
             height: 15, width: 15,
             child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              valueColor: AlwaysStoppedAnimation<Color>(textColor ?? Colors.white),
               strokeWidth: 2,
             ),
           ),
           const SizedBox(width: Dimensions.paddingSizeSmall),
 
-          Text('loading'.tr, style: robotoMedium.copyWith(color: Colors.white)),
+          Text('loading'.tr, style: robotoMedium.copyWith(color: textColor ?? Colors.white)),
         ]),
         ) : Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           icon != null ? Icon(icon, color: transparent ? Theme.of(context).primaryColor : iconColor ?? Theme.of(context).cardColor) : const SizedBox(),

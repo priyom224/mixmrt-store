@@ -20,4 +20,6 @@ class Dimensions {
   static const double radiusExtraLarge = 20.0;
 
   static const int messageInputLength = 250;
+
+  static const double pickMapIconSize = 100.0;
 }

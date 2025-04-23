@@ -32,7 +32,7 @@ class WithdrawHistoryScreen extends StatelessWidget {
           margin: const EdgeInsets.all(Dimensions.paddingSizeSmall),
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: Theme.of(context).disabledColor.withOpacity(0.5),
+            color: Theme.of(context).disabledColor.withValues(alpha: 0.5),
             borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
           ),
           child: const Icon(Icons.arrow_drop_down, size: 30),

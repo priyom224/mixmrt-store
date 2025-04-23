@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:sixam_mart_store/common/widgets/custom_bottom_sheet_widget.dart';
 import 'package:sixam_mart_store/common/widgets/custom_button_widget.dart';
+import 'package:sixam_mart_store/features/auth/controllers/auth_controller.dart';
 import 'package:sixam_mart_store/features/splash/controllers/splash_controller.dart';
 import 'package:sixam_mart_store/features/subscription/controllers/subscription_controller.dart';
 import 'package:sixam_mart_store/features/subscription/widgets/billing_info_widget.dart';
@@ -33,6 +34,8 @@ class _SubscriptionDetailsWidgetState extends State<SubscriptionDetailsWidget> {
 
     int remainingDays = widget.subscriptionController.profileModel!.subscription != null ? DateConverterHelper.differenceInDaysIgnoringTime(DateTime.parse(widget.subscriptionController.profileModel!.subscription!.expiryDate!), null) : 0;
 
+    bool isRental = Get.find<AuthController>().getModuleType() == 'rental';
+
     return Column(children: [
 
       Expanded(
@@ -46,7 +49,7 @@ class _SubscriptionDetailsWidgetState extends State<SubscriptionDetailsWidget> {
                 padding: const EdgeInsets.all(Dimensions.paddingSizeExtraLarge),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                  color: Theme.of(context).disabledColor.withOpacity(0.03),
+                  color: Theme.of(context).disabledColor.withValues(alpha: 0.03),
                 ),
                 child: Column(children: [
 
@@ -65,8 +68,8 @@ class _SubscriptionDetailsWidgetState extends State<SubscriptionDetailsWidget> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: context.width * 0.15),
                     child: Text(
-                      "${'store_will_pay'.tr} ${Get.find<SplashController>().configModel!.adminCommission}% ${'commission_to'.tr} ${Get.find<SplashController>().configModel!.businessName} ${'from_each_order_You_will_get_access_of_all'.tr}",
-                      style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.7), height: 2), textAlign: TextAlign.center,
+                      "${'vendor_will_pay'.tr} ${Get.find<SplashController>().configModel!.adminCommission}% ${'commission_to'.tr} ${Get.find<SplashController>().configModel!.businessName} ${'from_each_order_You_will_get_access_of_all'.tr}",
+                      style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).textTheme.bodyLarge?.color?.withValues(alpha: 0.7), height: 2), textAlign: TextAlign.center,
                     ),
                   )
                   
@@ -128,8 +131,8 @@ class _SubscriptionDetailsWidgetState extends State<SubscriptionDetailsWidget> {
                 padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault, horizontal: Dimensions.paddingSizeLarge),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                  color: Theme.of(context).disabledColor.withOpacity(0.05),
-                  border: Border.all(color: Theme.of(context).disabledColor.withOpacity(0.1)),
+                  color: Theme.of(context).disabledColor.withValues(alpha: 0.05),
+                  border: Border.all(color: Theme.of(context).disabledColor.withValues(alpha: 0.1)),
                 ),
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
@@ -190,7 +193,7 @@ class _SubscriptionDetailsWidgetState extends State<SubscriptionDetailsWidget> {
                 padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                  color: Theme.of(context).disabledColor.withOpacity(0.03),
+                  color: Theme.of(context).disabledColor.withValues(alpha: 0.03),
                 ),
                 child: Column(children: [
 
@@ -226,13 +229,13 @@ class _SubscriptionDetailsWidgetState extends State<SubscriptionDetailsWidget> {
                   const SizedBox(height: Dimensions.paddingSizeDefault),
 
                   PackageFeatureItem(
-                    title: widget.subscriptionController.profileModel!.subscription!.maxOrder == 'unlimited' ? 'max_order'.tr : '${widget.subscriptionController.profileModel!.subscription?.package?.maxOrder} ${'order'.tr}',
+                    title: widget.subscriptionController.profileModel!.subscription!.maxOrder == 'unlimited' ? isRental ? 'max_trip'.tr : 'max_order'.tr : '${widget.subscriptionController.profileModel!.subscription?.package?.maxOrder} ${isRental ? 'trip'.tr : 'order'.tr}',
                     leftValue: widget.subscriptionController.profileModel!.subscription!.maxOrder == 'unlimited' ? widget.subscriptionController.profileModel!.subscription!.maxOrder.toString().tr : '${widget.subscriptionController.profileModel!.subscription!.maxOrder} ${'left'.tr}',
                   ),
                   const SizedBox(height: Dimensions.paddingSizeDefault),
 
                   PackageFeatureItem(
-                    title: widget.subscriptionController.profileModel!.subscription!.maxProduct == 'unlimited' ? 'max_product'.tr : '${widget.subscriptionController.profileModel!.subscription?.package?.maxProduct} ${'products_upload'.tr}',
+                    title: widget.subscriptionController.profileModel!.subscription!.maxProduct == 'unlimited' ? isRental ? 'max_vehicle'.tr : 'max_product'.tr : '${widget.subscriptionController.profileModel!.subscription?.package?.maxProduct} ${isRental ? 'vehicle_upload'.tr : 'products_upload'.tr}',
                     leftValue: widget.subscriptionController.profileModel!.subscription!.maxProduct == 'unlimited' ? widget.subscriptionController.profileModel!.subscription!.maxProduct.toString().tr
                         : '${widget.subscriptionController.profileModel!.subscriptionOtherData != null ? widget.subscriptionController.profileModel!.subscriptionOtherData!.maxProductUpload : 0} ${'left'.tr}',
                   ),
@@ -292,7 +295,7 @@ class _SubscriptionDetailsWidgetState extends State<SubscriptionDetailsWidget> {
               padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                border: Border.all(color: Theme.of(context).disabledColor.withOpacity(0.7)),
+                border: Border.all(color: Theme.of(context).disabledColor.withValues(alpha: 0.7)),
               ),
               child: Text('cancel_subscription'.tr, style: robotoMedium.copyWith(color: Theme.of(context).disabledColor, fontSize: Dimensions.fontSizeLarge), textAlign: TextAlign.center),
             ),

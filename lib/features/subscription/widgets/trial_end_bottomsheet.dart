@@ -68,7 +68,7 @@ class TrialEndBottomSheet extends StatelessWidget {
 
               Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.error.withOpacity(0.1),
+                  color: Theme.of(context).colorScheme.error.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
                 ),
                 padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall, horizontal: Dimensions.paddingSizeSmall),

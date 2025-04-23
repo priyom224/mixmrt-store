@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:sixam_mart_store/common/widgets/custom_snackbar_widget.dart';
 import 'package:sixam_mart_store/features/address/domain/models/address_model.dart';
 import 'package:sixam_mart_store/features/auth/domain/models/module_model.dart';
 import 'package:sixam_mart_store/features/address/domain/models/place_details_model.dart';
@@ -102,7 +103,7 @@ class AddressController extends GetxController implements GetxService {
       _inZone = await addressServiceInterface.checkInZone(location.latitude.toString(), location.longitude.toString(), zoneId);
     }
 
-    _storeAddress = await _getAddressFromGeocode(LatLng(location.latitude, location.longitude));
+    _storeAddress = await getAddressFromGeocode(LatLng(location.latitude, location.longitude));
     //_restaurantLocation = addressServiceInterface.setRestaurantLocation(response, location);
     //_zoneIds = addressServiceInterface.setZoneIds(response);
     //_selectedZoneIndex = addressServiceInterface.setSelectedZoneIndex(response, _zoneIds, _selectedZoneIndex, _zoneList);
@@ -125,7 +126,7 @@ class AddressController extends GetxController implements GetxService {
     update();
   }
 
-  Future<String> _getAddressFromGeocode(LatLng latLng) async {
+  Future<String> getAddressFromGeocode(LatLng latLng) async {
     String address = await addressServiceInterface.getAddressFromGeocode(latLng);
     return address;
   }
@@ -228,7 +229,7 @@ class AddressController extends GetxController implements GetxService {
     _pickPosition = myPosition;
 
     addressServiceInterface.handleMapAnimation(mapController, myPosition);
-    String addressFromGeocode = await _getAddressFromGeocode(LatLng(myPosition.latitude, myPosition.longitude));
+    String addressFromGeocode = await getAddressFromGeocode(LatLng(myPosition.latitude, myPosition.longitude));
     _pickAddress = addressFromGeocode;
     ZoneResponseModel responseModel = await getZone(myPosition.latitude.toString(), myPosition.longitude.toString(), true);
 
@@ -240,6 +241,55 @@ class AddressController extends GetxController implements GetxService {
     _loading = false;
     update();
     return addressModel;
+  }
+
+  String? _selectedPickupZone;
+  String? get selectedPickupZone => _selectedPickupZone;
+
+  final List<String> _pickupZoneList = [];
+  List<String> get pickupZoneList => _pickupZoneList;
+
+  final List<int> _pickupZoneIdList = [];
+  List<int> get pickupZoneIdList => _pickupZoneIdList;
+
+  void setSelectedPickupZone(String? zone, int? zoneId) {
+    if (zone != null && zoneId != null) {
+      if (_pickupZoneList.contains(zone) || _pickupZoneIdList.contains(zoneId)) {
+        showCustomSnackBar('zone_already_added_please_select_another'.tr);
+      } else {
+        _selectedPickupZone = zone;
+        _pickupZoneList.add(zone);
+        _pickupZoneIdList.add(zoneId);
+        update();
+      }
+    }
+  }
+
+  void removePickupZone(String zone, int zoneId) {
+    _selectedPickupZone = null;
+    _pickupZoneList.remove(zone);
+    _pickupZoneIdList.remove(zoneId);
+    update();
+  }
+
+  void clearPickupZone() {
+    _selectedModuleIndex = -1;
+    _selectedPickupZone = null;
+    _pickupZoneList.clear();
+    _pickupZoneIdList.clear();
+  }
+
+  void preloadPickupZones({required List<String> pickupZoneList}) {
+    _pickupZoneList.clear();
+    _pickupZoneIdList.clear();
+    for (String id in pickupZoneList) {
+      final ZoneModel? zone = zoneList?.firstWhereOrNull((zone) => zone.id == int.parse(id));
+      if (zone != null) {
+        _pickupZoneList.add(zone.name!);
+        _pickupZoneIdList.add(zone.id!);
+      }
+    }
+    update();
   }
 
 }

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
 import 'package:sixam_mart_store/api/api_client.dart';
 import 'package:sixam_mart_store/features/banner/domain/models/store_banner_list_model.dart';
@@ -10,8 +11,13 @@ class BannerRepository implements BannerRepositoryInterface {
   BannerRepository({required this.apiClient});
 
   @override
-  Future<bool> addBanner(String title, String url, XFile image) async {
-    Response response = await apiClient.postMultipartData(AppConstants.addStoreBannerUri, {'title': title, 'default_link': url}, [MultipartBody('image', image)]);
+  Future<bool> addBanner({required StoreBannerListModel? banner, required XFile image}) async {
+    Map<String, String> body = {};
+    body.addAll({
+      'translations': jsonEncode(banner?.translations),
+      'default_link': banner?.defaultLink ?? ''
+    });
+    Response response = await apiClient.postMultipartData(AppConstants.addStoreBannerUri, body, [MultipartBody('image', image)]);
     return (response.statusCode == 200);
   }
 
@@ -33,20 +39,28 @@ class BannerRepository implements BannerRepositoryInterface {
   }
 
   @override
-  Future<bool> updateBanner(int? bannerID, String title, String url, XFile? image) async {
-    Map<String, String> fields = {};
-    fields.addAll(<String, String>{'_method': 'put', 'id': bannerID.toString(), 'title': title, 'default_link': url});
-    Response response = await apiClient.postMultipartData(AppConstants.updateStoreBannerUri, fields, [MultipartBody('image', image)]);
+  Future<bool> updateBanner({required StoreBannerListModel? banner, XFile? image}) async {
+    Map<String, String> body = {};
+    body.addAll({
+      'translations': jsonEncode(banner?.translations),
+      'default_link': banner?.defaultLink ?? ''
+    });
+    Response response = await apiClient.postMultipartData('${AppConstants.updateStoreBannerUri}/${banner?.id}', body, [MultipartBody('image', image)]);
     return (response.statusCode == 200);
   }
 
   @override
-  Future add(value) {
-    throw UnimplementedError();
+  Future<StoreBannerListModel?> get(int? id) async {
+    StoreBannerListModel? bannersDetails;
+    Response response = await apiClient.getData('${AppConstants.storeBannerDetailsUri}/$id');
+    if(response.statusCode == 200) {
+      bannersDetails = StoreBannerListModel.fromJson(response.body);
+    }
+    return bannersDetails;
   }
 
   @override
-  Future get(int? id) {
+  Future add(value) {
     throw UnimplementedError();
   }
 

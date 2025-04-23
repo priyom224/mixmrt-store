@@ -72,7 +72,7 @@ class ConfirmationDialogWidget extends StatelessWidget {
                         isOnNoPressedShow ? Expanded(child: TextButton(
                           onPressed: () => isLogOut ? onYesPressed() : onNoPressed != null ? onNoPressed!() : Get.back(),
                           style: TextButton.styleFrom(
-                            backgroundColor: Theme.of(context).disabledColor.withOpacity(0.3), minimumSize: const Size(1170, 40), padding: EdgeInsets.zero,
+                            backgroundColor: Theme.of(context).disabledColor.withValues(alpha: 0.3), minimumSize: const Size(1170, 40), padding: EdgeInsets.zero,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimensions.radiusSmall)),
                           ),
                           child: Text(

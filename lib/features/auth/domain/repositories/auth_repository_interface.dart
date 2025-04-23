@@ -1,3 +1,4 @@
+import 'package:sixam_mart_store/features/business/domain/models/package_model.dart';
 import 'package:sixam_mart_store/interface/repository_interface.dart';
 import 'dart:async';
 import 'package:image_picker/image_picker.dart';
@@ -20,4 +21,7 @@ abstract class AuthRepositoryInterface implements RepositoryInterface {
   Future<dynamic> toggleStoreClosedStatus();
   Future<bool> saveIsStoreRegistration(bool status);
   bool getIsStoreRegistration();
+  String getModuleType();
+  void setModuleType(String type);
+  Future<PackageModel?> getPackageList({int? moduleId});
 }

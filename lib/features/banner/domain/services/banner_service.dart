@@ -8,8 +8,8 @@ class BannerService implements BannerServiceInterface {
   BannerService({required this.bannerRepositoryInterface});
 
   @override
-  Future<bool> addBanner(String title, String url, XFile image) async {
-    return await bannerRepositoryInterface.addBanner(title, url, image);
+  Future<bool> addBanner({required StoreBannerListModel? banner, required XFile image}) async {
+    return await bannerRepositoryInterface.addBanner(banner: banner, image: image);
   }
 
   @override
@@ -23,8 +23,13 @@ class BannerService implements BannerServiceInterface {
   }
 
   @override
-  Future<bool> updateBanner(int? bannerID, String title, String url, XFile? image) async {
-    return await bannerRepositoryInterface.updateBanner(bannerID, title, url, image);
+  Future<bool> updateBanner({required StoreBannerListModel? banner, XFile? image}) async {
+    return await bannerRepositoryInterface.updateBanner(banner: banner, image: image);
+  }
+
+  @override
+  Future<StoreBannerListModel?> getBannerDetails(int id) async {
+    return await bannerRepositoryInterface.get(id);
   }
 
 }

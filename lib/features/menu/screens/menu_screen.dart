@@ -52,7 +52,9 @@ class MenuScreen extends StatelessWidget {
       ));
     }
 
-    menuList.add(MenuModel(icon: Images.warning, iconColor: Colors.white, title: 'low_stock'.tr, route: RouteHelper.getLowStockRoute()));
+    if(Get.find<ProfileController>().profileModel!.stores![0].module!.moduleType != 'food') {
+      menuList.add(MenuModel(icon: Images.warning, iconColor: Colors.white, title: 'low_stock'.tr, route: RouteHelper.getLowStockRoute()));
+    }
 
     menuList.add(MenuModel(icon: Images.review, title: 'reviews'.tr, route: RouteHelper.getCustomerReviewRoute(), isNotSubscribe: Get.find<ProfileController>().profileModel!.stores![0].storeBusinessModel == 'subscription' && Get.find<ProfileController>().profileModel!.subscription!.review == 0));
 

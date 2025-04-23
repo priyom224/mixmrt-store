@@ -23,5 +23,7 @@ abstract class AuthServiceInterface {
   Future<bool> saveIsStoreRegistration(bool status);
   bool getIsStoreRegistration();
   Future<ResponseModel?> manageLogin(Response response, String type);
-  Future<PackageModel?> getPackageList();
+  Future<PackageModel?> getPackageList({int? moduleId});
+  String getModuleType();
+  void setModuleType(String type);
 }

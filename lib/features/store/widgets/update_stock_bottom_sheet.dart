@@ -66,7 +66,7 @@ class _UpdateStockBottomSheetState extends State<UpdateStockBottomSheet> {
         Container(
           height: 5, width: 50,
           decoration: BoxDecoration(
-            color: Theme.of(context).hintColor.withOpacity(0.2),
+            color: Theme.of(context).hintColor.withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
           ),
         ),
@@ -101,7 +101,7 @@ class _UpdateStockBottomSheetState extends State<UpdateStockBottomSheet> {
               padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
               margin: const EdgeInsets.all(Dimensions.paddingSizeLarge),
               decoration: BoxDecoration(
-                color: Theme.of(context).hintColor.withOpacity(0.1),
+                color: Theme.of(context).hintColor.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
               ),
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -174,7 +174,7 @@ class _UpdateStockBottomSheetState extends State<UpdateStockBottomSheet> {
             Expanded(
               child: CustomButtonWidget(
                 buttonText: 'cancel'.tr,
-                color: Theme.of(context).disabledColor.withOpacity(0.4),
+                color: Theme.of(context).disabledColor.withValues(alpha: 0.4),
                 textColor: Theme.of(context).textTheme.bodyLarge!.color,
                 onPressed: () {
                   Get.back();

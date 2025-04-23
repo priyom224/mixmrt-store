@@ -41,8 +41,8 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
             menuWidget: Transform.scale(
               scale: 0.7,
               child: CupertinoSwitch(
-                trackColor: Theme.of(context).primaryColor.withOpacity(0.5),
-                activeColor: Theme.of(context).primaryColor,
+                inactiveTrackColor: Theme.of(context).primaryColor.withValues(alpha: 0.5),
+                activeTrackColor: Theme.of(context).primaryColor,
                 value: storeController.announcementStatus,
                 onChanged: (value) {
                   showCustomBottomSheet(child: const AnnouncementStatusBottomSheet());
@@ -67,7 +67,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
                   tailBaseWidth: 20,
                   content: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('this_feature_is_for_sharing_important_information_or_announcements_related_to_the_store'.tr,style: robotoRegular.copyWith(color: Theme.of(context).cardColor)),
+                    child: Text('this_feature_is_for_sharing_important_information_or_announcements_related_to_the_vendor'.tr,style: robotoRegular.copyWith(color: Theme.of(context).cardColor)),
                   ),
                   child: InkWell(
                     onTap: () => tooltipController.showTooltip(),

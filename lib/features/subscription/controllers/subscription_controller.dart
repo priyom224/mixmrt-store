@@ -14,6 +14,7 @@ import 'package:sixam_mart_store/features/profile/domain/models/profile_model.da
 import 'package:sixam_mart_store/features/splash/controllers/splash_controller.dart';
 import 'package:sixam_mart_store/features/subscription/domain/models/subscription_transaction_model.dart';
 import 'package:sixam_mart_store/features/subscription/domain/services/subscription_service_interface.dart';
+import 'package:sixam_mart_store/features/rental_module/profile/controllers/taxi_profile_controller.dart';
 import 'package:sixam_mart_store/helper/date_converter_helper.dart';
 import 'package:sixam_mart_store/helper/route_helper.dart';
 import 'package:sixam_mart_store/util/images.dart';
@@ -166,6 +167,9 @@ class SubscriptionController extends GetxController implements GetxService {
         Get.toNamed(RouteHelper.getPaymentRoute(digitalPaymentName, redirectUrl,  null, false, null));
       } else {
         _renewStatus = 'packages';
+        if(Get.find<AuthController>().getModuleType() == 'rental'){
+          await Get.find<TaxiProfileController>().getProfile();
+        }
         await Get.find<ProfileController>().getProfile();
         getProfile(Get.find<ProfileController>().profileModel);
         Get.back();
@@ -189,6 +193,9 @@ class SubscriptionController extends GetxController implements GetxService {
     update();
     Response response = await subscriptionServiceInterface.cancelSubscription({'store_id' : '$storeId', 'subscription_id': '$subscriptionId'});
     if(response.statusCode == 200) {
+      if(Get.find<AuthController>().getModuleType() == 'rental'){
+        await Get.find<TaxiProfileController>().getProfile();
+      }
       await Get.find<ProfileController>().getProfile();
       await getProfile(Get.find<ProfileController>().profileModel);
       Get.back();
@@ -200,7 +207,7 @@ class SubscriptionController extends GetxController implements GetxService {
 
   Future<void> getPackageList() async {
     if(Get.find<AuthController>().packageModel == null || Get.find<AuthController>().packageModel!.packages!.isEmpty) {
-      await Get.find<AuthController>().getPackageList();
+      await Get.find<AuthController>().getPackageList(moduleId: Get.find<ProfileController>().profileModel!.stores![0].module?.id);
     }
     _packageList = [];
     if(Get.find<SplashController>().configModel?.commissionBusinessModel == 1){
@@ -208,7 +215,7 @@ class SubscriptionController extends GetxController implements GetxService {
         id: -1,
         packageName: 'commission_base'.tr,
         price: Get.find<SplashController>().configModel!.adminCommission,
-        description: "${'store_will_pay'.tr} ${Get.find<SplashController>().configModel!.adminCommission}% ${'commission_to'.tr} ${Get.find<SplashController>().configModel!.businessName} ${'from_each_order_You_will_get_access_of_all'.tr}",
+        description: "${'vendor_will_pay'.tr} ${Get.find<SplashController>().configModel!.adminCommission}% ${'commission_to'.tr} ${Get.find<SplashController>().configModel!.businessName} ${'from_each_order_You_will_get_access_of_all'.tr}",
       ));
     }
     for (var package in Get.find<AuthController>().packageModel!.packages!) {

@@ -40,7 +40,7 @@ class FundPaymentDialogWidget extends StatelessWidget {
                 Get.back();
               },
               style: TextButton.styleFrom(
-                backgroundColor: Theme.of(context).disabledColor.withOpacity(0.3), minimumSize: const Size(1130, 40), padding: EdgeInsets.zero,
+                backgroundColor: Theme.of(context).disabledColor.withValues(alpha: 0.3), minimumSize: const Size(1130, 40), padding: EdgeInsets.zero,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimensions.radiusSmall)),
               ),
               child: Text('cancel_payment'.tr, textAlign: TextAlign.center, style: robotoBold.copyWith(color: Theme.of(context).textTheme.bodyLarge!.color)),

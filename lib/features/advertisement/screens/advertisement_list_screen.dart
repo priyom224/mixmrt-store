@@ -152,7 +152,7 @@ class _AdvertisementListScreenState extends State<AdvertisementListScreen>{
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
                     color: Theme.of(context).cardColor,
-                    border: Border.all(color: Theme.of(context).disabledColor.withOpacity(0.3)),
+                    border: Border.all(color: Theme.of(context).disabledColor.withValues(alpha: 0.3)),
                     // boxShadow: const [BoxShadow(color: Colors.black12, spreadRadius: 0, blurRadius: 5)],
                   ),
                   child: Column(children: [
@@ -160,7 +160,7 @@ class _AdvertisementListScreenState extends State<AdvertisementListScreen>{
                     Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: Theme.of(context).disabledColor.withOpacity(0.1),
+                        color: Theme.of(context).disabledColor.withValues(alpha: 0.1),
                         borderRadius: const BorderRadius.vertical(top: Radius.circular(Dimensions.radiusDefault)),
                       ),
                       padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall, vertical: Dimensions.paddingSizeDefault),
@@ -175,12 +175,12 @@ class _AdvertisementListScreenState extends State<AdvertisementListScreen>{
 
                               Container(
                                 decoration: BoxDecoration(
-                                  color: status == 'approved' ? Colors.green.withOpacity(0.2)
-                                      : status == 'running' ? Colors.indigo.withOpacity(0.2)
-                                      : status == 'expired' ? Theme.of(context).disabledColor.withOpacity(0.2)
-                                      : status == 'denied' ? Colors.red.withOpacity(0.2)
-                                      : status == 'paused' ? Colors.orange.withOpacity(0.2)
-                                      : Colors.blue.withOpacity(0.2),
+                                  color: status == 'approved' ? Colors.green.withValues(alpha: 0.2)
+                                      : status == 'running' ? Colors.indigo.withValues(alpha: 0.2)
+                                      : status == 'expired' ? Theme.of(context).disabledColor.withValues(alpha: 0.2)
+                                      : status == 'denied' ? Colors.red.withValues(alpha: 0.2)
+                                      : status == 'paused' ? Colors.orange.withValues(alpha: 0.2)
+                                      : Colors.blue.withValues(alpha: 0.2),
                                   borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
                                 ),
                                 padding: const EdgeInsets.symmetric(vertical: 3, horizontal: Dimensions.paddingSizeExtraSmall),
@@ -206,7 +206,7 @@ class _AdvertisementListScreenState extends State<AdvertisementListScreen>{
                           PopupMenuButton<PopupMenuModel>(
                             shape: RoundedRectangleBorder(
                               borderRadius: const BorderRadius.all(Radius.circular(Dimensions.radiusDefault)),
-                              side: BorderSide(color: Theme.of(context).hintColor.withOpacity(0.1)),
+                              side: BorderSide(color: Theme.of(context).hintColor.withValues(alpha: 0.1)),
                             ),
                             itemBuilder: (BuildContext context) {
                               return adsController.getPopupMenuList(advertisementList[index].status!, advertisementList[index].active??0).map((PopupMenuModel option) {
@@ -404,7 +404,7 @@ class _AdvertisementListScreenState extends State<AdvertisementListScreen>{
           padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-            color: isSelected ? Theme.of(context).primaryColor : Theme.of(context).disabledColor.withOpacity(0.3),
+            color: isSelected ? Theme.of(context).primaryColor : Theme.of(context).disabledColor.withValues(alpha: 0.3),
           ),
           alignment: Alignment.center,
           child: Row(
@@ -423,7 +423,7 @@ class _AdvertisementListScreenState extends State<AdvertisementListScreen>{
                 padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraSmall, vertical: 2),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                  color: isSelected ? Theme.of(context).cardColor.withOpacity(0.2) : Theme.of(context).cardColor.withOpacity(0.4),
+                  color: isSelected ? Theme.of(context).cardColor.withValues(alpha: 0.2) : Theme.of(context).cardColor.withValues(alpha: 0.4),
                 ),
                 child: Text(
                   adsCount.toString(),

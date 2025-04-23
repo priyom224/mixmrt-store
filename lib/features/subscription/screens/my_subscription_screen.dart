@@ -95,7 +95,7 @@ class _MySubscriptionScreenState extends State<MySubscriptionScreen> with Ticker
                   padding: const EdgeInsets.all(Dimensions.paddingSizeExtraLarge),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                    color: Theme.of(context).disabledColor.withOpacity(0.03),
+                    color: Theme.of(context).disabledColor.withValues(alpha: 0.03),
                   ),
                   child: Column(children: [
 
@@ -116,8 +116,8 @@ class _MySubscriptionScreenState extends State<MySubscriptionScreen> with Ticker
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: context.width * 0.15),
                       child: Text(
-                        "${'store_will_pay'.tr} ${Get.find<SplashController>().configModel!.adminCommission}% ${'commission_to'.tr} ${Get.find<SplashController>().configModel!.businessName} ${'from_each_order_You_will_get_access_of_all'.tr}",
-                        style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.7), height: 2), textAlign: TextAlign.center,
+                        "${'vendor_will_pay'.tr} ${Get.find<SplashController>().configModel!.adminCommission}% ${'commission_to'.tr} ${Get.find<SplashController>().configModel!.businessName} ${'from_each_order_You_will_get_access_of_all'.tr}",
+                        style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).textTheme.bodyLarge?.color?.withValues(alpha: 0.7), height: 2), textAlign: TextAlign.center,
                       ),
                     )
 
@@ -156,7 +156,7 @@ class _MySubscriptionScreenState extends State<MySubscriptionScreen> with Ticker
                     padding: const EdgeInsets.all(Dimensions.paddingSizeExtraLarge),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                      color: Theme.of(context).colorScheme.error.withOpacity(0.6),
+                      color: Theme.of(context).colorScheme.error.withValues(alpha: 0.6),
                     ),
                     child: Column(
                       children: [

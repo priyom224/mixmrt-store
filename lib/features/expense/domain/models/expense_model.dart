@@ -40,6 +40,7 @@ class Expense {
   String? createdBy;
   int? restaurantId;
   int? orderId;
+  int? tripId;
 
   Expense({
     this.id,
@@ -51,6 +52,7 @@ class Expense {
     this.createdBy,
     this.restaurantId,
     this.orderId,
+    this.tripId,
   });
 
   Expense.fromJson(Map<String, dynamic> json) {
@@ -63,6 +65,7 @@ class Expense {
     createdBy = json['created_by'];
     restaurantId = json['restaurant_id'];
     orderId = json['order_id'];
+    tripId = json['trip_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -76,6 +79,7 @@ class Expense {
     data['created_by'] = createdBy;
     data['restaurant_id'] = restaurantId;
     data['order_id'] = orderId;
+    data['trip_id'] = tripId;
     return data;
   }
 }

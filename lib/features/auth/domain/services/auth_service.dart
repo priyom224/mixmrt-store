@@ -6,6 +6,7 @@ import 'package:sixam_mart_store/features/auth/domain/services/auth_service_inte
 import 'package:sixam_mart_store/features/business/domain/models/package_model.dart';
 import 'package:sixam_mart_store/features/business/screens/subscription_payment_screen.dart';
 import 'package:sixam_mart_store/features/profile/controllers/profile_controller.dart';
+import 'package:sixam_mart_store/features/rental_module/profile/controllers/taxi_profile_controller.dart';
 import 'package:sixam_mart_store/helper/route_helper.dart';
 
 class AuthService implements AuthServiceInterface {
@@ -21,18 +22,6 @@ class AuthService implements AuthServiceInterface {
   Future<Response> registerRestaurant(Map<String, String> data, XFile? logo, XFile? cover, XFile? tax, XFile? registration) async {
     return await authRepositoryInterface.registerRestaurant(data, logo, cover, tax, registration);
   }
-
-
-  // @override
-  // Future<Response> registerRestaurant(Map<String, String> data, XFile? logo, XFile? cover) async {
-  //   Response response = await authRepositoryInterface.registerRestaurant(data, logo, cover);
-  //   if(response.statusCode == 200) {
-  //     int? storeId = response.body['store_id'];
-  //     Get.offAllNamed(RouteHelper.getBusinessPlanRoute(storeId));
-  //   }
-  //   return response;
-  // }
-
 
   @override
   Future<Response> updateToken() async {
@@ -113,6 +102,10 @@ class AuthService implements AuthServiceInterface {
   Future<ResponseModel?> manageLogin(Response response, String type) async {
     ResponseModel? responseModel;
     if (response.statusCode == 200) {
+
+      String? moduleType = response.body['module_type'];
+      setModuleType(moduleType ?? '');
+
       if(response.body['subscribed'] != null){
         int? storeId = response.body['subscribed']['store_id'];
         int? packageId = response.body['subscribed']['package_id'];
@@ -121,7 +114,7 @@ class AuthService implements AuthServiceInterface {
 
           saveUserToken(response.body['subscribed']['token'], response.body['subscribed']['zone_wise_topic'], type);
           await updateToken();
-          await Get.find<ProfileController>().getProfile();
+          moduleType == 'rental' ? await Get.find<TaxiProfileController>().getProfile() : await Get.find<ProfileController>().getProfile();
 
           Get.toNamed(RouteHelper.getMySubscriptionRoute(fromNotification: true));
         } else {
@@ -131,7 +124,7 @@ class AuthService implements AuthServiceInterface {
       }else{
         saveUserToken(response.body['token'], response.body['zone_wise_topic'], type);
         await updateToken();
-        Get.find<ProfileController>().getProfile();
+        moduleType == 'rental' ? Get.find<TaxiProfileController>().getProfile() : Get.find<ProfileController>().getProfile();
         responseModel = ResponseModel(true, 'successful');
       }
     } else {
@@ -141,8 +134,17 @@ class AuthService implements AuthServiceInterface {
   }
 
   @override
-  Future<PackageModel?> getPackageList() async {
-    return await authRepositoryInterface.getList();
+  Future<PackageModel?> getPackageList({int? moduleId}) async {
+    return await authRepositoryInterface.getPackageList(moduleId: moduleId);
   }
 
+  @override
+  String getModuleType() {
+    return authRepositoryInterface.getModuleType();
+  }
+
+  @override
+  void setModuleType(String type) {
+    authRepositoryInterface.setModuleType(type);
+  }
 }

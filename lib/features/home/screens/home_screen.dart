@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         titleSpacing: 0,
         surfaceTintColor: Theme.of(context).cardColor,
-        shadowColor: Theme.of(context).disabledColor.withOpacity(0.5),
+        shadowColor: Theme.of(context).disabledColor.withValues(alpha: 0.5),
         elevation: 2,
         title: Text(AppConstants.appName, maxLines: 1, overflow: TextOverflow.ellipsis, style: robotoMedium.copyWith(
           color: Theme.of(context).textTheme.bodyLarge!.color, fontSize: Dimensions.fontSizeDefault,
@@ -113,8 +113,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     scale: 0.8,
                     child: CupertinoSwitch(
                       value: !profileController.profileModel!.stores![0].active!,
-                      activeColor: Theme.of(context).primaryColor,
-                      trackColor: Theme.of(context).primaryColor.withOpacity(0.5),
+                      activeTrackColor: Theme.of(context).primaryColor,
+                      inactiveTrackColor: Theme.of(context).primaryColor.withValues(alpha: 0.5),
                       onChanged: (bool isActive) {
                         bool? showRestaurantText = Get.find<SplashController>().configModel!.moduleConfig!.module!.showRestaurantText;
                         isEnableTemporarilyClosed ? Get.dialog(ConfirmationDialogWidget(
@@ -158,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                       Text(
                         'today'.tr,
-                        style: robotoRegular.copyWith(color: Theme.of(context).cardColor.withOpacity(0.7)),
+                        style: robotoRegular.copyWith(color: Theme.of(context).cardColor.withValues(alpha: 0.7)),
                       ),
                       const SizedBox(height: Dimensions.paddingSizeSmall),
                       Text(
@@ -179,13 +179,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault, vertical: Dimensions.paddingSizeLarge),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                          color: Theme.of(context).primaryColor.withOpacity(0.8),
+                          color: Theme.of(context).primaryColor.withValues(alpha: 0.8),
                         ),
                         child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.start, children: [
 
                           Text(
                             'this_week'.tr,
-                            style: robotoRegular.copyWith(color: Theme.of(context).cardColor.withOpacity(0.7)),
+                            style: robotoRegular.copyWith(color: Theme.of(context).cardColor.withValues(alpha: 0.7)),
                           ),
                           const SizedBox(height: Dimensions.paddingSizeExtraSmall),
                           Text(
@@ -208,7 +208,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                           Text(
                             'this_month'.tr,
-                            style: robotoRegular.copyWith(color: Theme.of(context).cardColor.withOpacity(0.7)),
+                            style: robotoRegular.copyWith(color: Theme.of(context).cardColor.withValues(alpha: 0.7)),
                           ),
                           const SizedBox(height: Dimensions.paddingSizeExtraSmall),
                           Text(

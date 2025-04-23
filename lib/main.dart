@@ -34,6 +34,7 @@ Future<void> main() async {
 
   if(GetPlatform.isAndroid) {
     await Firebase.initializeApp(
+      name: 'mixmrt-vendor',
       options: const FirebaseOptions(
         apiKey: "AIzaSyDwdLNqrd8Is1i_q8BQWxXVbJshwHzAdsg",
         authDomain: "secret-lambda-403915.firebaseapp.com",

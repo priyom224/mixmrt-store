@@ -128,12 +128,8 @@ class ProfileController extends GetxController implements GetxService {
     return _trialWidgetNotShow;
   }
 
-  // Future<bool> saveLowStockStatus(bool status) async {
-  //   return await profileServiceInterface.saveLowStockStatus(status);
-  // }
-  //
-  // bool getLowStockStatus() {
-  //   return profileServiceInterface.getLowStockStatus();
-  // }
+  void initTrialWidgetNotShow(){
+    _trialWidgetNotShow = false;
+  }
 
 }

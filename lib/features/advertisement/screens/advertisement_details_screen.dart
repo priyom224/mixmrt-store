@@ -92,7 +92,7 @@ class _AdvertisementDetailsScreenState extends State<AdvertisementDetailsScreen>
                                 overflow: TextOverflow.ellipsis,
                                 style: robotoBold.copyWith(
                                   fontSize: Dimensions.fontSizeLarge,
-                                  color: Theme.of(context).textTheme.bodyLarge!.color?.withOpacity(0.9),
+                                  color: Theme.of(context).textTheme.bodyLarge!.color?.withValues(alpha: 0.9),
                                   decoration: TextDecoration.none,
                                 ),
                               ),
@@ -100,11 +100,11 @@ class _AdvertisementDetailsScreenState extends State<AdvertisementDetailsScreen>
 
                             Container(
                               decoration: BoxDecoration(
-                                color: status == 'approved' ? Colors.green.withOpacity(0.2)
-                                    : status == 'running' ? Colors.indigo.withOpacity(0.2)
-                                    : status == 'expired' ? Theme.of(context).disabledColor.withOpacity(0.2)
-                                    : status == 'denied' ? Colors.red.withOpacity(0.2)
-                                    : Colors.blue.withOpacity(0.2),
+                                color: status == 'approved' ? Colors.green.withValues(alpha: 0.2)
+                                    : status == 'running' ? Colors.indigo.withValues(alpha: 0.2)
+                                    : status == 'expired' ? Theme.of(context).disabledColor.withValues(alpha: 0.2)
+                                    : status == 'denied' ? Colors.red.withValues(alpha: 0.2)
+                                    : Colors.blue.withValues(alpha: 0.2),
                                 borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
                               ),
                               padding: const EdgeInsets.symmetric(vertical: 3, horizontal: Dimensions.paddingSizeExtraSmall),
@@ -122,7 +122,7 @@ class _AdvertisementDetailsScreenState extends State<AdvertisementDetailsScreen>
                           ]),
 
                           const SizedBox(height:Dimensions.paddingSizeDefault),
-                          Divider(height: 0.5,color: Theme.of(context).hintColor.withOpacity(0.5),),
+                          Divider(height: 0.5,color: Theme.of(context).hintColor.withValues(alpha: 0.5),),
                           const SizedBox(height:Dimensions.paddingSizeDefault),
 
                           AdsCard(
@@ -303,7 +303,7 @@ class _AdvertisementDetailsScreenState extends State<AdvertisementDetailsScreen>
               height: 100,
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
-                boxShadow: [BoxShadow(color: Theme.of(context).disabledColor.withOpacity(0.2), blurRadius: 10)],
+                boxShadow: [BoxShadow(color: Theme.of(context).disabledColor.withValues(alpha: 0.2), blurRadius: 10)],
               ),
               padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
               child: SafeArea(
@@ -328,7 +328,7 @@ class _AdvertisementDetailsScreenState extends State<AdvertisementDetailsScreen>
                     advertisementController.advertisementDetailsModel?.status == 'pending' ? Expanded(
                       child: CustomButtonWidget(
                         buttonText: "delete_ads".tr,
-                        color: Theme.of(context).primaryColor.withOpacity(0.07),
+                        color: Theme.of(context).primaryColor.withValues(alpha: 0.07),
                         fontSize: Dimensions.fontSizeDefault,
                         onPressed: (){
                           showCustomBottomSheet(child: ConfirmationBottomSheet(
@@ -346,7 +346,7 @@ class _AdvertisementDetailsScreenState extends State<AdvertisementDetailsScreen>
                         },
                         icon: Icons.delete_outline,
                         iconColor: Theme.of(context).textTheme.bodyMedium!.color,
-                        textColor: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.8),
+                        textColor: Theme.of(context).textTheme.bodySmall?.color?.withValues(alpha: 0.8),
                       ),
                     ): const SizedBox(),
                   ],

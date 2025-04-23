@@ -149,7 +149,7 @@ class CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
 
             label: widget.showLabelText ? Text.rich(TextSpan(children: [
 
-              TextSpan(text: widget.labelText ?? '', style: robotoRegular.copyWith(fontSize: widget.labelTextSize ?? Dimensions.fontSizeLarge, color: Theme.of(context).hintColor.withOpacity(.75))),
+              TextSpan(text: widget.labelText ?? '', style: robotoRegular.copyWith(fontSize: widget.labelTextSize ?? Dimensions.fontSizeLarge, color: Theme.of(context).hintColor.withValues(alpha: .75))),
 
               if(widget.required && widget.labelText != null)
                 TextSpan(text : ' *', style: robotoRegular.copyWith(color: Theme.of(context).colorScheme.error, fontSize: Dimensions.fontSizeLarge)),
@@ -193,9 +193,9 @@ class CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
             ) : widget.prefixImage != null && widget.prefixIcon == null ? Padding(
               padding: EdgeInsets.symmetric(horizontal: widget.prefixSize),
               child: CustomAssetImageWidget(widget.prefixImage!, height: 25, width: 25, fit: BoxFit.scaleDown),
-            ) : widget.prefixImage == null && widget.prefixIcon != null ? Icon(widget.prefixIcon, size: widget.iconSize, color: Theme.of(context).disabledColor.withOpacity(0.4)) : null,
+            ) : widget.prefixImage == null && widget.prefixIcon != null ? Icon(widget.prefixIcon, size: widget.iconSize, color: Theme.of(context).disabledColor.withValues(alpha: 0.4)) : null,
             suffixIcon: widget.isPassword ? IconButton(
-              icon: Icon(_obscureText ? Icons.visibility_off : Icons.visibility, color: Theme.of(context).hintColor.withOpacity(0.3)),
+              icon: Icon(_obscureText ? Icons.visibility_off : Icons.visibility, color: Theme.of(context).hintColor.withValues(alpha: 0.3)),
               onPressed: _toggle,
             ) : widget.suffixChild,
           ),

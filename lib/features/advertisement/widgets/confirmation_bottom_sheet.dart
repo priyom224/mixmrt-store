@@ -95,8 +95,8 @@ class _ConfirmationBottomSheetState extends State<ConfirmationBottomSheet> {
                       Get.back();
                     }
                   },
-                  color: Theme.of(context).hintColor.withOpacity(0.2),
-                  textColor: Theme.of(context).textTheme.bodyLarge!.color!.withOpacity(0.8),
+                  color: Theme.of(context).hintColor.withValues(alpha: 0.2),
+                  textColor: Theme.of(context).textTheme.bodyLarge!.color!.withValues(alpha: 0.8),
                 )): const SizedBox(),
 
 

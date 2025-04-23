@@ -45,9 +45,17 @@ class _AddItemScreenState extends State<AddItemScreen> with TickerProviderStateM
   final TextEditingController _tagController = TextEditingController();
   final TextEditingController _maxOrderQuantityController = TextEditingController();
   final TextEditingController _weightController = TextEditingController();
+  final TextEditingController _vmwHeightController = TextEditingController();
+  final TextEditingController _vmwWidthController = TextEditingController();
+  final TextEditingController _vmwLengthController = TextEditingController();
+
   final FocusNode _priceNode = FocusNode();
   final FocusNode _discountNode = FocusNode();
   final FocusNode _weightNode = FocusNode();
+  final FocusNode _vwmHeightNode = FocusNode();
+  final FocusNode _vwmWidthNode = FocusNode();
+  final FocusNode _vwmLengthNode = FocusNode();
+
   final FocusNode _tagNode = FocusNode();
   TextEditingController _c = TextEditingController();
   TextEditingController _nutritionSuggestionController = TextEditingController();
@@ -147,6 +155,9 @@ class _AddItemScreenState extends State<AddItemScreen> with TickerProviderStateM
       _stockController.text = _item.stock.toString();
       _maxOrderQuantityController.text = _item.maxOrderQuantity.toString();
       _weightController.text = _item.weight.toString();
+      _vmwHeightController.text = _item.vmwHeight.toString();
+      _vmwWidthController.text = _item.vmwWidth.toString();
+      _vmwLengthController.text = _item.vmwLength.toString();
       _genericNameSuggestionController.text = (_item.genericName != null && _item.genericName!.isNotEmpty) ? _item.genericName![0]! : '';
       Get.find<StoreController>().setDiscountTypeIndex(_item.discountType == 'percent' ? 0 : 1, false);
       Get.find<StoreController>().setVeg(_item.veg == 1, false);
@@ -390,12 +401,47 @@ class _AddItemScreenState extends State<AddItemScreen> with TickerProviderStateM
 
                       CustomTextFieldWidget(
                         hintText: 'weight'.tr,
+                        labelText: 'weight'.tr,
                         controller: _weightController,
                         focusNode: _weightNode,
-                        nextFocus: _tagNode,
+                        nextFocus: _vwmHeightNode,
+                        inputType: TextInputType.number,
                         isAmount: true,
                       ),
-                      const SizedBox(height: Dimensions.paddingSizeDefault),
+                      const SizedBox(height: Dimensions.paddingSizeExtraLarge),
+
+                      CustomTextFieldWidget(
+                        hintText: 'VWM Height (cm)'.tr,
+                        labelText: 'VWM Height (cm)'.tr,
+                        controller: _vmwHeightController,
+                        focusNode: _vwmHeightNode,
+                        nextFocus: _vwmWidthNode,
+                        inputType: TextInputType.number,
+                        isAmount: true,
+                      ),
+                      const SizedBox(height: Dimensions.paddingSizeExtraLarge),
+
+                      CustomTextFieldWidget(
+                        hintText: 'VWM Width (cm)'.tr,
+                        labelText: 'VWM Width (cm)'.tr,
+                        controller: _vmwWidthController,
+                        focusNode: _vwmWidthNode,
+                        nextFocus: _vwmLengthNode,
+                        inputType: TextInputType.number,
+                        isAmount: true,
+                      ),
+                      const SizedBox(height: Dimensions.paddingSizeExtraLarge),
+
+                      CustomTextFieldWidget(
+                        hintText: 'VWM Length (cm)'.tr,
+                        labelText: 'VWM Length (cm)'.tr,
+                        controller: _vmwLengthController,
+                        focusNode: _vwmLengthNode,
+                        nextFocus: _tagNode,
+                        inputType: TextInputType.number,
+                        isAmount: true,
+                      ),
+                      const SizedBox(height: Dimensions.paddingSizeExtraLarge),
 
                       Container(
                         decoration: BoxDecoration(
@@ -1514,6 +1560,9 @@ class _AddItemScreenState extends State<AddItemScreen> with TickerProviderStateM
                   String price = _priceController.text.trim();
                   String discount = _discountController.text.trim();
                   String weight = _weightController.text.trim();
+                  String vwmHeight = _vmwHeightController.text.trim();
+                  String vwmWidth = _vmwWidthController.text.trim();
+                  String vwmLength = _vmwLengthController.text.trim();
                   int maxOrderQuantity = _maxOrderQuantityController.text.isNotEmpty ? int.parse(_maxOrderQuantityController.text) : 0;
                   bool haveBlankVariant = false;
                   bool blankVariantPrice = false;
@@ -1591,6 +1640,18 @@ class _AddItemScreenState extends State<AddItemScreen> with TickerProviderStateM
                     }
                   }
 
+                  double? finalWeight = 0;
+                  double? staticWeight = double.tryParse(_weightController.text) ?? 0;
+                  double? vmvWeight = 0;
+                  double? vmwHeight = double.tryParse(_vmwHeightController.text) ?? 0;
+                  double? vmwWidth = double.tryParse(_vmwWidthController.text) ?? 0;
+                  double? vmwLength = double.tryParse(_vmwLengthController.text) ?? 0;
+                  if(_vmwHeightController.text.isNotEmpty && _vmwWidthController.text.isNotEmpty && _vmwLengthController.text.isNotEmpty){
+                    vmvWeight = (vmwHeight * vmwWidth * vmwLength) / 5000;
+                  }
+
+                  finalWeight = staticWeight > vmvWeight ? staticWeight : vmvWeight;
+
                   if(defaultDataNull) {
                     showCustomSnackBar('enter_data_for_english'.tr);
                   }else if(categoryController.categoryIndex == null) {
@@ -1644,7 +1705,11 @@ class _AddItemScreenState extends State<AddItemScreen> with TickerProviderStateM
                     _item.isBasicMedicine = storeController.isBasicMedicine ? 1 : 0;
                     _item.price = double.parse(price);
                     _item.discount = double.parse(discount);
-                    _item.weight = double.parse(weight);
+                    _item.weight = finalWeight;
+                    _item.staticWeight = staticWeight;
+                    _item.vmwHeight = vmwHeight;
+                    _item.vmwWidth = vmwWidth;
+                    _item.vmwLength = vmwLength;
                     _item.discountType = storeController.discountTypeIndex == 0 ? 'percent' : 'amount';
                     _item.categoryIds = [];
                     _item.maxOrderQuantity = maxOrderQuantity;

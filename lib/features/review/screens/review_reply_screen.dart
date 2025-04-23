@@ -99,9 +99,9 @@ class _ReviewReplyScreenState extends State<ReviewReplyScreen> {
                     height: 120,
                     padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor.withOpacity(0.1),
+                      color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                      border: Border.all(color: Theme.of(context).primaryColor.withOpacity(0.2)),
+                      border: Border.all(color: Theme.of(context).primaryColor.withValues(alpha: 0.2)),
                     ),
                     child: Text(widget.review.reply ?? '', style: robotoRegular, maxLines: 5, overflow: TextOverflow.ellipsis),
                   ) : const SizedBox(),
@@ -115,7 +115,7 @@ class _ReviewReplyScreenState extends State<ReviewReplyScreen> {
             padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
-              boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.2), spreadRadius: 1, blurRadius: 10, offset: const Offset(0, 1))],
+              boxShadow: [BoxShadow(color: Colors.grey.withValues(alpha: 0.2), spreadRadius: 1, blurRadius: 10, offset: const Offset(0, 1))],
             ),
             child: !storeController.isLoading ? CustomButtonWidget(
               onPressed: () {

@@ -57,7 +57,7 @@ class _NetworkVideoPreviewWidgetState extends State<NetworkVideoPreviewWidget> {
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
             child: Container(
-              color: Colors.black.withOpacity(0.85),
+              color: Colors.black.withValues(alpha: 0.85),
             ),
           ),
         ),

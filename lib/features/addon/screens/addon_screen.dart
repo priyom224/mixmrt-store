@@ -46,7 +46,7 @@ class AddonScreen extends StatelessWidget {
                   horizontal: Dimensions.paddingSizeSmall,
                   vertical: Dimensions.paddingSizeExtraSmall,
                 ),
-                color: index % 2 == 0 ? Theme.of(context).cardColor : Theme.of(context).disabledColor.withOpacity(0.2),
+                color: index % 2 == 0 ? Theme.of(context).cardColor : Theme.of(context).disabledColor.withValues(alpha: 0.2),
                 child: Row(children: [
 
                   Expanded(child: Text(

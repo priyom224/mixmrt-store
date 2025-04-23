@@ -1,4 +1,3 @@
-import 'package:sixam_mart_store/common/controllers/theme_controller.dart';
 import 'package:sixam_mart_store/features/store/controllers/store_controller.dart';
 import 'package:sixam_mart_store/features/profile/domain/models/profile_model.dart';
 import 'package:sixam_mart_store/helper/date_converter_helper.dart';
@@ -32,12 +31,9 @@ class DailyTimeWidget extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeSmall),
       child: Row(children: [
 
-        Expanded(flex: 2, child: Text(dayString.tr)),
+        Expanded(flex: 3, child: Text(dayString.tr, style: robotoMedium)),
 
-        const Text(':'),
-        const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-
-        Expanded(flex: 7, child: SizedBox(height: 50, child: ListView.builder(
+        Expanded(flex: 7, child: SizedBox(height: 60, child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: scheduleList.length+1,
           itemBuilder: (context, index) {
@@ -78,7 +74,7 @@ class DailyTimeWidget extends StatelessWidget {
                           Expanded(child: TextButton(
                             onPressed: () => Get.back(),
                             style: TextButton.styleFrom(
-                              backgroundColor: Theme.of(context).disabledColor.withOpacity(0.3), minimumSize: const Size(1170, 40), padding: EdgeInsets.zero,
+                              backgroundColor: Theme.of(context).disabledColor.withValues(alpha: 0.3), minimumSize: const Size(1170, 40), padding: EdgeInsets.zero,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimensions.radiusSmall)),
                             ),
                             child: Text(
@@ -127,43 +123,53 @@ class DailyTimeWidget extends StatelessWidget {
                   ),
                 ), barrierDismissible: false),
                 child: Container(
-                  height: 40, width: 40,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                    color: Get.find<ThemeController>().darkTheme ? Theme.of(context).primaryColor : Theme.of(context).secondaryHeaderColor,
-                  ),
+                  height: 30, width: 25,
+                  margin: const EdgeInsets.symmetric(vertical: 18),
+                  color: Theme.of(context).primaryColor,
                   child: const Icon(Icons.add, color: Colors.white),
                 ),
               );
             }
 
             return Padding(
-              padding: const EdgeInsets.only(right: Dimensions.paddingSizeExtraSmall),
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Theme.of(context).textTheme.bodyLarge!.color!, width: 1),
-                  color: Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraSmall),
-                child: Row(children: [
+              padding: const EdgeInsets.only(right: Dimensions.paddingSizeLarge),
+              child: Stack(clipBehavior: Clip.none, children: [
 
-                  Text(
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  height: 60,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Theme.of(context).textTheme.bodyLarge!.color!, width: 1),
+                    color: Theme.of(context).cardColor,
+                    borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraSmall),
+                  alignment: Alignment.center,
+                  child: Text(
                     '${DateConverterHelper.convertStringTimeToTime(scheduleList[index].openingTime!.substring(0, 5))} '
                         '- ${DateConverterHelper.convertStringTimeToTime(scheduleList[index].closingTime!.substring(0, 5))}',
                   ),
-                  const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-                  InkWell(
-                    onTap: () => Get.dialog(ConfirmationDialogWidget(
-                      icon: Images.warning, description: 'are_you_sure_to_delete_this_schedule'.tr,
-                      onYesPressed: () => Get.find<StoreController>().deleteSchedule(scheduleList[index].id),
-                    ), barrierDismissible: false),
-                    child: const Icon(Icons.cancel, color: Colors.red),
-                  ),
-                ]),
-              ),
-            );
+                ),
 
+                Positioned(
+                  right: -10, top: 0,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      shape: BoxShape.circle,
+                    ),
+                    child: InkWell(
+                      onTap: () => Get.dialog(ConfirmationDialogWidget(
+                        icon: Images.warning, description: 'are_you_sure_to_delete_this_schedule'.tr,
+                        onYesPressed: () => Get.find<StoreController>().deleteSchedule(scheduleList[index].id),
+                      ), barrierDismissible: false),
+                      child: const Icon(Icons.cancel_outlined, color: Colors.red),
+                    ),
+                  ),
+                ),
+
+              ]),
+            );
           },
         ))),
 

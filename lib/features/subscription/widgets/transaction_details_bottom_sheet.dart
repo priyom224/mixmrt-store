@@ -27,7 +27,7 @@ class TransactionDetailsBottomSheet extends StatelessWidget {
         Container(
           width: double.infinity,
           decoration: BoxDecoration(
-            color: Theme.of(context).disabledColor.withOpacity(0.07),
+            color: Theme.of(context).disabledColor.withValues(alpha: 0.07),
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(Dimensions.radiusExtraLarge),
               topRight: Radius.circular(Dimensions.radiusExtraLarge),
@@ -40,7 +40,7 @@ class TransactionDetailsBottomSheet extends StatelessWidget {
             Container(
               height: 5, width: 50,
               decoration: BoxDecoration(
-                color: Theme.of(context).disabledColor.withOpacity(0.2),
+                color: Theme.of(context).disabledColor.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
               ),
             ),
@@ -48,7 +48,7 @@ class TransactionDetailsBottomSheet extends StatelessWidget {
 
             Column(children: [
 
-              Text('${'transaction_successful'.tr}!', style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).textTheme.bodyLarge!.color?.withOpacity(0.6))),
+              Text('${'transaction_successful'.tr}!', style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).textTheme.bodyLarge!.color?.withValues(alpha: 0.6))),
 
               Text('${'for'.tr} ${transactions.package!.packageName} ${'package'.tr}', style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall)),
               const SizedBox(height: Dimensions.paddingSizeDefault),

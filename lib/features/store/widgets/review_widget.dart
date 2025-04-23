@@ -20,7 +20,7 @@ class ReviewWidget extends StatelessWidget {
         width: context.width * 0.7,
         padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
         decoration: BoxDecoration(
-          color: Theme.of(context).hintColor.withOpacity(0.1),
+          color: Theme.of(context).hintColor.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -39,7 +39,7 @@ class ReviewWidget extends StatelessWidget {
 
           Text(
             review.comment ?? '', maxLines: 2, overflow: TextOverflow.ellipsis,
-            style: robotoRegular.copyWith(color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.7), fontSize: Dimensions.fontSizeSmall),
+            style: robotoRegular.copyWith(color: Theme.of(context).textTheme.bodyLarge?.color?.withValues(alpha: 0.7), fontSize: Dimensions.fontSizeSmall),
           ),
 
         ]),

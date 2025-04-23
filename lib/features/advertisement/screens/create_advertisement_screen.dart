@@ -195,7 +195,7 @@ class _CreateAdvertisementScreenState extends State<CreateAdvertisementScreen> w
                             inputAction: TextInputAction.done,
                             isEnabled : false,
                             hideEnableText: true,
-                            suffixChild: Icon(Icons.date_range_rounded, color: Theme.of(context).disabledColor.withOpacity(0.5)),
+                            suffixChild: Icon(Icons.date_range_rounded, color: Theme.of(context).disabledColor.withValues(alpha: 0.5)),
                             validator: (value) {
                               if(value == null || value.isEmpty) {
                                 return "enter_validity".tr;
@@ -220,7 +220,7 @@ class _CreateAdvertisementScreenState extends State<CreateAdvertisementScreen> w
                             child: TabBar(
                               tabAlignment: TabAlignment.start,
                               controller: multiLanguageTabController,
-                              unselectedLabelColor:Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.5),
+                              unselectedLabelColor:Theme.of(context).textTheme.bodyLarge?.color?.withValues(alpha: 0.5),
                               indicatorColor: Theme.of(context).primaryColor,
                               labelColor: Theme.of(context).textTheme.bodyMedium!.color,
                               labelStyle: robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge),
@@ -228,7 +228,7 @@ class _CreateAdvertisementScreenState extends State<CreateAdvertisementScreen> w
                               unselectedLabelStyle: robotoRegular,
                               isScrollable : true,
                               dividerHeight: 0.2,
-                              dividerColor: Theme.of(context).disabledColor.withOpacity(0.5),
+                              dividerColor: Theme.of(context).disabledColor.withValues(alpha: 0.5),
                               tabs: tabList,
                               onTap: (int ? value) {
                                 setState(() {});

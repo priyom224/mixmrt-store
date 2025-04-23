@@ -4,6 +4,7 @@ import 'package:sixam_mart_store/features/business/controllers/business_controll
 import 'package:sixam_mart_store/features/business/domain/models/package_model.dart';
 import 'package:sixam_mart_store/features/profile/controllers/profile_controller.dart';
 import 'package:sixam_mart_store/features/profile/domain/models/profile_model.dart';
+import 'package:sixam_mart_store/features/rental_module/profile/controllers/taxi_profile_controller.dart';
 import 'package:sixam_mart_store/features/splash/controllers/splash_controller.dart';
 import 'package:sixam_mart_store/common/models/response_model.dart';
 import 'package:get/get.dart';
@@ -222,7 +223,11 @@ class AuthController extends GetxController implements GetxService {
   Future<void> toggleStoreClosedStatus() async {
     bool isSuccess = await authServiceInterface.toggleStoreClosedStatus();
     if (isSuccess) {
-      Get.find<ProfileController>().getProfile();
+      if(getModuleType() == 'rental'){
+        await Get.find<TaxiProfileController>().getProfile();
+      }else{
+        Get.find<ProfileController>().getProfile();
+      }
     }
     update();
   }
@@ -357,8 +362,8 @@ class AuthController extends GetxController implements GetxService {
     _paymentIndex = Get.find<SplashController>().configModel!.subscriptionFreeTrialStatus! ? 0 : 1;
   }
 
-  Future<void> getPackageList({bool isUpdate = true}) async {
-    _packageModel = await authServiceInterface.getPackageList();
+  Future<void> getPackageList({bool isUpdate = true, int? moduleId}) async {
+    _packageModel = await authServiceInterface.getPackageList(moduleId: moduleId);
     if(isUpdate) {
       update();
     }
@@ -378,6 +383,14 @@ class AuthController extends GetxController implements GetxService {
   void selectSubscriptionCard(int index){
     _activeSubscriptionIndex = index;
     update();
+  }
+
+  String getModuleType() {
+    return authServiceInterface.getModuleType();
+  }
+
+  void setModuleType(String type){
+    authServiceInterface.setModuleType(type);
   }
 
 }

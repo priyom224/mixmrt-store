@@ -65,7 +65,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor.withOpacity(0.1),
+                    color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
                   ),
                   padding: const EdgeInsets.only(left: Dimensions.paddingSizeLarge),
@@ -127,7 +127,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
               padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                color: Theme.of(context).primaryColor.withOpacity(0.05),
+                color: Theme.of(context).primaryColor.withValues(alpha: 0.05),
               ),
               child: Text(DateConverterHelper.convertDateToDate(expenseController.from!), style: robotoMedium),
             ),
@@ -140,7 +140,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
               padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                color: Theme.of(context).primaryColor.withOpacity(0.05),
+                color: Theme.of(context).primaryColor.withValues(alpha: 0.05),
               ),
               child: Text(DateConverterHelper.convertDateToDate(expenseController.to!), style: robotoMedium),
             ),

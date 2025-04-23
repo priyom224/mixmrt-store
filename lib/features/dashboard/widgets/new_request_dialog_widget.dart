@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:sixam_mart_store/features/auth/controllers/auth_controller.dart';
+import 'package:sixam_mart_store/features/rental_module/trips/screens/trip_details_screen.dart';
 import 'package:sixam_mart_store/helper/route_helper.dart';
 import 'package:sixam_mart_store/util/dimensions.dart';
 import 'package:sixam_mart_store/util/images.dart';
@@ -44,6 +46,9 @@ class _NewRequestDialogWidgetState extends State<NewRequestDialogWidget> {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isRental = Get.find<AuthController>().getModuleType() == 'rental';
+
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimensions.radiusSmall)),
       child: Padding(
@@ -55,7 +60,7 @@ class _NewRequestDialogWidgetState extends State<NewRequestDialogWidget> {
           Padding(
             padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
             child: Text(
-              'new_order_placed'.tr, textAlign: TextAlign.center,
+              isRental ? 'new_trip_booked'.tr : 'new_order_placed'.tr, textAlign: TextAlign.center,
               style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeLarge),
             ),
           ),
@@ -68,7 +73,11 @@ class _NewRequestDialogWidgetState extends State<NewRequestDialogWidget> {
               if(Get.isDialogOpen!) {
                 Get.back();
               }
-              Get.offAllNamed(RouteHelper.getOrderDetailsRoute(widget.orderId, fromNotification: true));
+              if(isRental) {
+                Get.offAll(() => TripDetailsScreen(tripId: widget.orderId, fromNotification: true));
+              } else{
+                Get.offAllNamed(RouteHelper.getOrderDetailsRoute(widget.orderId, fromNotification: true));
+              }
             },
           ),
 

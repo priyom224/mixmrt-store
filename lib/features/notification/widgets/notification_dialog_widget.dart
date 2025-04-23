@@ -29,7 +29,7 @@ class NotificationDialogWidget extends StatelessWidget {
             (notificationModel.imageFullUrl != null && notificationModel.imageFullUrl!.isNotEmpty) ? Container(
               width: MediaQuery.of(context).size.width,
               margin: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge),
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(Dimensions.radiusSmall), color: Theme.of(context).primaryColor.withOpacity(0.20)),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(Dimensions.radiusSmall), color: Theme.of(context).primaryColor.withValues(alpha: 0.20)),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
                 child: CustomImageWidget(

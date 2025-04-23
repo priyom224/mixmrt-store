@@ -25,7 +25,7 @@ class AdsCreateSuccessBottomSheet extends StatelessWidget {
         Container(
           height: 6, width: 50,
           decoration: BoxDecoration(
-            color: Theme.of(context).disabledColor.withOpacity(0.5),
+            color: Theme.of(context).disabledColor.withValues(alpha: 0.5),
             borderRadius: BorderRadius.circular(Dimensions.radiusLarge),
           ),
           margin: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall),

@@ -99,7 +99,7 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
     }
     Get.find<AuthController>().pickImageForReg(false, true);
     Get.find<AuthController>().resetBusiness();
-    Get.find<AuthController>().getPackageList(isUpdate: false);
+    Get.find<AddressController>().clearPickupZone();
 
     for (var language in _languageList) {
       _tabs.add(Tab(text: language.value));
@@ -131,7 +131,7 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
           },
           child: Scaffold(
 
-            appBar: CustomAppBarWidget(title: 'store_registration'.tr, onTap: () async {
+            appBar: CustomAppBarWidget(title: 'vendor_registration'.tr, onTap: () async {
               if(authController.storeStatus == 0.6 && firstTime){
                 authController.storeStatusChange(0.1);
                 firstTime = false;
@@ -149,8 +149,7 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
                   Text(
-                    //authController.storeStatus == 0.1 ? 'provide_store_information_to_proceed_next'.tr : 'provide_owner_information_to_confirm'.tr,
-                    authController.storeStatus == 0.1 ? 'provide_store_information_to_proceed_next'.tr : authController.storeStatus == 0.6 ? 'provide_owner_information_to_confirm'.tr : 'you_are_one_step_away_choose_your_business_plan'.tr,
+                    authController.storeStatus == 0.1 ? 'provide_vendor_information_to_proceed_next'.tr : authController.storeStatus == 0.6 ? 'provide_owner_information_to_confirm'.tr : 'you_are_one_step_away_choose_your_business_plan'.tr,
                     style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).hintColor),
                   ),
                   const SizedBox(height: Dimensions.paddingSizeSmall),
@@ -175,7 +174,7 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                         key: _formKeyLogin,
                         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
-                          Text('store_info'.tr, style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge)),
+                          Text('vendor_info'.tr, style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge)),
                           const SizedBox(height: Dimensions.paddingSizeDefault),
 
                           Container(
@@ -216,8 +215,8 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                               ),
 
                               CustomTextFieldWidget(
-                                hintText: 'write_store_name'.tr,
-                                labelText: 'store_name'.tr,
+                                hintText: 'write_vendor_name'.tr,
+                                labelText: 'vendor_name'.tr,
                                 controller: _nameController[_tabController!.index],
                                 focusNode: _nameFocus[_tabController!.index],
                                 nextFocus: _tabController!.index != _languageList!.length-1 ? _addressFocus[_tabController!.index] : _addressFocus[0],
@@ -225,7 +224,7 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                                 prefixImage: Images.shopIcon,
                                 capitalization: TextCapitalization.words,
                                 required: true,
-                                validator: (value) => ValidateCheck.validateEmptyText(value, "store_name_field_is_required".tr),
+                                validator: (value) => ValidateCheck.validateEmptyText(value, "vendor_name_field_is_required".tr),
                               ),
                               const SizedBox(height: Dimensions.paddingSizeExtremeLarge),
 
@@ -235,7 +234,7 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
                                     Row(children: [
-                                      Text('store_logo'.tr, style: robotoRegular.copyWith(color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.7))),
+                                      Text('vendor_logo'.tr, style: robotoRegular.copyWith(color: Theme.of(context).textTheme.bodyLarge?.color?.withValues(alpha: 0.7))),
                                       Text(' (${'1:1'})', style: robotoRegular.copyWith(color: Theme.of(context).hintColor, fontSize: Dimensions.fontSizeSmall)),
                                     ]),
                                     const SizedBox(height: Dimensions.paddingSizeDefault),
@@ -253,14 +252,14 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                                             width: 150, height: 120,
                                             child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
 
-                                              Icon(CupertinoIcons.photo_camera_solid, size: 30, color: Theme.of(context).disabledColor.withOpacity(0.6)),
+                                              Icon(CupertinoIcons.photo_camera_solid, size: 30, color: Theme.of(context).disabledColor.withValues(alpha: 0.6)),
                                               const SizedBox(height: Dimensions.paddingSizeSmall),
 
                                               Padding(
                                                 padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
                                                 child: Text(
-                                                  'upload_store_logo'.tr,
-                                                  style: robotoRegular.copyWith(color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.7)), textAlign: TextAlign.center,
+                                                  'upload_vendor_logo'.tr,
+                                                  style: robotoRegular.copyWith(color: Theme.of(context).textTheme.bodyLarge?.color?.withValues(alpha: 0.7)), textAlign: TextAlign.center,
                                                 ),
                                               ),
 
@@ -305,7 +304,7 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
                                     Row(children: [
-                                      Text('store_cover'.tr, style: robotoRegular.copyWith(color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.7))),
+                                      Text('vendor_cover'.tr, style: robotoRegular.copyWith(color: Theme.of(context).textTheme.bodyLarge?.color?.withValues(alpha: 0.7))),
                                       Text(' (${'3:1'})', style: robotoRegular.copyWith(color: Theme.of(context).hintColor, fontSize: Dimensions.fontSizeSmall)),
                                     ]),
                                     const SizedBox(height: Dimensions.paddingSizeDefault),
@@ -323,18 +322,18 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                                             width: context.width, height: 120,
                                             child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
 
-                                              Icon(CupertinoIcons.photo_camera_solid, size: 30, color: Theme.of(context).disabledColor.withOpacity(0.6)),
+                                              Icon(CupertinoIcons.photo_camera_solid, size: 30, color: Theme.of(context).disabledColor.withValues(alpha: 0.6)),
 
                                               Text(
-                                                'upload_store_cover'.tr,
-                                                style: robotoRegular.copyWith(color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.7)), textAlign: TextAlign.center,
+                                                'upload_vendor_cover'.tr,
+                                                style: robotoRegular.copyWith(color: Theme.of(context).textTheme.bodyLarge?.color?.withValues(alpha: 0.7)), textAlign: TextAlign.center,
                                               ),
 
                                               Padding(
                                                 padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
                                                 child: Text(
                                                   'upload_jpg_png_gif_maximum_2_mb'.tr,
-                                                  style: robotoRegular.copyWith(color: Theme.of(context).disabledColor.withOpacity(0.6), fontSize: Dimensions.fontSizeSmall),
+                                                  style: robotoRegular.copyWith(color: Theme.of(context).disabledColor.withValues(alpha: 0.6), fontSize: Dimensions.fontSizeSmall),
                                                   textAlign: TextAlign.center,
                                                 ),
                                               ),
@@ -390,14 +389,14 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
 
                           const SizedBox(height: Dimensions.paddingSizeLarge),
 
-                          Text('store_preference'.tr, style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge)),
+                          Text('vendor_preference'.tr, style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge)),
                           const SizedBox(height: Dimensions.paddingSizeDefault),
 
                           Container(
                             decoration: BoxDecoration(
                               color: Theme.of(context).cardColor,
                               borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                              boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.1), spreadRadius: 1, blurRadius: 10, offset: const Offset(0, 1))],
+                              boxShadow: [BoxShadow(color: Colors.grey.withValues(alpha: 0.1), spreadRadius: 1, blurRadius: 10, offset: const Offset(0, 1))],
                             ),
                             padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall, vertical: Dimensions.paddingSizeDefault),
                             child: Column(children: [
@@ -545,7 +544,7 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                                   iconColor: Theme.of(context).disabledColor,
                                 ),
                                 required: true,
-                                validator: (value) => ValidateCheck.validateEmptyText(value, "store_vat_tax_field_is_required".tr),
+                                validator: (value) => ValidateCheck.validateEmptyText(value, "vendor_vat_tax_field_is_required".tr),
                               ),
                               const SizedBox(height: Dimensions.paddingSizeExtremeLarge),
 
@@ -604,9 +603,9 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                             const SizedBox(width: Dimensions.paddingSizeSmall),
 
                             CustomToolTip(
-                              message: 'this_info_will_need_for_store_app_and_panel_login'.tr,
+                              message: 'this_info_will_need_for_vendor_app_and_panel_login'.tr,
                               preferredDirection: AxisDirection.down,
-                              iconColor: Theme.of(context).textTheme.bodyLarge!.color?.withOpacity(0.7),
+                              iconColor: Theme.of(context).textTheme.bodyLarge!.color?.withValues(alpha: 0.7),
                             ),
                           ]),
                           const SizedBox(height: Dimensions.paddingSizeDefault),
@@ -615,7 +614,7 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                             decoration: BoxDecoration(
                               color: Theme.of(context).cardColor,
                               borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                              boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.1), spreadRadius: 1, blurRadius: 10, offset: const Offset(0, 1))],
+                              boxShadow: [BoxShadow(color: Colors.grey.withValues(alpha: 0.1), spreadRadius: 1, blurRadius: 10, offset: const Offset(0, 1))],
                             ),
                             padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall, vertical: Dimensions.paddingSizeDefault),
                             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -779,15 +778,15 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                         authController.businessIndex == 0 ? Padding(
                           padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge),
                           child: Text(
-                            "${'store_will_pay'.tr} ${Get.find<SplashController>().configModel!.adminCommission}% ${'commission_to'.tr} ${Get.find<SplashController>().configModel!.businessName} ${'from_each_order_You_will_get_access_of_all'.tr}",
-                            style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.7)), textAlign: TextAlign.justify, textScaler: const TextScaler.linear(1.1),
+                            "${'vendor_will_pay'.tr} ${Get.find<SplashController>().configModel!.adminCommission}% ${'commission_to'.tr} ${Get.find<SplashController>().configModel!.businessName} ${'from_each_order_You_will_get_access_of_all'.tr}",
+                            style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).textTheme.bodyLarge?.color?.withValues(alpha: 0.7)), textAlign: TextAlign.justify, textScaler: const TextScaler.linear(1.1),
                           ),
                         ) : Column(children: [
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge),
                             child: Text(
-                              'run_store_by_purchasing_subscription_packages'.tr,
-                              style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.7)), textAlign: TextAlign.justify, textScaler: const TextScaler.linear(1.1),
+                              'run_vendor_by_purchasing_subscription_packages'.tr,
+                              style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).textTheme.bodyLarge?.color?.withValues(alpha: 0.7)), textAlign: TextAlign.justify, textScaler: const TextScaler.linear(1.1),
                             ),
                           ),
                           const SizedBox(height: Dimensions.paddingSizeLarge),
@@ -801,9 +800,12 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
 
                                 Packages package = authController.packageModel!.packages![index];
 
+                                bool isRentalModule = addressController.moduleList != null && addressController.selectedModuleIndex != -1 &&
+                                    addressController.moduleList![addressController.selectedModuleIndex!].moduleType == 'rental';
+
                                 return PackageCardWidget(
                                   currentIndex: authController.activeSubscriptionIndex == index ? index : null,
-                                  package: package,
+                                  package: package, isRental: isRentalModule,
                                 );
                               },
                               onIndexChanged: (index) {
@@ -862,6 +864,9 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                     String confirmPassword = _confirmPasswordController.text.trim();
                     String phoneWithCountryCode = _countryDialCode! + phone;
                     bool valid = false;
+                    bool isRentalModule = addressController.moduleList != null && addressController.selectedModuleIndex != -1 &&
+                      addressController.moduleList![addressController.selectedModuleIndex!].moduleType == 'rental';
+
                     try {
                       double.parse(maxTime);
                       double.parse(minTime);
@@ -874,28 +879,20 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                       if(authController.storeStatus == 0.1){
                         if(_formKeyLogin!.currentState!.validate()){
                           if(defaultNameNull) {
-                            showCustomSnackBar('enter_store_name'.tr);
+                            showCustomSnackBar('enter_vendor_name'.tr);
                           }else if(authController.pickedLogo == null) {
-                            showCustomSnackBar('select_store_logo'.tr);
+                            showCustomSnackBar('select_vendor_logo'.tr);
                           }else if(authController.pickedCover == null) {
-                            showCustomSnackBar('select_store_cover_photo'.tr);
+                            showCustomSnackBar('select_vendor_cover_photo'.tr);
                           }else if(addressController.selectedModuleIndex == -1) {
                             showCustomSnackBar('please_select_module_first'.tr);
+                          }else if(isRentalModule && addressController.pickupZoneIdList.isEmpty) {
+                            showCustomSnackBar('please_select_pickup_zone'.tr);
                           }else if(defaultAddressNull) {
-                            showCustomSnackBar('enter_store_address'.tr);
+                            showCustomSnackBar('enter_vendor_address'.tr);
                           }else if(addressController.selectedZoneIndex == -1) {
                             showCustomSnackBar('please_select_zone'.tr);
-                          }else if(taxId.isEmpty){
-                            showCustomSnackBar('enter_tax_id_info'.tr);
-                          }else if(regiNo.isEmpty){
-                            showCustomSnackBar('enter_regi_no_info'.tr);
-                          }else if(authController.pickedTax == null){
-                            showCustomSnackBar('upload_tax_document'.tr);
-                          }else if(authController.pickedRegistration == null){
-                            showCustomSnackBar('upload_registration_document'.tr);
-                          }/*else if(authController.pickedAgreement == null){
-                          showCustomSnackBar('upload_agreement_document'.tr);
-                        }*/else if(vat.isEmpty) {
+                          }else if(vat.isEmpty) {
                             showCustomSnackBar('enter_vat_amount'.tr);
                           }else if(minTime.isEmpty) {
                             showCustomSnackBar('enter_minimum_delivery_time'.tr);
@@ -906,7 +903,7 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                           }else if(valid && double.parse(minTime) > double.parse(maxTime)) {
                             showCustomSnackBar('maximum_delivery_time_can_not_be_smaller_then_minimum_delivery_time'.tr);
                           }else if(addressController.restaurantLocation == null) {
-                            showCustomSnackBar('set_store_location'.tr);
+                            showCustomSnackBar('set_vendor_location'.tr);
                           }else{
                             _scrollController.jumpTo(_scrollController.position.minScrollExtent);
                             authController.storeStatusChange(0.6);
@@ -966,6 +963,7 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> with 
                         taxID: taxId, registerNo: regiNo,
                         businessPlan: authController.businessIndex == 0 ? 'commission' : 'subscription',
                         packageId: authController.packageModel!.packages != null && authController.packageModel!.packages!.isNotEmpty ? authController.packageModel!.packages![authController.activeSubscriptionIndex].id!.toString() : '',
+                        pickUpZoneIds: addressController.pickupZoneIdList.map((e) => e.toString()).toList(),
                       ).toJson());
 
                       authController.registerStore(data);

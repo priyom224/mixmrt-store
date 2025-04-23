@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sixam_mart_store/features/address/controllers/address_controller.dart';
 import 'package:sixam_mart_store/features/auth/controllers/auth_controller.dart';
 import 'package:sixam_mart_store/util/dimensions.dart';
 import 'package:sixam_mart_store/util/styles.dart';
@@ -20,6 +21,11 @@ class CustomTimePickerWidget extends StatelessWidget {
     }
     List<String> unit = ['minute'.tr, 'hours'.tr, 'days'.tr];
 
+    AddressController addressController = Get.find<AddressController>();
+
+    bool isRental = addressController.moduleList != null && addressController.selectedModuleIndex != -1 &&
+        addressController.moduleList![addressController.selectedModuleIndex!].moduleType == 'rental';
+
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimensions.radiusExtraLarge)),
       insetPadding: const EdgeInsets.all(30),
@@ -31,7 +37,10 @@ class CustomTimePickerWidget extends StatelessWidget {
 
           return Column(mainAxisSize: MainAxisSize.min, children: [
 
-            Text('estimated_delivery_time'.tr , style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
+            Text(
+              isRental ? 'estimated_pickup_time_time'.tr : 'estimated_delivery_time'.tr ,
+              style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge),
+            ),
             const SizedBox(height: Dimensions.paddingSizeSmall),
 
             Padding(
@@ -120,15 +129,15 @@ class CustomTimePickerWidget extends StatelessWidget {
                 }
 
                 if(min == null){
-                  showCustomSnackBar('minimum_delivery_time_can_not_be_empty'.tr);
+                  showCustomSnackBar(isRental ? 'minimum_pickup_time_can_not_be_empty' : 'minimum_delivery_time_can_not_be_empty'.tr);
                 }else if(max == null){
-                  showCustomSnackBar('maximum_delivery_time_can_not_be_empty'.tr);
+                  showCustomSnackBar(isRental ? 'maximum_pickup_time_can_not_be_empty' : 'maximum_delivery_time_can_not_be_empty'.tr);
                 }else if(authController.storeTimeUnit.isEmpty){
                   showCustomSnackBar('time_unit_can_not_be_empty'.tr);
                 }else if(min < max){
                   Get.back();
                 }else{
-                  showCustomSnackBar('maximum_delivery_time_can_not_be_smaller_then_minimum_delivery_time'.tr);
+                  showCustomSnackBar(isRental ? 'maximum_pickup_time_can_not_be_smaller_then_minimum_pickup_time' : 'maximum_delivery_time_can_not_be_smaller_then_minimum_delivery_time'.tr);
                 }
               },
             ),

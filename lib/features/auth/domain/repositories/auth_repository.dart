@@ -155,13 +155,23 @@ class AuthRepository implements AuthRepositoryInterface {
   }
 
   @override
-  Future<PackageModel?> getList({int? offset}) async {
+  Future<PackageModel?> getPackageList({int? moduleId}) async {
     PackageModel? packageModel;
-    Response response = await apiClient.getData(AppConstants.restaurantPackagesUri);
+    Response response = await apiClient.getData('${AppConstants.restaurantPackagesUri}?module_id=$moduleId');
     if(response.statusCode == 200) {
       packageModel = PackageModel.fromJson(response.body);
     }
     return packageModel;
+  }
+
+  @override
+  String getModuleType() {
+    return sharedPreferences.getString(AppConstants.moduleType) ?? "";
+  }
+
+  @override
+  void setModuleType(String type) {
+    sharedPreferences.setString(AppConstants.moduleType, type);
   }
 
   @override
@@ -179,10 +189,10 @@ class AuthRepository implements AuthRepositoryInterface {
     throw UnimplementedError();
   }
 
-  // @override
-  // Future getList() {
-  //   throw UnimplementedError();
-  // }
+  @override
+  Future getList() {
+    throw UnimplementedError();
+  }
 
   @override
   Future update(Map<String, dynamic> body) {

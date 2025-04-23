@@ -45,7 +45,6 @@ class _TrialWidgetState extends State<TrialWidget> {
             }),
             child: Icon(businessController.freeTrialExpand ? Icons.arrow_forward_ios : Icons.arrow_back_ios, color: Theme.of(context).cardColor,),
           ),
-          // const SizedBox(width: Dimensions.fontSizeExtraSmall),
 
           SizedBox(
             height: 40, width: 40,
@@ -54,7 +53,7 @@ class _TrialWidgetState extends State<TrialWidget> {
                 child: CircularProgressIndicator(
                   value: remainingPercentage,
                   color: Theme.of(context).cardColor,
-                  backgroundColor: Theme.of(context).cardColor.withOpacity(0.3),
+                  backgroundColor: Theme.of(context).cardColor.withValues(alpha: 0.3),
                   strokeCap: StrokeCap.round,
                 ),
               ),
@@ -100,7 +99,6 @@ class _TrialWidgetState extends State<TrialWidget> {
                   Text('choose_plan'.tr,
                     style: robotoBold.copyWith(color: Theme.of(context).textTheme.bodyMedium!.color),
                   ),
-                  // const SizedBox(width: Dimensions.paddingSizeExtraSmall),
 
                   const Icon(Icons.arrow_forward_outlined, color: Colors.green,),
                 ]),

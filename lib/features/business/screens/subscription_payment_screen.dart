@@ -45,7 +45,7 @@ class _SubscriptionPaymentScreenState extends State<SubscriptionPaymentScreen> {
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
                 Text(
-                  'store_registration'.tr,
+                  'vendor_registration'.tr,
                   style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge),
                 ),
 
@@ -110,9 +110,9 @@ class _SubscriptionPaymentScreenState extends State<SubscriptionPaymentScreen> {
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                color: isSelected ? Theme.of(context).primaryColor.withOpacity(0.05) : Theme.of(context).cardColor,
+                                color: isSelected ? Theme.of(context).primaryColor.withValues(alpha: 0.05) : Theme.of(context).cardColor,
                                 borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                                border: Border.all(color: isSelected ? Theme.of(context).primaryColor : Theme.of(context).disabledColor.withOpacity(0.2), width: 1),
+                                border: Border.all(color: isSelected ? Theme.of(context).primaryColor : Theme.of(context).disabledColor.withValues(alpha: 0.2), width: 1),
                               ),
                               padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault, vertical: Dimensions.paddingSizeDefault),
                               child: Row(children: [

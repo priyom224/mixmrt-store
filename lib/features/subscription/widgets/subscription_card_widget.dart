@@ -27,7 +27,7 @@ class SubscriptionCardWidget extends StatelessWidget {
             ClipPath(
               clipper: CurveClipper(),
               child: Container(
-              color: color.withOpacity(0.3),
+              color: color.withValues(alpha: 0.3),
               height: 140.0,
               ),
             ),
@@ -35,7 +35,7 @@ class SubscriptionCardWidget extends StatelessWidget {
             ClipPath(
               clipper: CurveClipper(),
               child: Container(
-                color: color.withOpacity(0.2),
+                color: color.withValues(alpha: 0.2),
                 height: 158.0,
               ),
             ),
@@ -47,7 +47,7 @@ class SubscriptionCardWidget extends StatelessWidget {
                   SizedBox(
                     height: 120, width: size.width,
                     child: Container(
-                      color: color.withOpacity(1),
+                      color: color.withValues(alpha: 1),
                       height: 120.0,
                     ),
                   ),

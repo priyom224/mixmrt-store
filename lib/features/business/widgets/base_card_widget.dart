@@ -21,14 +21,14 @@ class BaseCardWidget extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-            color: authController.businessIndex == index ? Theme.of(context).primaryColor.withOpacity(0.05) : Theme.of(context).cardColor,
+            color: authController.businessIndex == index ? Theme.of(context).primaryColor.withValues(alpha: 0.05) : Theme.of(context).cardColor,
             border: Border.all(color: authController.businessIndex == index ? Theme.of(context).primaryColor
-                : Theme.of(context).disabledColor.withOpacity(0.2), width: 1),
+                : Theme.of(context).disabledColor.withValues(alpha: 0.2), width: 1),
           ),
           padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault, vertical: Dimensions.paddingSizeLarge),
           child: Align(
             alignment: Alignment.center,
-            child: Text(title, style: robotoMedium.copyWith(color: authController.businessIndex == index ? Theme.of(context).primaryColor : Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.7), fontSize: Dimensions.fontSizeDefault,
+            child: Text(title, style: robotoMedium.copyWith(color: authController.businessIndex == index ? Theme.of(context).primaryColor : Theme.of(context).textTheme.bodyLarge?.color?.withValues(alpha: 0.7), fontSize: Dimensions.fontSizeDefault,
               fontWeight: authController.businessIndex == index ? FontWeight.w600 : FontWeight.w400,
             )),
           ),

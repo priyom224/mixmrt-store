@@ -20,16 +20,16 @@ class ReviewCardWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-        boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.2), spreadRadius: 1, blurRadius: 10, offset: const Offset(0, 1))],
+        boxShadow: [BoxShadow(color: Colors.grey.withValues(alpha: 0.2), spreadRadius: 1, blurRadius: 10, offset: const Offset(0, 1))],
       ),
       child: Column(children: [
 
         Container(
           padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
           decoration: BoxDecoration(
-            color: Theme.of(context).cardColor.withOpacity(0.8),
+            color: Theme.of(context).cardColor.withValues(alpha: 0.8),
             borderRadius: const BorderRadius.only(topLeft: Radius.circular(Dimensions.radiusSmall), topRight: Radius.circular(Dimensions.radiusSmall)),
-            boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.1), spreadRadius: 1, blurRadius: 5, offset: const Offset(0, 1))],
+            boxShadow: [BoxShadow(color: Colors.grey.withValues(alpha: 0.1), spreadRadius: 1, blurRadius: 5, offset: const Offset(0, 1))],
           ),
           child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
 
@@ -69,7 +69,7 @@ class ReviewCardWidget extends StatelessWidget {
               fontWeight: FontWeight.w500,
               fontSize: Dimensions.fontSizeDefault,
               buttonText: review.reply != null ? 'view_reply'.tr : 'give_reply'.tr,
-              color: review.reply != null ? Theme.of(context).primaryColor.withOpacity(0.1) : Theme.of(context).primaryColor,
+              color: review.reply != null ? Theme.of(context).primaryColor.withValues(alpha: 0.1) : Theme.of(context).primaryColor,
               isViewReply: review.reply != null,
             ) : CustomButtonWidget(
               onPressed: () => Get.toNamed(RouteHelper.getReviewReplyRoute(isGiveReply: review.reply != null ? false : true, review: review, storeReviewReplyStatus: Get.find<SplashController>().configModel!.storeReviewReply!)),
@@ -84,7 +84,7 @@ class ReviewCardWidget extends StatelessWidget {
           ]),
         ),
 
-        Divider(height: 0, thickness: 1, color: Theme.of(context).disabledColor.withOpacity(0.2)),
+        Divider(height: 0, thickness: 1, color: Theme.of(context).disabledColor.withValues(alpha: 0.2)),
 
         Padding(
           padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
