@@ -1,5 +1,8 @@
+import 'dart:io';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:sixam_mart_store/common/widgets/custom_snackbar_widget.dart';
+import 'package:sixam_mart_store/features/auth/domain/models/account_recovery_model.dart';
 import 'package:sixam_mart_store/features/business/controllers/business_controller.dart';
 import 'package:sixam_mart_store/features/business/domain/models/package_model.dart';
 import 'package:sixam_mart_store/features/profile/controllers/profile_controller.dart';
@@ -11,6 +14,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sixam_mart_store/features/auth/domain/services/auth_service_interface.dart';
 import 'package:sixam_mart_store/helper/route_helper.dart';
+import 'package:http/http.dart' as http;
 
 class AuthController extends GetxController implements GetxService {
   final AuthServiceInterface authServiceInterface;
@@ -100,6 +104,21 @@ class AuthController extends GetxController implements GetxService {
   bool _notificationLoading = false;
   bool get notificationLoading => _notificationLoading;
 
+  AccountRecoveryModel? _accountRecoveryModel;
+  AccountRecoveryModel? get accountRecoveryModel => _accountRecoveryModel;
+
+  void setMinTime(String time) {
+    _storeMinTime = time;
+  }
+
+  void setMaxTime(String time) {
+    _storeMaxTime = time;
+  }
+
+  void setSelectedDurationInitData(String unit){
+    _storeTimeUnit = unit;
+  }
+
   void toggleTerms() {
     _acceptTerms = !_acceptTerms;
     update();
@@ -119,6 +138,9 @@ class AuthController extends GetxController implements GetxService {
     _isLoading = true;
     update();
     Response response = await authServiceInterface.login(email, password, type);
+    if(response.statusCode == 420){
+      _accountRecoveryModel = AccountRecoveryModel.fromJson(response.body);
+    }
     ResponseModel? responseModel = await authServiceInterface.manageLogin(response, type);
     _isLoading = false;
     update();
@@ -385,12 +407,104 @@ class AuthController extends GetxController implements GetxService {
     update();
   }
 
+  void setBusinessIndex(String businessType){
+    businessType == 'commission' ? _businessIndex = 0 : _businessIndex = 1;
+  }
+
+  void setAccRecActiveSubscriptionIndex(int? id) {
+    int index0 = 0;
+    for(int index=0; index<_packageModel!.packages!.length; index++) {
+      if(_packageModel!.packages?[index].id == id) {
+        index0 = index;
+        break;
+      }
+    }
+    _activeSubscriptionIndex = index0;
+  }
+
   String getModuleType() {
     return authServiceInterface.getModuleType();
   }
 
   void setModuleType(String type){
     authServiceInterface.setModuleType(type);
+  }
+
+  Future<XFile?> urlToXFile(String imageUrl) async {
+    try {
+      final tempDir = await getTemporaryDirectory();
+      final filePath = '${tempDir.path}/${imageUrl.split('/').last}';
+
+      final response = await http.get(Uri.parse(imageUrl));
+      if (response.statusCode == 200) {
+        final file = File(filePath);
+        await file.writeAsBytes(response.bodyBytes);
+
+        return XFile(filePath);
+      } else {
+        showCustomSnackBar('${'Failed to download file'.tr} ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      showCustomSnackBar('Error occurred while converting URL to XFile: $e');
+      return null;
+    }
+  }
+
+  void saveLogoImage(String imageUrl) async {
+    XFile? xFile = await urlToXFile(imageUrl);
+    if(xFile != null) {
+      _pickedLogo = xFile;
+    }
+    Future.delayed(const Duration(milliseconds: 500), () {
+      update();
+    });
+  }
+
+  void clearLogoImage() {
+    _pickedLogo = null;
+  }
+
+  void saveCoverImage(String imageUrl) async {
+    XFile? xFile = await urlToXFile(imageUrl);
+    if(xFile != null) {
+      _pickedCover = xFile;
+    }
+    Future.delayed(const Duration(milliseconds: 500), () {
+      update();
+    });
+  }
+
+  void clearCoverImage() {
+    _pickedCover = null;
+  }
+
+  void saveTaxImage(String imageUrl) async {
+    XFile? xFile = await urlToXFile(imageUrl);
+    if(xFile != null) {
+      _pickedTax = xFile;
+    }
+    Future.delayed(const Duration(milliseconds: 500), () {
+      update();
+    });
+  }
+
+  void clearTaxImage() {
+    _pickedTax = null;
+  }
+
+  void saveRegistrationImage(String imageUrl) async {
+    XFile? xFile = await urlToXFile(imageUrl);
+    if(xFile != null) {
+      _pickedRegistration = xFile;
+    }
+    Future.delayed(const Duration(milliseconds: 500), () {
+      update();
+    });
+  }
+
+  void clearRegistrationImage() {
+    _pickedRegistration = null;
   }
 
 }

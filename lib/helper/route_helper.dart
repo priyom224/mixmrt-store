@@ -63,6 +63,7 @@ import 'package:sixam_mart_store/features/store/screens/store_screen.dart';
 import 'package:sixam_mart_store/features/store/screens/store_settings_screen.dart';
 import 'package:sixam_mart_store/features/splash/screens/splash_screen.dart';
 import 'package:sixam_mart_store/features/subscription/screens/my_subscription_screen.dart';
+import 'package:sixam_mart_store/features/ticket/screens/ticket_screen.dart';
 import 'package:sixam_mart_store/features/update/screens/update_screen.dart';
 import 'package:get/get.dart';
 
@@ -122,6 +123,7 @@ class RouteHelper {
   static const String offlineHistory = '/offline-history';
   static const String offlinePaymentScreen = '/offline-payment-screen';
   static const String agreement = '/agreement';
+  static const String ticket = '/ticket';
 
   //Subscription
   static const String businessPlan = '/business-plan';
@@ -268,6 +270,7 @@ class RouteHelper {
   static String getCreateAdvertisementRoute() => createAdvertisement;
   static String getAdvertisementDetailsScreen({required int? advertisementId, bool? fromNotification}) => '$advertisementDetails?advertisementId=$advertisementId&fromNotification=$fromNotification';
   static String getLowStockRoute() => lowStock;
+  static String getTicketScreen() => ticket;
 
 
   static List<GetPage> routes = [
@@ -427,6 +430,7 @@ class RouteHelper {
       id: int.parse(Get.parameters['advertisementId']!), fromNotification: Get.parameters['fromNotification'] == 'true',
     )),
     GetPage(name: lowStock, page: () => const LowStockScreen()),
+    GetPage(name: ticket, page: () => const TicketScreen()),
 
   ];
 }

@@ -158,42 +158,6 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> with TickerProvider
     }
   }
 
-  /*void _validateDiscount() {
-    ProviderController providerController = Get.find<ProviderController>();
-    double hourlyRate = double.parse(_vehicle!.hourlyPrice.toString());
-    double distanceRate = double.parse(_vehicle!.distancePrice.toString());
-    double discountPrice = double.parse(_discountPriceController.text == '' ? '0' : _discountPriceController.text);
-
-    if (providerController.discountType == '%') {
-      if (discountPrice > 100) {
-        showCustomSnackBar('discount_percentage_should_be_less_than_100'.tr);
-        _discountPriceController.text = '0';
-        return;
-      }
-    }
-
-    if (providerController.isTripTypeHourly && !providerController.isTripTypeDistanceWise) {
-      // Validate only for hourly type
-      if (discountPrice > hourlyRate) {
-        showCustomSnackBar('discount_cannot_exceed_hourly_rate'.tr);
-        _discountPriceController.text = '0';
-      }
-    } else if (!providerController.isTripTypeHourly && providerController.isTripTypeDistanceWise) {
-      // Validate only for distance type
-      if (discountPrice > distanceRate) {
-        showCustomSnackBar('discount_cannot_exceed_distance_rate'.tr);
-        _discountPriceController.text = '0';
-      }
-    } else if (providerController.isTripTypeHourly && providerController.isTripTypeDistanceWise) {
-      // Both types are active, compare rates
-      double cheaperRate = hourlyRate < distanceRate ? hourlyRate : distanceRate;
-      if (discountPrice > cheaperRate) {
-        showCustomSnackBar('discount_cannot_exceed_cheaper_rate'.tr);
-        _discountPriceController.text = '0';
-      }
-    }
-  }*/
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

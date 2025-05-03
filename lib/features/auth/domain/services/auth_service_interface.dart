@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sixam_mart_store/common/models/response_model.dart';
+import 'package:sixam_mart_store/features/auth/domain/models/account_recovery_model.dart';
 import 'package:sixam_mart_store/features/business/domain/models/package_model.dart';
 
 abstract class AuthServiceInterface {

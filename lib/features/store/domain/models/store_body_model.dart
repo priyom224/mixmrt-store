@@ -20,6 +20,9 @@ class StoreBodyModel {
   String? businessPlan;
   String? packageId;
   List<String>? pickUpZoneIds;
+  int? isForResubmit;
+  int? storePreviousId;
+  int? vendorPreviousId;
 
   StoreBodyModel({
     this.translation,
@@ -41,6 +44,9 @@ class StoreBodyModel {
     this.businessPlan,
     this.packageId,
     this.pickUpZoneIds,
+    this.isForResubmit,
+    this.storePreviousId,
+    this.vendorPreviousId,
   });
 
   StoreBodyModel.fromJson(Map<String, dynamic> json) {
@@ -65,6 +71,9 @@ class StoreBodyModel {
     if (json['pickup_zone_id'] != null) {
       pickUpZoneIds = json['pickup_zone_id'].cast<String>();
     }
+    isForResubmit = json['is_for_resubmit'];
+    storePreviousId = json['store_previous_id'];
+    vendorPreviousId = json['vendor_previous_id'];
   }
 
   Map<String, String> toJson() {
@@ -90,6 +99,9 @@ class StoreBodyModel {
     if (pickUpZoneIds != null) {
       data['pickup_zone_id'] = json.encode(pickUpZoneIds);
     }
+    data['is_for_resubmit'] = isForResubmit.toString();
+    data['store_previous_id'] = storePreviousId.toString();
+    data['vendor_previous_id'] = vendorPreviousId.toString();
     return data;
   }
 }

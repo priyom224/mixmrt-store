@@ -29,9 +29,12 @@ class AppConstants {
   static const String notificationUri = '/api/v1/vendor/notifications';
   static const String profileUri = '/api/v1/vendor/profile';
   static const String updateProfileUri = '/api/v1/vendor/update-profile';
+
+  ///Campaign
   static const String basicCampaignUri = '/api/v1/vendor/get-basic-campaigns';
   static const String joinCampaignUri = '/api/v1/vendor/campaign-join';
   static const String leaveCampaignUri = '/api/v1/vendor/campaign-leave';
+
   static const String withdrawListUri = '/api/v1/vendor/get-withdraw-list';
   static const String itemListUri = '/api/v1/vendor/get-items-list';
   static const String updateBankInfoUri = '/api/v1/vendor/update-bank-info';
@@ -98,15 +101,19 @@ class AppConstants {
   static const String updateStoreBannerUri = '/api/v1/vendor/banner/update';
   static const String storeBannerDetailsUri = '/api/v1/vendor/banner/edit';
   static const String announcementUri = '/api/v1/vendor/update-announcment';
+
+  ///Disbursement
   static const String addWithdrawMethodUri = '/api/v1/vendor/withdraw-method/store';
   static const String disbursementMethodListUri = '/api/v1/vendor/withdraw-method/list';
   static const String makeDefaultDisbursementMethodUri = '/api/v1/vendor/withdraw-method/make-default';
   static const String deleteDisbursementMethodUri = '/api/v1/vendor/withdraw-method/delete';
   static const String getDisbursementReportUri = '/api/v1/vendor/get-disbursement-report';
+
   static const String withdrawRequestMethodUri = '/api/v1/vendor/get-withdraw-method-list';
   static const String walletPaymentListUri = '/api/v1/vendor/wallet-payment-list';
   static const String makeWalletAdjustmentUri = '/api/v1/vendor/make-wallet-adjustment';
   static const String makeCollectedCashPaymentUri = '/api/v1/vendor/make-collected-cash-payment';
+
   static const String getBrandsUri = '/api/v1/brand';
   static const String updateReplyUri = '/api/v1/vendor/item/reply-update';
   static const String checkZoneUri = '/api/v1/zone/check';
@@ -149,6 +156,9 @@ class AppConstants {
   static const String changeAdvertisementStatusUri = '/api/v1/vendor/advertisement/status';
   static const String copyAddAdvertisementUri = '/api/v1/vendor/advertisement/copy-add-post';
 
+  ///Ticket System
+  static const String ticketCategoryUri = '/api/v1/get-ticket-categories';
+  static const String ticketUri = '/api/v1/tickets';
 
   ///Rental Module API
   static const String taxiCategoryListUri = '/api/v1/rental/vendor/category/list';

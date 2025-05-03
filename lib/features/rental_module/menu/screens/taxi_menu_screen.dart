@@ -1,3 +1,6 @@
+import 'package:sixam_mart_store/features/advertisement/screens/advertisement_list_screen.dart';
+import 'package:sixam_mart_store/features/campaign/screens/campaign_screen.dart';
+import 'package:sixam_mart_store/features/disbursement/screens/disbursement_menu_screen.dart';
 import 'package:sixam_mart_store/features/html/screens/html_viewer_screen.dart';
 import 'package:sixam_mart_store/features/subscription/screens/my_subscription_screen.dart';
 import 'package:sixam_mart_store/features/rental_module/banner/screens/taxi_banner_list_screen.dart';
@@ -13,6 +16,8 @@ import 'package:sixam_mart_store/features/rental_module/profile/controllers/taxi
 import 'package:sixam_mart_store/features/rental_module/profile/screens/taxi_profile_screen.dart';
 import 'package:sixam_mart_store/features/rental_module/provider/screens/add_vehicle_screen.dart';
 import 'package:sixam_mart_store/features/rental_module/review/screens/taxi_customer_review_screen.dart';
+import 'package:sixam_mart_store/features/ticket/domain/models/ticket_list_model.dart';
+import 'package:sixam_mart_store/features/ticket/screens/ticket_screen.dart';
 import 'package:sixam_mart_store/helper/responsive_helper.dart';
 import 'package:sixam_mart_store/util/dimensions.dart';
 import 'package:sixam_mart_store/util/images.dart';
@@ -41,6 +46,16 @@ class TaxiMenuScreen extends StatelessWidget {
       menuList.add(TaxiMenuModel(icon: Images.categories, title: 'categories'.tr, route: const TaxiCategoryScreen()));
     }
 
+    //if(Get.find<TaxiProfileController>().taxiModulePermission!.campaign!) {
+      menuList.add(TaxiMenuModel(icon: Images.campaign, title: 'campaign'.tr, route: const CampaignScreen()));
+    //}
+
+    menuList.add(TaxiMenuModel(icon: Images.adsMenu, title: 'advertisements'.tr, route: const AdvertisementListScreen()));
+
+    //if(Get.find<SplashController>().configModel!.disbursementType == 'automated') {
+      menuList.add(TaxiMenuModel(icon: Images.disbursementIcon, title: 'disbursement'.tr, route: const DisbursementMenuScreen()));
+    //}
+
     if(Get.find<TaxiProfileController>().taxiModulePermission!.vehicle!) {
       menuList.add(TaxiMenuModel(icon: Images.brandIcon, title: 'brands'.tr, route: const TaxiBrandScreen()));
     }
@@ -58,6 +73,8 @@ class TaxiMenuScreen extends StatelessWidget {
     }
 
     menuList.add(TaxiMenuModel(icon: Images.mySubscriptionIcon, title: 'business_plan'.tr, route: const MySubscriptionScreen(fromNotification: false)));
+
+    menuList.add(TaxiMenuModel(icon: Images.chat, title: 'Ticket'.tr, route: const TicketScreen()));
 
     if(Get.find<TaxiProfileController>().taxiModulePermission!.chat!) {
       menuList.add(

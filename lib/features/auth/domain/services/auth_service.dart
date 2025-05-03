@@ -1,8 +1,10 @@
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sixam_mart_store/common/models/response_model.dart';
+import 'package:sixam_mart_store/features/auth/domain/models/account_recovery_model.dart';
 import 'package:sixam_mart_store/features/auth/domain/repositories/auth_repository_interface.dart';
 import 'package:sixam_mart_store/features/auth/domain/services/auth_service_interface.dart';
+import 'package:sixam_mart_store/features/auth/screens/account_recovery_screen.dart';
 import 'package:sixam_mart_store/features/business/domain/models/package_model.dart';
 import 'package:sixam_mart_store/features/business/screens/subscription_payment_screen.dart';
 import 'package:sixam_mart_store/features/profile/controllers/profile_controller.dart';
@@ -127,6 +129,9 @@ class AuthService implements AuthServiceInterface {
         moduleType == 'rental' ? Get.find<TaxiProfileController>().getProfile() : Get.find<ProfileController>().getProfile();
         responseModel = ResponseModel(true, 'successful');
       }
+    } else if(response.statusCode == 420){
+      Get.to(() => const AccountRecoveryScreen());
+      responseModel = ResponseModel(false, 'Account Recovery');
     } else {
       responseModel = ResponseModel(false, response.statusText);
     }

@@ -81,6 +81,17 @@ class AddressController extends GetxController implements GetxService {
     update();
   }
 
+  void setAccRecZoneIndex(int? id) {
+    int index0 = 0;
+    for(int index=0; index<_zoneList!.length; index++) {
+      if(_zoneList?[index].id == id) {
+        index0 = index;
+        break;
+      }
+    }
+    _selectedZoneIndex = index0;
+  }
+
   Future<void> getModules(int? zoneId) async {
     List<ModuleModel>? moduleList = await addressServiceInterface.getModules(zoneId);
     if (moduleList != null) {
@@ -93,6 +104,17 @@ class AddressController extends GetxController implements GetxService {
   void selectModuleIndex(int? index) {
     _selectedModuleIndex = index;
     update();
+  }
+
+  void setAccRecModuleIndex(int? id) {
+    int index0 = 0;
+    for(int index=0; index<_moduleList!.length; index++) {
+      if(_moduleList?[index].id == id) {
+        index0 = index;
+        break;
+      }
+    }
+    _selectedModuleIndex = index0;
   }
 
   void setLocation(LatLng location, {bool forStoreRegistration = false, int? zoneId}) async{
@@ -290,6 +312,20 @@ class AddressController extends GetxController implements GetxService {
       }
     }
     update();
+  }
+
+  void setPreloadPickupZones({required List<String>? pickupZoneList}) {
+    _pickupZoneList.clear();
+    _pickupZoneIdList.clear();
+    if (pickupZoneList != null) {
+      for (String id in pickupZoneList) {
+        final ZoneModel? zone = zoneList?.firstWhereOrNull((zone) => zone.id == int.parse(id));
+        if (zone != null) {
+          _pickupZoneList.add(zone.name!);
+          _pickupZoneIdList.add(zone.id!);
+        }
+      }
+    }
   }
 
 }

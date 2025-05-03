@@ -156,6 +156,11 @@ import 'package:sixam_mart_store/features/subscription/domain/repositories/subsc
 import 'package:sixam_mart_store/features/subscription/domain/repositories/subscription_repository_interface.dart';
 import 'package:sixam_mart_store/features/subscription/domain/services/subscription_service.dart';
 import 'package:sixam_mart_store/features/subscription/domain/services/subscription_service_interface.dart';
+import 'package:sixam_mart_store/features/ticket/controllers/ticket_controller.dart';
+import 'package:sixam_mart_store/features/ticket/domain/repositories/ticket_repository.dart';
+import 'package:sixam_mart_store/features/ticket/domain/repositories/ticket_repository_interface.dart';
+import 'package:sixam_mart_store/features/ticket/domain/services/ticket_service.dart';
+import 'package:sixam_mart_store/features/ticket/domain/services/ticket_service_interface.dart';
 import 'package:sixam_mart_store/util/app_constants.dart';
 import 'package:sixam_mart_store/features/language/domain/models/language_model.dart';
 import 'package:flutter/services.dart';
@@ -241,6 +246,9 @@ Future<Map<String, Map<String, String>>> init() async {
 
   AdvertisementRepositoryInterface advertisementRepositoryInterface = AdvertisementRepository(apiClient: Get.find());
   Get.lazyPut(() => advertisementRepositoryInterface);
+
+  TicketRepositoryInterface ticketRepositoryInterface = TicketRepository(apiClient: Get.find());
+  Get.lazyPut(() => ticketRepositoryInterface);
 
   ///Taxi module Repositories
   ProviderRepositoryInterface providerRepositoryInterface = ProviderRepository(apiClient: Get.find());
@@ -337,6 +345,9 @@ Future<Map<String, Map<String, String>>> init() async {
   AdvertisementServiceInterface advertisementServiceInterface = AdvertisementService(advertisementRepositoryInterface: Get.find());
   Get.lazyPut(() => advertisementServiceInterface);
 
+  TicketServiceInterface ticketServiceInterface = TicketService(ticketRepositoryInterface: Get.find());
+  Get.lazyPut(() => ticketServiceInterface);
+
   ///Taxi module Services
   ProviderServiceInterface providerServiceInterface = ProviderService(providerRepositoryInterface: Get.find());
   Get.lazyPut(() => providerServiceInterface);
@@ -385,6 +396,7 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.lazyPut(() => PosController(posServiceInterface: Get.find()));
   Get.lazyPut(() => SubscriptionController(subscriptionServiceInterface: Get.find()));
   Get.lazyPut(() => AdvertisementController(advertisementServiceInterface: Get.find()));
+  Get.lazyPut(() => TicketController(ticketServiceInterface: Get.find()));
 
   ///Taxi module Controllers
   Get.lazyPut(() => ProviderController(providerServiceInterface: Get.find()));

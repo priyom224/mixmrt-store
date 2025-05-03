@@ -75,7 +75,7 @@ class MyApp extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
-      systemNavigationBarColor: Colors.black,
+      systemNavigationBarColor: Colors.transparent,
       systemNavigationBarIconBrightness: Brightness.dark,
     ));
 
@@ -95,24 +95,27 @@ class MyApp extends StatelessWidget {
           transitionDuration: const Duration(milliseconds: 500),
           builder: (BuildContext context, widget) {
             return MediaQuery(data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1)), child: Material(
-              child: Stack(children: [
-                widget!,
+              child: SafeArea(
+                top: false, bottom: GetPlatform.isAndroid,
+                child: Stack(children: [
+                  widget!,
 
-                GetBuilder<ProfileController>(builder: (profileController) {
-                  bool canShow = profileController.profileModel != null && profileController.profileModel!.subscription != null
-                      && profileController.profileModel!.subscription!.isTrial == 1 && profileController.profileModel!.subscription!.status == 1
-                      && DateConverterHelper.differenceInDaysIgnoringTime(DateTime.parse(profileController.profileModel!.subscription!.expiryDate!), null) > 0;
+                  GetBuilder<ProfileController>(builder: (profileController) {
+                    bool canShow = profileController.profileModel != null && profileController.profileModel!.subscription != null
+                        && profileController.profileModel!.subscription!.isTrial == 1 && profileController.profileModel!.subscription!.status == 1
+                        && DateConverterHelper.differenceInDaysIgnoringTime(DateTime.parse(profileController.profileModel!.subscription!.expiryDate!), null) > 0;
 
-                  return canShow && !profileController.trialWidgetNotShow ? Align(
-                    alignment: Alignment.bottomRight,
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 90),
-                      child: TrialWidget(subscription: profileController.profileModel!.subscription!),
-                    ),
-                  ) : const SizedBox();
-                }),
+                    return canShow && !profileController.trialWidgetNotShow ? Align(
+                      alignment: Alignment.bottomRight,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 90),
+                        child: TrialWidget(subscription: profileController.profileModel!.subscription!),
+                      ),
+                    ) : const SizedBox();
+                  }),
 
-              ]),
+                ]),
+              ),
             ));
           },
         );
