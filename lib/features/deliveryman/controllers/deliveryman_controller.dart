@@ -5,6 +5,7 @@ import 'package:sixam_mart_store/common/widgets/custom_snackbar_widget.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sixam_mart_store/features/deliveryman/domain/services/deliveryman_service_interface.dart';
+import 'package:sixam_mart_store/util/app_constants.dart';
 
 class DeliveryManController extends GetxController implements GetxService {
   final DeliverymanServiceInterface deliverymanServiceInterface;
@@ -19,7 +20,7 @@ class DeliveryManController extends GetxController implements GetxService {
   List<XFile> _pickedIdentities = [];
   List<XFile> get pickedIdentities => _pickedIdentities;
 
-  final List<String> _identityTypeList = ['nid'];
+  final List<String> _identityTypeList = AppConstants.baseUrl.contains('zm') ? ['nrc', 'driving_license', 'passport'] : ['nid', 'driving_license', 'passport'];
   List<String> get identityTypeList => _identityTypeList;
 
   int _identityTypeIndex = 0;
