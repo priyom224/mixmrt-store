@@ -158,7 +158,7 @@ class Trips {
     additionalCharge = json['additional_charge'].toDouble();
     partiallyPaidAmount = json['partially_paid_amount'].toDouble();
     distance = json['distance'].toDouble();
-    estimatedHours = json['estimated_hours'];
+    estimatedHours = int.tryParse(json['estimated_hours'].toString());
     refBonusAmount = json['ref_bonus_amount'].toDouble();
     canceledBy = json['canceled_by'];
     cancellationReason = json['cancellation_reason'];

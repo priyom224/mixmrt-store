@@ -136,21 +136,22 @@ class _AccountRecoveryScreenState extends State<AccountRecoveryScreen> with Tick
     _emailController.text = accountRecoveryModel?.vendor?.email ?? '';
 
     authController.storeStatusChange(0.1, isUpdate: false);
-    Get.find<AddressController>().getZoneList();
-    authController.getPackageList(moduleId: accountRecoveryModel?.store?.moduleId, isUpdate: false);
-    Get.find<AddressController>().setAccRecModuleIndex(accountRecoveryModel?.store?.moduleId);
-    authController.setMinTime(getDeliveryData(accountRecoveryModel!.store!.deliveryTime!, 'min'));
-    authController.setMaxTime(getDeliveryData(accountRecoveryModel.store!.deliveryTime!, 'max'));
-    authController.setSelectedDurationInitData(getDeliveryData(accountRecoveryModel.store!.deliveryTime!, 'type'));
-    authController.setBusinessIndex(accountRecoveryModel.store!.storeBusinessModel!);
-    authController.setAccRecActiveSubscriptionIndex(accountRecoveryModel.store?.packageId);
-    Get.find<AddressController>().setAccRecZoneIndex(accountRecoveryModel.store?.zoneId);
+    Get.find<AddressController>().getZoneList().then((value) {
+      authController.getPackageList(moduleId: accountRecoveryModel?.store?.moduleId, isUpdate: false);
+      Get.find<AddressController>().setAccRecModuleIndex(accountRecoveryModel?.store?.moduleId);
+      authController.setMinTime(getDeliveryData(accountRecoveryModel!.store!.deliveryTime!, 'min'));
+      authController.setMaxTime(getDeliveryData(accountRecoveryModel.store!.deliveryTime!, 'max'));
+      authController.setSelectedDurationInitData(getDeliveryData(accountRecoveryModel.store!.deliveryTime!, 'type'));
+      authController.setBusinessIndex(accountRecoveryModel.store!.storeBusinessModel!);
+      authController.setAccRecActiveSubscriptionIndex(accountRecoveryModel.store?.packageId);
+      Get.find<AddressController>().setAccRecZoneIndex(accountRecoveryModel.store?.zoneId);
+    });
 
     if(authController.showPassView){
       authController.showHidePass(isUpdate: false);
     }
 
-    Get.find<AddressController>().setPreloadPickupZones(pickupZoneList: accountRecoveryModel.store?.pickupZoneId);
+    Get.find<AddressController>().setPreloadPickupZones(pickupZoneList: accountRecoveryModel?.store?.pickupZoneId);
 
     _formKeyLogin = GlobalKey<FormState>();
     _formKeySecond = GlobalKey<FormState>();
@@ -204,6 +205,24 @@ class _AccountRecoveryScreenState extends State<AccountRecoveryScreen> with Tick
             }),
 
             body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+
+              Container(
+                padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                margin: const EdgeInsets.only(left: Dimensions.paddingSizeDefault, right: Dimensions.paddingSizeDefault, top: Dimensions.paddingSizeDefault),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                  color: Theme.of(context).colorScheme.error,
+                ),
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+
+                  Text('Reason :', style: robotoMedium.copyWith(color: Theme.of(context).cardColor, fontSize: Dimensions.fontSizeLarge)),
+                  Text(authController.accountRecoveryModel?.store?.reason ?? 'No reason provided',
+                    style: robotoRegular.copyWith(color: Theme.of(context).cardColor),
+                  ),
+
+                ]),
+              ),
 
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge, vertical:  Dimensions.paddingSizeSmall),

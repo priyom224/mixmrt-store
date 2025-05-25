@@ -42,6 +42,8 @@ class MenuScreen extends StatelessWidget {
     if(Get.find<ProfileController>().modulePermission!.campaign!) {
       menuList.add(MenuModel(icon: Images.campaign, title: 'campaign'.tr, route: RouteHelper.getCampaignRoute()));
     }
+    
+    print('selfDeliverySystem: ${Get.find<ProfileController>().profileModel!.stores![0].selfDeliverySystem == 1} || userType: ${Get.find<AuthController>().getUserType()} || storeBusinessModel: ${Get.find<ProfileController>().profileModel!.stores![0].storeBusinessModel}');
 
     if(Get.find<ProfileController>().profileModel!.stores![0].selfDeliverySystem == 1 && Get.find<AuthController>().getUserType() == 'owner' && Get.find<ProfileController>().profileModel!.stores![0].storeBusinessModel != 'subscription') {
       menuList.add(MenuModel(icon: Images.deliveryMan, iconColor: Colors.white, title: 'delivery_man'.tr, route: RouteHelper.getDeliveryManRoute()));

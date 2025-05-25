@@ -55,6 +55,8 @@ class DeliveryManController extends GetxController implements GetxService {
       Get.back();
       showCustomSnackBar(isAdd ? 'delivery_man_added_successfully'.tr : 'delivery_man_updated_successfully'.tr, isError: false);
       getDeliveryManList();
+    }else {
+      showCustomSnackBar('Please enable self delivery system from settings'.tr);
     }
     _isLoading = false;
     update();

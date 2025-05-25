@@ -328,6 +328,7 @@ class Store {
     active = json['active'];
     gstStatus = json['gst_status'];
     gstCode = json['gst_code'];
+    print('Self Delivery System: ${json['self_delivery_system']}');
     selfDeliverySystem = json['self_delivery_system'];
     posSystem = json['pos_system'];
     minimumShippingCharge = json['minimum_shipping_charge'] != null ? json['minimum_shipping_charge']?.toDouble() : 0.0;

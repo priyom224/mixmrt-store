@@ -37,7 +37,7 @@ class DeliverymanRepository implements DeliverymanRepositoryInterface {
       'phone': deliveryMan.phone!, 'identity_type': deliveryMan.identityType!, 'identity_number': deliveryMan.identityNumber!,
     });
 
-    Response response = await apiClient.postMultipartData(isAdd ? AppConstants.addDmUri : '${AppConstants.updateDmUri}${deliveryMan.id}', fields, multiParts);
+    Response response = await apiClient.postMultipartData(isAdd ? AppConstants.addDmUri : '${AppConstants.updateDmUri}${deliveryMan.id}', fields, multiParts, handleError: false);
     return (response.statusCode == 200);
   }
 

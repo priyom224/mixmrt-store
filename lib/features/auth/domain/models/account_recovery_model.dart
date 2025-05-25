@@ -318,8 +318,10 @@ class Stores {
     storeBusinessModel = json['store_business_model'];
     reason = json['reason'];
     packageId = json['package_id'];
-    List<dynamic> parsedList = jsonDecode(json['pickup_zone_id']);
-    pickupZoneId = json['pickup_zone_id'] != null ? parsedList.map((e) => e.toString()).toList() : [];
+    if(json['pickup_zone_id'] != null){
+      List<dynamic> parsedList = jsonDecode(json['pickup_zone_id']);
+      pickupZoneId = json['pickup_zone_id'] != null ? parsedList.map((e) => e.toString()).toList() : [];
+    }
     gstStatus = json['gst_status'];
     gstCode = json['gst_code'];
     logoFullUrl = json['logo_full_url'];
